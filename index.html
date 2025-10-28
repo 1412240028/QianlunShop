@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QianlunShop | Elegan & Profesional</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="navbar glass">
+    <div class="logo">Qianlun<span>Shop</span></div>
+    <nav>
+      <ul>
+        <li><a href="index.html" class="active">Beranda</a></li>
+        <li><a href="pages/products.html">Produk</a></li>
+        <li><a href="pages/about.html">Tentang</a></li>
+        <li><a href="pages/contact.html">Kontak</a></li>
+      </ul>
+    </nav>
+    <button id="dark-mode-toggle">🌙</button>
+  </header>
+
+  <section class="hero fade-appear">
+    <h1>Selamat Datang di <span>QianlunShop</span></h1>
+    <p>Temukan produk pilihan dengan sentuhan elegan dan kualitas premium.</p>
+    <button class="btn-utama" id="cta-btn">Belanja Sekarang</button>
+  </section>
+
+  <section class="produk-preview fade-appear">
+    <h2>Produk Unggulan</h2>
+    <div class="produk-container">
+      <div class="card glass">
+        <img src="assets/images/sample1.jpg" alt="Produk 1" />
+        <h3>Jam Tangan Premium</h3>
+        <p>Rp 1.250.000</p>
+        <button class="btn-detail">Detail</button>
+        <button class="btn-beli">Tambah ke Keranjang</button>
+      </div>
+      <div class="card glass">
+        <img src="assets/images/sample2.jpg" alt="Produk 2" />
+        <h3>Tas Kulit Elegan</h3>
+        <p>Rp 980.000</p>
+        <button class="btn-detail">Detail</button>
+        <button class="btn-beli">Tambah ke Keranjang</button>
+      </div>
+      <div class="card glass">
+        <img src="assets/images/sample3.jpg" alt="Produk 3" />
+        <h3>Sepatu Formal</h3>
+        <p>Rp 890.000</p>
+        <button class="btn-detail">Detail</button>
+        <button class="btn-beli">Tambah ke Keranjang</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 QianlunShop. Semua hak dilindungi.</p>
+  </footer>
+
+  <!-- Modal Detail -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content glass">
+      <span id="close-modal">&times;</span>
+      <h3 id="modal-title"></h3>
+      <p id="modal-price"></p>
+      <p>Produk elegan dengan kualitas premium dan desain modern.</p>
+      <button class="btn-beli" id="modal-add">Tambah ke Keranjang</button>
+    </div>
+  </div>
+
+  <!-- Notifikasi -->
+  <div id="notif" class="notif hidden">Produk berhasil ditambahkan!</div>
+
+  <label class="switch">
+    <input type="checkbox" id="darkToggle">
+    <span class="slider"></span>
+  </label>
+  
+  <!-- Cart -->
+  <div id="cart-container" class="glass hidden">
+    <h3>Keranjang Belanja</h3>
+    <ul id="cart-items"></ul>
+    <div class="cart-total"><strong>Total:</strong> <span id="cart-total">Rp 0</span></div>
+    <button id="close-cart" class="btn-beli">Tutup</button>
+  </div>
+  <button id="cart-btn" class="cart-fab">🛍️</button>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

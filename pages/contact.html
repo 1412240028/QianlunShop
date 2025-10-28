@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kontak | QianlunShop</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Qianlun<span>Shop</span></div>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Beranda</a></li>
+        <li><a href="products.html">Produk</a></li>
+        <li><a href="about.html">Tentang</a></li>
+        <li><a href="contact.html" aria-current="page">Kontak</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="contact-section glass">
+      <h1>Hubungi Kami</h1>
+      <p>Kami senang mendengar dari Anda! Kirimkan pesan, saran, atau pertanyaan melalui formulir di bawah ini.</p>
+
+      <form id="contact-form" class="contact-form" onsubmit="handleContactSubmit(event)">
+        <input type="text" id="contact-name" placeholder="Nama Lengkap" required />
+        <input type="email" id="contact-email" placeholder="Alamat Email" required />
+        <textarea id="contact-message" placeholder="Pesan Anda" rows="5" required></textarea>
+        <button type="submit" class="btn-utama">Kirim Pesan</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 QianlunShop. Semua hak dilindungi.</p>
+  </footer>
+
+  <!-- Mini Cart (global) -->
+  <div id="cart-container" class="glass hidden">
+    <h3>Keranjang Belanja</h3>
+    <ul id="cart-items"></ul>
+    <div class="cart-total"><strong>Total:</strong> <span id="cart-total">Rp 0</span></div>
+    <div class="cart-actions">
+      <button id="checkout-btn" class="btn-beli">Checkout</button>
+      <button id="close-cart" class="btn-beli">Tutup</button>
+    </div>
+  </div>
+
+  <button id="cart-btn" class="cart-fab" aria-label="Buka Keranjang">🛍️</button>
+
+  <script src="../js/script.js"></script>
+</body>
+</html>
