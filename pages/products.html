@@ -1,109 +1,105 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>QianlunShop | Elegan & Profesional</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produk | QianlunShop</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <header class="navbar glass" role="banner">
-    <div class="logo">Qianlun<span>Shop</span></div>
-    <nav role="navigation" aria-label="Main navigation">
-      <ul class="nav-links">
-        <li><a href="index.html" class="active">Beranda</a></li>
-        <li><a href="pages/products.html">Produk</a></li>
-        <li><a href="pages/about.html">Tentang</a></li>
-        <li><a href="pages/contact.html">Kontak</a></li>
-      </ul>
-    </nav>
+    <header class="glass">
+        <div class="logo">🛍️ QianlunShop</div>
+        <nav class="nav-links">
+            <a href="../index.html">Beranda</a>
+            <a href="products.html" class="active">Produk</a>
+            <a href="about.html">Tentang Kami</a>
+            <a href="contact.html">Kontak</a>
 
-    <!-- Dark mode toggle (single canonical control used across pages) -->
-    <label class="switch" title="Toggle tema gelap/terang">
-      <input type="checkbox" id="darkToggle" aria-label="Toggle dark mode">
-      <span class="slider"></span>
-    </label>
-  </header>
+            <!-- Dark Mode Toggle -->
+            <label class="switch">
+                <input type="checkbox" id="darkToggle">
+                <span class="slider"></span>
+            </label>
+        </nav>
+    </header>
 
-  <main>
-    <section class="hero fade-appear" aria-labelledby="hero-title">
-      <h1 id="hero-title">Selamat Datang di <span>QianlunShop</span></h1>
-      <p>Temukan produk pilihan dengan sentuhan elegan dan kualitas premium.</p>
-      <button class="btn-utama" id="cta-btn">Belanja Sekarang</button>
-    </section>
+    <main>
+        <section class="hero glass">
+            <h1>Produk Kami</h1>
+            <p>Temukan koleksi produk elegan dan berkualitas tinggi.</p>
+        </section>
 
-    <section class="produk-preview fade-appear" aria-labelledby="produk-unggulan">
-      <h2 id="produk-unggulan">Produk Unggulan</h2>
-      <div class="produk-container" id="home-produk">
-        <article class="card product-card glass" data-name="Jam Tangan Premium" data-price="1250000">
-          <img src="assets/images/sample1.jpg" alt="Jam Tangan Premium - Stainless Steel" loading="lazy">
-          <h3>Jam Tangan Premium</h3>
-          <p>Rp 1.250.000</p>
-          <div class="card-actions">
-            <button class="btn-detail" data-action="detail">Detail</button>
-            <button class="btn-beli" data-action="add">Tambah ke Keranjang</button>
-          </div>
-        </article>
+        <section class="search-container">
+            <input type="text" id="searchInput" placeholder="Cari produk...">
+        </section>
 
-        <article class="card product-card glass" data-name="Tas Kulit Elegan" data-price="980000">
-          <img src="assets/images/sample2.jpg" alt="Tas Kulit Elegan - Kulit Asli" loading="lazy">
-          <h3>Tas Kulit Elegan</h3>
-          <p>Rp 980.000</p>
-          <div class="card-actions">
-            <button class="btn-detail" data-action="detail">Detail</button>
-            <button class="btn-beli" data-action="add">Tambah ke Keranjang</button>
-          </div>
-        </article>
+        <section class="products-grid">
+            <div class="product-card glass">
+                <img src="../assets/images/sample1.jpg" alt="Jam Tangan Premium">
+                <h3>Jam Tangan Premium</h3>
+                <p>Rp 1.200.000</p>
+                <button class="btn-detail" data-product="Jam Tangan Premium">Detail</button>
+                <button class="add-to-cart" data-product="Jam Tangan Premium">Tambah ke Keranjang</button>
+            </div>
 
-        <article class="card product-card glass" data-name="Sepatu Formal" data-price="890000">
-          <img src="assets/images/sample3.jpg" alt="Sepatu Formal - Kulit Black" loading="lazy">
-          <h3>Sepatu Formal</h3>
-          <p>Rp 890.000</p>
-          <div class="card-actions">
-            <button class="btn-detail" data-action="detail">Detail</button>
-            <button class="btn-beli" data-action="add">Tambah ke Keranjang</button>
-          </div>
-        </article>
-      </div>
-    </section>
-  </main>
+            <div class="product-card glass">
+                <img src="../assets/images/sample2.jpg" alt="Tas Kulit Asli">
+                <h3>Tas Kulit Asli</h3>
+                <p>Rp 850.000</p>
+                <button class="btn-detail" data-product="Tas Kulit Asli">Detail</button>
+                <button class="add-to-cart" data-product="Tas Kulit Asli">Tambah ke Keranjang</button>
+            </div>
 
-  <footer role="contentinfo">
-    <p>&copy; 2025 QianlunShop. Semua hak dilindungi.</p>
-  </footer>
+            <div class="product-card glass">
+                <img src="../assets/images/sample3.jpg" alt="Kacamata Stylish">
+                <h3>Kacamata Stylish</h3>
+                <p>Rp 500.000</p>
+                <button class="btn-detail" data-product="Kacamata Stylish">Detail</button>
+                <button class="add-to-cart" data-product="Kacamata Stylish">Tambah ke Keranjang</button>
+            </div>
 
-  <!-- Shared UI: Modal, Notif, Cart -->
-  <!-- Modal Detail -->
-  <div id="modal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal-content glass" role="document">
-      <button id="close-modal" class="modal-close" aria-label="Tutup">&times;</button>
-      <h3 id="modal-title"></h3>
-      <p id="modal-price"></p>
-      <p id="modal-desc">Produk elegan dengan kualitas premium dan desain modern.</p>
-      <div style="text-align:right;margin-top:1rem;">
-        <button class="btn-beli" id="modal-add" data-action="modal-add">Tambah ke Keranjang</button>
-      </div>
+            <div class="product-card glass">
+                <img src="../assets/images/sample4.jpg" alt="Sepatu Elegan">
+                <h3>Sepatu Elegan</h3>
+                <p>Rp 950.000</p>
+                <button class="btn-detail" data-product="Sepatu Elegan">Detail</button>
+                <button class="add-to-cart" data-product="Sepatu Elegan">Tambah ke Keranjang</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass">
+        <p>&copy; 2025 QianlunShop. Semua hak dilindungi.</p>
+    </footer>
+
+    <!-- Floating Cart Button -->
+    <button id="cart-btn" class="cart-fab">🛒 <span class="cart-count">0</span></button>
+
+    <!-- Cart Container -->
+    <div id="cart-container" class="glass hidden">
+        <h3>Keranjang Belanja</h3>
+        <ul id="cart-items"></ul>
+        <div class="cart-total">
+            <strong>Total:</strong> <span id="cart-total">Rp 0</span>
+        </div>
+        <button id="close-cart" class="btn-beli">Tutup</button>
     </div>
-  </div>
 
-  <!-- Notifikasi -->
-  <div id="notif" class="notif" aria-live="polite" aria-atomic="true"></div>
-
-  <!-- Cart -->
-  <div id="cart-container" class="glass hidden" aria-hidden="true">
-    <h3>Keranjang Belanja</h3>
-    <ul id="cart-items" aria-live="polite"></ul>
-    <div class="cart-total"><strong>Total:</strong> <span id="cart-total">Rp 0</span></div>
-    <div class="cart-actions">
-      <button id="checkout-btn" class="btn-beli">Checkout</button>
-      <button id="close-cart" class="btn-beli">Tutup</button>
+    <!-- Modal Detail -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content glass">
+            <span id="close-modal">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-price"></p>
+            <p id="modal-desc">Produk elegan dengan kualitas premium dan desain modern.</p>
+            <button class="btn-beli" id="modal-add">Tambah ke Keranjang</button>
+        </div>
     </div>
-  </div>
-  <button id="cart-btn" class="cart-fab" aria-label="Buka Keranjang">
-    🛍️ <span id="cart-badge" class="cart-badge hidden">0</span>
-  </button>
 
-  <script src="js/script.js"></script>
+    <!-- Toast Notification -->
+    <div id="notif" class="notif hidden">Produk berhasil ditambahkan!</div>
+
+    <!-- Link ke JS -->
+    <script src="../js/script.js"></script>
 </body>
 </html>
