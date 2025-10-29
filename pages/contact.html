@@ -1,64 +1,57 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kontak | QianlunShop</title>
-  <link rel="stylesheet" href="../css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | QianlunShop</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="navbar glass" role="banner">
-    <div class="logo">Qianlun<span>Shop</span></div>
-    <nav role="navigation" aria-label="Main navigation">
-      <ul class="nav-links">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">QIANLUNSHOP</div>
+    <ul>
         <li><a href="../index.html">Beranda</a></li>
         <li><a href="products.html">Produk</a></li>
+        <li><a href="cart.html">Keranjang</a></li>
         <li><a href="about.html">Tentang</a></li>
-        <li><a href="contact.html" class="active">Kontak</a></li>
-      </ul>
-    </nav>
+        <li><a href="contact.html" class="active" >Kontak</a></li>
+    </ul>
+  </nav>
 
-    <label class="switch" title="Toggle tema gelap/terang">
-      <input type="checkbox" id="darkToggle" aria-label="Toggle dark mode">
-      <span class="slider"></span>
-    </label>
-  </header>
+  <!-- Contact Section -->
+  <section class="section contact-section">
+    <h2>Get in Touch</h2>
 
-  <main>
-    <section class="contact-section glass" aria-labelledby="contact-title">
-      <h1 id="contact-title">Hubungi Kami</h1>
-      <p>Kami senang mendengar dari Anda! Kirimkan pesan, saran, atau pertanyaan melalui formulir di bawah ini.</p>
-
-      <form id="contact-form" class="contact-form" onsubmit="handleContactSubmit(event)">
-        <input type="text" id="contact-name" placeholder="Nama Lengkap" required />
-        <input type="email" id="contact-email" placeholder="Alamat Email" required />
-        <textarea id="contact-message" placeholder="Pesan Anda" rows="5" required></textarea>
-        <button type="submit" class="btn-utama">Kirim Pesan</button>
-      </form>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 QianlunShop. Semua hak dilindungi.</p>
-  </footer>
-
-  <!-- Shared UI: Notif & Cart -->
-  <div id="notif" class="notif" aria-live="polite" aria-atomic="true"></div>
-
-  <div id="cart-container" class="glass hidden" aria-hidden="true">
-    <h3>Keranjang Belanja</h3>
-    <ul id="cart-items" aria-live="polite"></ul>
-    <div class="cart-total"><strong>Total:</strong> <span id="cart-total">Rp 0</span></div>
-    <div class="cart-actions">
-      <button id="checkout-btn" class="btn-beli">Checkout</button>
-      <button id="close-cart" class="btn-beli">Tutup</button>
+    <div class="contact-container">
+      <div class="contact-card">
+        <h3>Email</h3>
+        <p>support@qianlunshop.com</p>
+      </div>
+      <div class="contact-card">
+        <h3>Phone</h3>
+        <p>+62 812-3456-7890</p>
+      </div>
+      <div class="contact-card">
+        <h3>Address</h3>
+        <p>Tuban, East Java, Indonesia</p>
+      </div>
     </div>
-  </div>
 
-  <button id="cart-btn" class="cart-fab" aria-label="Buka Keranjang">
-    🛍️ <span id="cart-badge" class="cart-badge hidden">0</span>
-  </button>
+    <form class="contact-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="5" placeholder="Your Message..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
 
-  <script src="../js/script.js"></script>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 <span>QianlunShop</span>. All rights reserved.</p>
+  </footer>
+<script type="module" src="../js/script.js"></script>
 </body>
 </html>

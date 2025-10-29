@@ -1,64 +1,48 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tentang Kami | QianlunShop</title>
-  <link rel="stylesheet" href="../css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | QianlunShop</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="navbar glass" role="banner">
-    <div class="logo">Qianlun<span>Shop</span></div>
-    <nav role="navigation" aria-label="Main navigation">
-      <ul class="nav-links">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">QIANLUNSHOP</div>
+    <ul>
         <li><a href="../index.html">Beranda</a></li>
         <li><a href="products.html">Produk</a></li>
-        <li><a href="about.html" class="active">Tentang</a></li>
+        <li><a href="cart.html">Keranjang</a></li>
+        <li><a href="about.html"  class="active" >Tentang</a></li>
         <li><a href="contact.html">Kontak</a></li>
-      </ul>
-    </nav>
+    </ul>
+  </nav>
 
-    <label class="switch" title="Toggle tema gelap/terang">
-      <input type="checkbox" id="darkToggle" aria-label="Toggle dark mode">
-      <span class="slider"></span>
-    </label>
-  </header>
+  <!-- About Section -->
+  <section class="section about-section">
+    <h2>About QianlunShop</h2>
+    <p>
+      QianlunShop was founded with one mission — to bring elegance and sophistication 
+      into the world of e-commerce. Inspired by luxury timepieces and modern design, 
+      we combine technology with aesthetics to deliver a shopping experience unlike any other.
+    </p>
+    <p>
+      Our team believes that online shopping should feel refined, secure, and enjoyable. 
+      Every detail of our interface, color palette, and navigation is designed to reflect 
+      excellence — because you deserve nothing less.
+    </p>
+    <p>
+      Welcome to QianlunShop — where technology meets timeless luxury.
+    </p>
+  </section>
 
-  <main>
-    <section class="about-section glass" aria-labelledby="about-title">
-      <h1 id="about-title">Tentang QianlunShop</h1>
-      <p>
-        QianlunShop berdiri dengan visi menghadirkan produk elegan berkualitas tinggi bagi para profesional modern.
-        Kami percaya bahwa gaya dan kenyamanan bisa berjalan seimbang tanpa mengorbankan nilai estetika.
-      </p>
-      <p>
-        Setiap produk kami dirancang dengan perhatian pada detail, kualitas bahan, dan sentuhan desain formal yang tak lekang oleh waktu.
-        Tim kami berdedikasi untuk memberikan pengalaman belanja yang memadukan kemewahan dan kesederhanaan.
-      </p>
-    </section>
-  </main>
-
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2025 QianlunShop. Semua hak dilindungi.</p>
+    <p>© 2025 <span>QianlunShop</span>. All rights reserved.</p>
   </footer>
-
-  <!-- Shared UI: Notif & Cart -->
-  <div id="notif" class="notif" aria-live="polite" aria-atomic="true"></div>
-
-  <div id="cart-container" class="glass hidden" aria-hidden="true">
-    <h3>Keranjang Belanja</h3>
-    <ul id="cart-items" aria-live="polite"></ul>
-    <div class="cart-total"><strong>Total:</strong> <span id="cart-total">Rp 0</span></div>
-    <div class="cart-actions">
-      <button id="checkout-btn" class="btn-beli">Checkout</button>
-      <button id="close-cart" class="btn-beli">Tutup</button>
-    </div>
-  </div>
-
-  <button id="cart-btn" class="cart-fab" aria-label="Buka Keranjang">
-    🛍️ <span id="cart-badge" class="cart-badge hidden">0</span>
-  </button>
-
-  <script src="../js/script.js"></script>
+<script type="module" src="../js/script.js"></script>
 </body>
 </html>
