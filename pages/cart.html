@@ -6,32 +6,37 @@
   <title>Keranjang - QianlunShop</title>
   <link rel="stylesheet" href="../css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="module" src="../js/script.js" defer></script>
 </head>
 <body>
-  <!-- Navbar -->
+  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="logo">QIANLUNSHOP</div>
     <ul>
       <li><a href="../index.html">Beranda</a></li>
       <li><a href="products.html">Produk</a></li>
-      <li><a href="cart.html" class="active">Keranjang</a></li>
+      <li>
+        <a href="cart.html" class="active" id="cartIcon">
+          Keranjang <span class="cart-count">0</span>
+        </a>
+      </li>
       <li><a href="about.html">Tentang</a></li>
       <li><a href="contact.html">Kontak</a></li>
     </ul>
-  </nav>
+  </nav>  
 
-  <!-- Cart Section -->
+  <!-- CART SECTION -->
   <section class="section">
     <h2>Keranjang Saya</h2>
-    <div class="cart-container" id="cartContainer">
-      <p>Memuat keranjang...</p>
+    <div class="cart-container">
+      <!-- Item cart akan di-render otomatis oleh JS -->
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
     <p>© 2025 <span>QianlunShop</span>. Semua hak dilindungi.</p>
+    <p>Desain oleh Dhoni Prasetya</p>
   </footer>
-<script type="module" src="../js/script.js"></script>
 </body>
 </html>

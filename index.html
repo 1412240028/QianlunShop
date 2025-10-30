@@ -7,57 +7,66 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="assets/logo.png" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <script type="module" src="js/script.js"></script>
+  <script type="module" src="js/script.js" defer></script>
 </head>
 <body>
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="logo">QIANLUNSHOP</div>
     <ul>
-      <li><a href="index.html">Beranda</a></li>
+      <li><a href="index.html" class="active">Beranda</a></li>
       <li><a href="pages/products.html">Produk</a></li>
-      <li><a href="pages/cart.html">Keranjang</a></li>
+      <li>
+        <a href="pages/cart.html" id="cartIcon">
+          Keranjang <span class="cart-count">0</span>
+        </a>
+      </li>
       <li><a href="pages/about.html">Tentang</a></li>
       <li><a href="pages/contact.html">Kontak</a></li>
     </ul>
-  </nav>
+  </nav>  
 
   <!-- HERO -->
   <section class="hero">
     <h1>Luxury in Every Detail</h1>
     <p>Temukan koleksi premium dengan kualitas tak tertandingi.</p>
+    <a href="pages/products.html" class="btn">Lihat Produk</a>
   </section>
 
   <!-- FEATURED PRODUCTS -->
   <section class="section" id="featured">
     <h2>Produk Unggulan</h2>
     <div class="product-grid">
-      <div class="product-card">
-        <img src="assets/sample1.jpg" alt="Produk 1">
+      <div class="product-card" data-id="1" data-price="2500000">
+        <img src="assets/sample1.jpg" alt="Jam Tangan Qianlun">
         <div class="product-info">
           <h3>Jam Tangan Qianlun</h3>
           <p>Rp 2.500.000</p>
+          <button class="btn add-to-cart">Tambah ke Keranjang</button>
         </div>
       </div>
-      <div class="product-card">
-        <img src="assets/sample2.jpg" alt="Produk 2">
+      <div class="product-card" data-id="2" data-price="3800000">
+        <img src="assets/sample2.jpg" alt="Tas Kulit Eksklusif">
         <div class="product-info">
           <h3>Tas Kulit Eksklusif</h3>
           <p>Rp 3.800.000</p>
+          <button class="btn add-to-cart">Tambah ke Keranjang</button>
         </div>
       </div>
-      <div class="product-card">
-        <img src="assets/sample3.jpg" alt="Produk 3">
+      <div class="product-card" data-id="3" data-price="1200000">
+        <img src="assets/sample3.jpg" alt="Kacamata Signature">
         <div class="product-info">
           <h3>Kacamata Signature</h3>
           <p>Rp 1.200.000</p>
+          <button class="btn add-to-cart">Tambah ke Keranjang</button>
         </div>
       </div>
-      <div class="product-card">
-        <img src="assets/sample4.jpg" alt="Produk 4">
+      <div class="product-card" data-id="4" data-price="950000">
+        <img src="assets/sample4.jpg" alt="Dompet Premium">
         <div class="product-info">
           <h3>Dompet Premium</h3>
           <p>Rp 950.000</p>
+          <button class="btn add-to-cart">Tambah ke Keranjang</button>
         </div>
       </div>
     </div>

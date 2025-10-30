@@ -348,19 +348,16 @@ footer span {
    ✨ ANIMATION & INTERACTION
    ========================= */
 
-/* Smooth transition untuk semua elemen interaktif */
 a, button, .product-card, .btn {
   transition: all 0.3s ease;
 }
 
-/* Product Card Hover Effect */
 .product-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 8px 20px rgba(212, 175, 55, 0.15);
   border-color: rgba(212, 175, 55, 0.4);
 }
 
-/* Hero fade-in animation */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -389,7 +386,6 @@ a, button, .product-card, .btn {
   animation-delay: 0.9s;
 }
 
-/* Product card stagger animation */
 .product-card {
   opacity: 0;
   transform: translateY(20px);
@@ -401,12 +397,10 @@ a, button, .product-card, .btn {
 .product-card:nth-child(3) { animation-delay: 0.6s; }
 .product-card:nth-child(4) { animation-delay: 0.75s; }
 
-/* Gold glow effect on hover */
 .product-card:hover h3 {
   text-shadow: 0 0 8px rgba(244, 208, 63, 0.6);
 }
 
-/* Button ripple effect simulation */
 .btn {
   position: relative;
   overflow: hidden;
@@ -431,7 +425,6 @@ a, button, .product-card, .btn {
   transition: 0s;
 }
 
-/* Section reveal base (for future JS) */
 .reveal {
   opacity: 0;
   transform: translateY(30px);
@@ -443,7 +436,6 @@ a, button, .product-card, .btn {
   transform: translateY(0);
 }
 
-/* Optional shimmer (for loading state placeholder) */
 @keyframes shimmer {
   0% { background-position: -200px 0; }
   100% { background-position: 200px 0; }
@@ -678,8 +670,7 @@ a, button, .product-card, .btn {
     background: linear-gradient(90deg, var(--gold-accent), var(--gold-primary));
     transform: translateY(-2px);
   }
-  
-  /* Layout for filled cart (future-proof) */
+
   .cart-items {
     display: flex;
     flex-direction: column;
@@ -758,4 +749,40 @@ a, button, .product-card, .btn {
   .remove-item:hover {
     transform: scale(1.2);
   }
+  @keyframes cartBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
   
+  #cartIcon.bounce {
+    animation: cartBounce 0.5s ease;
+    color: var(--gold-accent);
+  }
+  /* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(90deg, var(--bg-secondary), var(--bg-tertiary));
+  border: 1px solid rgba(212,175,55,0.4);
+  color: var(--text-light);
+  padding: 14px 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(212,175,55,0.15);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.3s ease;
+  z-index: 2000;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast.success {
+  border-color: var(--success);
+}
+.toast.error {
+  border-color: var(--error);
+}
