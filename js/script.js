@@ -22,33 +22,10 @@ function showToast(message, type = "success") {
 // =========================
 function updateCartCount() {
   const countEl = document.querySelector("#cartIcon .cart-count");
-  if (countEl) countEl.textContent = cart.getItemCount();
-}
-
-// =========================
-// 🛍️ Tambah ke Keranjang (Products Page)
-// =========================
-document.addEventListener("click", e => {
-  if (e.target.classList.contains("add-to-cart")) {
-    const card = e.target.closest(".product-card");
-    if (!card) return;
-
-    const imgEl = card.querySelector("img");
-    flyToCart(imgEl); // animasi
-
-    const product = {
-      id: card.dataset.id,
-      name: card.querySelector("h3").textContent,
-      price: parseInt(card.dataset.price),
-      image: imgEl.src,
-      quantity: 1
-    };
-
-    cart.add(product);
-    updateCartCount();
-    showToast(`✅ ${product.name} ditambahkan ke keranjang!`);
+  if (countEl) {
+    countEl.textContent = cart.getItemCount();
   }
-});
+}
 
 // =========================
 // ✨ Animasi Terbang ke Cart
@@ -69,6 +46,7 @@ function flyToCart(imgEl) {
   imgClone.style.transition = "all 0.8s cubic-bezier(0.55, 0.06, 0.68, 0.19)";
   imgClone.style.zIndex = "9999";
   imgClone.style.borderRadius = "10px";
+  imgClone.style.pointerEvents = "none";
   document.body.appendChild(imgClone);
 
   setTimeout(() => {
@@ -87,17 +65,58 @@ function flyToCart(imgEl) {
 }
 
 // =========================
+// 🛍️ Tambah ke Keranjang
+// =========================
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("add-to-cart")) {
+    e.preventDefault();
+    
+    const card = e.target.closest(".product-card");
+    if (!card) {
+      console.error("❌ Product card tidak ditemukan");
+      return;
+    }
+
+    const imgEl = card.querySelector("img");
+    if (imgEl) {
+      flyToCart(imgEl);
+    }
+
+    const nameEl = card.querySelector("h3");
+    const priceAttr = card.dataset.price;
+    const idAttr = card.dataset.id;
+
+    if (!nameEl || !priceAttr || !idAttr) {
+      console.error("❌ Data produk tidak lengkap", { nameEl, priceAttr, idAttr });
+      showToast("❌ Gagal menambahkan produk", "error");
+      return;
+    }
+
+    const product = {
+      id: idAttr,
+      name: nameEl.textContent.trim(),
+      price: parseInt(priceAttr, 10),
+      image: imgEl ? imgEl.src : "",
+      quantity: 1
+    };
+
+    console.log("✅ Menambahkan produk:", product);
+    cart.add(product);
+    updateCartCount();
+    showToast(`✅ ${product.name} ditambahkan ke keranjang!`);
+  }
+});
+
+// =========================
 // 🛒 Render Halaman Cart
 // =========================
-document.addEventListener("DOMContentLoaded", () => {
+function initCartPage() {
   const container = document.querySelector(".cart-container");
   if (!container) return;
 
-  renderCart();
-  updateCartCount();
-
   function renderCart() {
-    const items = cart.load();
+    const items = cart.items;
+    
     if (!items || items.length === 0) {
       container.innerHTML = `
         <p>Keranjang kamu masih kosong.</p>
@@ -133,36 +152,53 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // =========================
-  // 🔧 Event Listener Cart
-  // =========================
+  renderCart();
+
+  // Event listener untuk cart actions
   container.addEventListener("click", e => {
     const id = e.target.dataset.id;
+    
     if (e.target.classList.contains("remove-item")) {
       cart.remove(id);
       renderCart();
       updateCartCount();
       showToast("🗑️ Item dihapus dari keranjang", "error");
     }
+    
     if (e.target.classList.contains("clear-cart")) {
-      cart.clear();
-      renderCart();
-      updateCartCount();
-      showToast("🚮 Semua item dihapus", "error");
+      if (confirm("Yakin ingin menghapus semua item?")) {
+        cart.clear();
+        renderCart();
+        updateCartCount();
+        showToast("🚮 Semua item dihapus", "error");
+      }
     }
+    
     if (e.target.classList.contains("inc")) {
       const item = cart.items.find(i => i.id === id);
-      cart.update(id, item.quantity + 1);
-      renderCart();
-      updateCartCount();
+      if (item) {
+        cart.update(id, item.quantity + 1);
+        renderCart();
+        updateCartCount();
+      }
     }
+    
     if (e.target.classList.contains("dec")) {
       const item = cart.items.find(i => i.id === id);
-      if (item.quantity > 1) {
+      if (item && item.quantity > 1) {
         cart.update(id, item.quantity - 1);
         renderCart();
         updateCartCount();
       }
     }
   });
+}
+
+// =========================
+// 🚀 Initialize on Load
+// =========================
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("🚀 Script loaded");
+  updateCartCount();
+  initCartPage();
 });

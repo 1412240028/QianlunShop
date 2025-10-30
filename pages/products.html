@@ -6,6 +6,7 @@
   <title>Produk - QianlunShop</title>
   <link rel="stylesheet" href="../css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="module" src="../js/script.js" defer></script>
 </head>
 <body>
   <nav class="navbar">
@@ -13,7 +14,11 @@
     <ul>
       <li><a href="../index.html">Beranda</a></li>
       <li><a href="products.html" class="active">Produk</a></li>
-      <li><a href="cart.html" id="cartIcon">Keranjang</a></li>
+      <li>
+        <a href="cart.html" id="cartIcon">
+          Keranjang <span class="cart-count">0</span>
+        </a>
+      </li>
       <li><a href="about.html">Tentang</a></li>
       <li><a href="contact.html">Kontak</a></li>
     </ul>
@@ -71,8 +76,5 @@
   <footer>
     <p>© 2025 <span>QianlunShop</span>. Semua hak dilindungi.</p>
   </footer>
-
-  <!-- Script -->
-    <script type="module" src="../js/script.js"></script>
 </body>
 </html>
