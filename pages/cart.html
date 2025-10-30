@@ -26,16 +26,78 @@
   </nav>  
 
   <!-- CART SECTION -->
-  <section class="section">
-    <h2>Keranjang Saya</h2>
+  <section class="section cart-section">
     <div class="cart-container">
+      <div class="cart-header">
+        <h2>Keranjang Belanja Anda</h2>
+        <p>Review produk yang telah Anda pilih</p>
+      </div>
+
+      <div class="cart-items" id="cartItems">
+        <!-- Cart items will be dynamically inserted here -->
+        
+        <!-- Empty Cart State -->
+        <div class="empty-cart" id="emptyCart">
+          <h3>🛒 Keranjang Kosong</h3>
+          <p>Belum ada produk di keranjang Anda</p>
+          <a href="products.html" class="btn btn-primary">Jelajahi Produk</a>
+        </div>
+      </div>
+
+      <!-- Cart Summary -->
+      <div class="cart-summary" id="cartSummary">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="subtotal">Rp 0</span>
+        </div>
+        <div class="summary-row">
+          <span>Pengiriman</span>
+          <span id="shipping">Gratis</span>
+        </div>
+        <div class="summary-row">
+          <span>Pajak</span>
+          <span id="tax">Termasuk</span>
+        </div>
+        <div class="summary-row">
+          <span>Total</span>
+          <span id="total" class="summary-total">Rp 0</span>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn">Lanjut ke Checkout</button>
+      </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <p>© 2025 <span>QianlunShop</span>. Semua hak dilindungi.</p>
-    <p>Desain oleh Dhoni Prasetya</p>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>QIANLUNSHOP</h4>
+          <p>Where Heritage Meets Modern Luxury</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="products.html">Koleksi</a></li>
+            <li><a href="about.html">Tentang Kami</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>hello@qianlunshop.com</p>
+          <p>+62 812-3456-7890</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 <span>QianlunShop</span>. Semua hak dilindungi.</p>
+        <p>Desain oleh Dhoni Prasetya</p>
+      </div>
+    </div>
   </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
 </body>
 </html>

@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Produk - QianlunShop</title>
   <link rel="stylesheet" href="../css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <script type="module" src="../js/script.js" defer></script>
 </head>
+
 <body>
   <nav class="navbar">
     <div class="logo">QIANLUNSHOP</div>
@@ -22,128 +26,112 @@
       <li><a href="about.html">Tentang</a></li>
       <li><a href="contact.html">Kontak</a></li>
     </ul>
-  </nav>  
+  </nav>
 
   <!-- Product Section -->
-<section class="section products-section">
-  <h2>Our Products</h2>
+  <section class="section products-section">
+    <h2>Our Products</h2>
 
-  <!-- 🔍 SEARCH & FILTER BAR -->
-  <div class="filter-container">
-    <!-- Search Box -->
-    <div class="search-box">
-      <input 
-        type="text" 
-        id="searchInput" 
-        placeholder="🔍 Cari produk..." 
-        autocomplete="off"
-      >
-    </div>
-
-    <!-- Category Filter -->
-    <div class="filter-group">
-      <label>Kategori:</label>
-      <select id="categoryFilter">
-        <option value="all">Semua Kategori</option>
-        <option value="watch">Jam Tangan</option>
-        <option value="bag">Tas</option>
-        <option value="shoes">Sepatu</option>
-        <option value="wallet">Dompet</option>
-      </select>
-    </div>
-
-    <!-- Sort Filter -->
-    <div class="filter-group">
-      <label>Urutkan:</label>
-      <select id="sortFilter">
-        <option value="default">Default</option>
-        <option value="price-low">Harga: Terendah</option>
-        <option value="price-high">Harga: Tertinggi</option>
-        <option value="name-asc">Nama: A-Z</option>
-        <option value="name-desc">Nama: Z-A</option>
-      </select>
-    </div>
-
-    <!-- Reset Button -->
-    <button class="btn btn-reset" id="resetFilter">Reset Filter</button>
-  </div>
-
-  <!-- Results Info -->
-  <div class="results-info">
-    Menampilkan <span id="resultCount">4</span> produk
-  </div>
-
-  <!-- Product Grid -->
-  <div class="product-grid" id="productGrid">
-
-    <!-- Product 1 -->
-    <div class="product-card" 
-         data-id="p001" 
-         data-price="15750000"
-         data-category="watch"
-         data-name="Luxury Watch">
-      <img src="../assets/sample1.jpg" alt="Luxury Watch">
-      <div class="product-info">
-        <h3>Luxury Watch</h3>
-        <p>Rp 15.750.000</p>
-        <button class="btn add-to-cart">Tambah ke Keranjang</button>
+    <!-- 🔍 SEARCH & FILTER BAR -->
+    <div class="filter-container">
+      <!-- Search Box -->
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Cari produk..." autocomplete="off">
       </div>
-    </div>
 
-    <!-- Product 2 -->
-    <div class="product-card" 
-         data-id="p002" 
-         data-price="7800000"
-         data-category="bag"
-         data-name="Elegant Bag">
-      <img src="../assets/sample2.jpg" alt="Elegant Bag">
-      <div class="product-info">
-        <h3>Elegant Bag</h3>
-        <p>Rp 7.800.000</p>
-        <button class="btn add-to-cart">Tambah ke Keranjang</button>
+      <!-- Category Filter -->
+      <div class="filter-group">
+        <label>Kategori:</label>
+        <select id="categoryFilter">
+          <option value="all">Semua Kategori</option>
+          <option value="watch">Jam Tangan</option>
+          <option value="bag">Tas</option>
+          <option value="shoes">Sepatu</option>
+          <option value="wallet">Dompet</option>
+        </select>
       </div>
-    </div>
 
-    <!-- Product 3 -->
-    <div class="product-card" 
-         data-id="p003" 
-         data-price="5900000"
-         data-category="shoes"
-         data-name="Signature Shoes">
-      <img src="../assets/sample3.jpg" alt="Signature Shoes">
-      <div class="product-info">
-        <h3>Signature Shoes</h3>
-        <p>Rp 5.900.000</p>
-        <button class="btn add-to-cart">Tambah ke Keranjang</button>
+      <!-- Sort Filter -->
+      <div class="filter-group">
+        <label>Urutkan:</label>
+        <select id="sortFilter">
+          <option value="default">Default</option>
+          <option value="price-low">Harga: Terendah</option>
+          <option value="price-high">Harga: Tertinggi</option>
+          <option value="name-asc">Nama: A-Z</option>
+          <option value="name-desc">Nama: Z-A</option>
+        </select>
       </div>
+
+      <!-- Reset Button -->
+      <button class="btn btn-reset" id="resetFilter">Reset Filter</button>
     </div>
 
-    <!-- Product 4 -->
-    <div class="product-card" 
-         data-id="p004" 
-         data-price="3250000"
-         data-category="wallet"
-         data-name="Premium Wallet">
-      <img src="../assets/sample4.jpg" alt="Premium Wallet">
-      <div class="product-info">
-        <h3>Premium Wallet</h3>
-        <p>Rp 3.250.000</p>
-        <button class="btn add-to-cart">Tambah ke Keranjang</button>
+    <!-- Results Info -->
+    <div class="results-info">
+      Menampilkan <span id="resultCount">4</span> produk
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="productGrid">
+
+      <!-- Product 1 -->
+      <div class="product-card" data-id="p001" data-price="8750000" data-category="watch"
+        data-name="QIANLUN HERITAGE COLLECTION">
+        <img src="../assets/images/products/QianLun Watch.jpg" alt="QIANLUN HERITAGE COLLECTION">
+        <div class="product-info">
+          <h3>QIANLUN "HERITAGE COLLECTION"</h3>
+          <p>Rp 8.750.000</p>
+          <button class="btn add-to-cart">Tambah ke Keranjang</button>
+        </div>
       </div>
+
+      <!-- Product 2 -->
+      <div class="product-card" data-id="p002" data-price="5500000" data-category="bag"
+        data-name="QIANLUN CELESTIAL DRAGON">
+        <img src="../assets/images/products/QianLun Bag.jpg" alt="QIANLUN CELESTIAL DRAGON">
+        <div class="product-info">
+          <h3>QIANLUN "CELESTIAL DRAGON"</h3>
+          <p>Rp 5.500.000</p>
+          <button class="btn add-to-cart">Tambah ke Keranjang</button>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="product-card" data-id="p003" data-price="3750000" data-category="shoes"
+        data-name="QIANLUN QILIN SCALE">
+        <img src="../assets/images/products/QianLun Shoes.jpg" alt="QIANLUN QILIN SCALE">
+        <div class="product-info">
+          <h3>QIANLUN "QILIN SCALE"</h3>
+          <p>Rp 3.750.000</p>
+          <button class="btn add-to-cart">Tambah ke Keranjang</button>
+        </div>
+      </div>
+
+      <!-- Product 4 -->
+      <div class="product-card" data-id="p004" data-price="2250000" data-category="wallet"
+        data-name="QIANLUN DRAGON SCALES">
+        <img src="../assets/images/products/QianLun Wallet.jpg" alt="QIANLUN DRAGON SCALES">
+        <div class="product-info">
+          <h3>QIANLUN "DRAGON SCALES"</h3>
+          <p>Rp 2.250.000</p>
+          <button class="btn add-to-cart">Tambah ke Keranjang</button>
+        </div>
+      </div>
+
     </div>
 
-  </div>
-
-  <!-- No Results Message -->
-  <div class="no-results" id="noResults" style="display: none;">
-    <h3>😔 Produk tidak ditemukan</h3>
-    <p>Coba kata kunci lain atau reset filter</p>
-  </div>
-</section>
+    <!-- No Results Message -->
+    <div class="no-results" id="noResults" style="display: none;">
+      <h3>😔 Produk tidak ditemukan</h3>
+      <p>Coba kata kunci lain atau reset filter</p>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer>
     <p>© 2025 <span>QianlunShop</span>. Semua hak dilindungi.</p>
   </footer>
 </body>
+
 </html>
