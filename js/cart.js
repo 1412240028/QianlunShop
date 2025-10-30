@@ -10,7 +10,24 @@ export class Cart {
   load() {
     try {
       const data = localStorage.getItem(this.key);
-      return data ? JSON.parse(data) : [];
+      if (!data) return [];
+      
+      const items = JSON.parse(data);
+      
+      // Validasi setiap item
+      return items.filter(item => {
+        const isValid = item && 
+                       item.id && 
+                       item.name && 
+                       typeof item.price === 'number' && 
+                       typeof item.quantity === 'number';
+        
+        if (!isValid) {
+          console.warn("⚠️ Invalid item removed from cart:", item);
+        }
+        
+        return isValid;
+      });
     } catch (err) {
       console.error("❌ Gagal load cart:", err);
       return [];
@@ -18,18 +35,47 @@ export class Cart {
   }
 
   save() {
-    localStorage.setItem(this.key, JSON.stringify(this.items));
+    try {
+      // Validasi sebelum save
+      const validItems = this.items.filter(item => {
+        return item && 
+               item.id && 
+               item.name && 
+               typeof item.price === 'number' && 
+               typeof item.quantity === 'number';
+      });
+      
+      localStorage.setItem(this.key, JSON.stringify(validItems));
+      console.log("💾 Cart saved:", validItems.length, "items");
+    } catch (err) {
+      console.error("❌ Gagal save cart:", err);
+    }
   }
 
   add(product) {
+    // Validasi product sebelum add
+    if (!product || !product.id || !product.name || typeof product.price !== 'number') {
+      console.error("❌ Invalid product:", product);
+      return false;
+    }
+
     const existing = this.items.find(i => i.id === product.id);
     const qty = Number(product.quantity ?? 1);
+    
     if (existing) {
       existing.quantity = (existing.quantity ?? 0) + qty;
     } else {
-      this.items.push({ ...product, quantity: qty });
+      this.items.push({ 
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image || '',
+        quantity: qty 
+      });
     }
+    
     this.save();
+    return true;
   }
 
   remove(id) {
@@ -55,6 +101,10 @@ export class Cart {
   }
 
   getTotal() {
-    return this.items.reduce((sum, i) => sum + ((i.price || 0) * (i.quantity || 0)), 0);
+    return this.items.reduce((sum, i) => {
+      const price = Number(i.price) || 0;
+      const qty = Number(i.quantity) || 0;
+      return sum + (price * qty);
+    }, 0);
   }
 }
