@@ -25,52 +25,121 @@
   </nav>  
 
   <!-- Product Section -->
-  <section class="section products-section">
-    <h2>Our Products</h2>
-    <div class="product-grid">
+<section class="section products-section">
+  <h2>Our Products</h2>
 
-      <!-- Product 1 -->
-      <div class="product-card" data-id="p001" data-price="15750000">
-        <img src="../assets/sample1.jpg" alt="Luxury Watch">
-        <div class="product-info">
-          <h3>Luxury Watch</h3>
-          <p>Rp 15.750.000</p>
-          <button class="btn add-to-cart">Tambah ke Keranjang</button>
-        </div>
-      </div>
-
-      <!-- Product 2 -->
-      <div class="product-card" data-id="p002" data-price="7800000">
-        <img src="../assets/sample2.jpg" alt="Elegant Bag">
-        <div class="product-info">
-          <h3>Elegant Bag</h3>
-          <p>Rp 7.800.000</p>
-          <button class="btn add-to-cart">Tambah ke Keranjang</button>
-        </div>
-      </div>
-
-      <!-- Product 3 -->
-      <div class="product-card" data-id="p003" data-price="5900000">
-        <img src="../assets/sample3.jpg" alt="Signature Shoes">
-        <div class="product-info">
-          <h3>Signature Shoes</h3>
-          <p>Rp 5.900.000</p>
-          <button class="btn add-to-cart">Tambah ke Keranjang</button>
-        </div>
-      </div>
-
-      <!-- Product 4 -->
-      <div class="product-card" data-id="p004" data-price="3250000">
-        <img src="../assets/sample4.jpg" alt="Premium Wallet">
-        <div class="product-info">
-          <h3>Premium Wallet</h3>
-          <p>Rp 3.250.000</p>
-          <button class="btn add-to-cart">Tambah ke Keranjang</button>
-        </div>
-      </div>
-
+  <!-- 🔍 SEARCH & FILTER BAR -->
+  <div class="filter-container">
+    <!-- Search Box -->
+    <div class="search-box">
+      <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="🔍 Cari produk..." 
+        autocomplete="off"
+      >
     </div>
-  </section>
+
+    <!-- Category Filter -->
+    <div class="filter-group">
+      <label>Kategori:</label>
+      <select id="categoryFilter">
+        <option value="all">Semua Kategori</option>
+        <option value="watch">Jam Tangan</option>
+        <option value="bag">Tas</option>
+        <option value="shoes">Sepatu</option>
+        <option value="wallet">Dompet</option>
+      </select>
+    </div>
+
+    <!-- Sort Filter -->
+    <div class="filter-group">
+      <label>Urutkan:</label>
+      <select id="sortFilter">
+        <option value="default">Default</option>
+        <option value="price-low">Harga: Terendah</option>
+        <option value="price-high">Harga: Tertinggi</option>
+        <option value="name-asc">Nama: A-Z</option>
+        <option value="name-desc">Nama: Z-A</option>
+      </select>
+    </div>
+
+    <!-- Reset Button -->
+    <button class="btn btn-reset" id="resetFilter">Reset Filter</button>
+  </div>
+
+  <!-- Results Info -->
+  <div class="results-info">
+    Menampilkan <span id="resultCount">4</span> produk
+  </div>
+
+  <!-- Product Grid -->
+  <div class="product-grid" id="productGrid">
+
+    <!-- Product 1 -->
+    <div class="product-card" 
+         data-id="p001" 
+         data-price="15750000"
+         data-category="watch"
+         data-name="Luxury Watch">
+      <img src="../assets/sample1.jpg" alt="Luxury Watch">
+      <div class="product-info">
+        <h3>Luxury Watch</h3>
+        <p>Rp 15.750.000</p>
+        <button class="btn add-to-cart">Tambah ke Keranjang</button>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product-card" 
+         data-id="p002" 
+         data-price="7800000"
+         data-category="bag"
+         data-name="Elegant Bag">
+      <img src="../assets/sample2.jpg" alt="Elegant Bag">
+      <div class="product-info">
+        <h3>Elegant Bag</h3>
+        <p>Rp 7.800.000</p>
+        <button class="btn add-to-cart">Tambah ke Keranjang</button>
+      </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-card" 
+         data-id="p003" 
+         data-price="5900000"
+         data-category="shoes"
+         data-name="Signature Shoes">
+      <img src="../assets/sample3.jpg" alt="Signature Shoes">
+      <div class="product-info">
+        <h3>Signature Shoes</h3>
+        <p>Rp 5.900.000</p>
+        <button class="btn add-to-cart">Tambah ke Keranjang</button>
+      </div>
+    </div>
+
+    <!-- Product 4 -->
+    <div class="product-card" 
+         data-id="p004" 
+         data-price="3250000"
+         data-category="wallet"
+         data-name="Premium Wallet">
+      <img src="../assets/sample4.jpg" alt="Premium Wallet">
+      <div class="product-info">
+        <h3>Premium Wallet</h3>
+        <p>Rp 3.250.000</p>
+        <button class="btn add-to-cart">Tambah ke Keranjang</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- No Results Message -->
+  <div class="no-results" id="noResults" style="display: none;">
+    <h3>😔 Produk tidak ditemukan</h3>
+    <p>Coba kata kunci lain atau reset filter</p>
+  </div>
+</section>
 
   <!-- Footer -->
   <footer>

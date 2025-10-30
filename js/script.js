@@ -127,7 +127,7 @@ function initCartPage() {
     
     console.log("🔄 Rendering cart with", items.length, "items");
     console.log("📦 Raw items data:", JSON.stringify(items, null, 2));
-  
+
     // Filter item yang valid
     const validItems = items.filter(i => {
       const isValid = i && i.id && i.name && i.price && i.quantity;
@@ -136,9 +136,9 @@ function initCartPage() {
       }
       return isValid;
     });
-  
+
     console.log("✅ Valid items:", validItems.length);
-  
+
     if (!validItems || validItems.length === 0) {
       container.innerHTML = `
         <p>Keranjang kamu masih kosong.</p>
@@ -154,7 +154,7 @@ function initCartPage() {
       }
       return;
     }
-  
+
     const total = validItems.reduce((sum, i) => sum + (i.price * i.quantity), 0).toLocaleString("id-ID");
     
     const itemsHTML = validItems.map(i => {
@@ -185,19 +185,19 @@ function initCartPage() {
         </div>
       `;
     }).join("");
-  
+
     container.innerHTML = `
       <div class="cart-items">
         ${itemsHTML}
       </div>
-  
+
       <div class="cart-summary">
         <h3>Total: Rp ${total}</h3>
         <button class="btn checkout-btn">Checkout</button>
         <button class="btn clear-cart" style="background: var(--error); margin-top: 1rem;">Hapus Semua</button>
       </div>
     `;
-  
+
     console.log("✅ Cart rendered successfully");
   }
 
@@ -252,6 +252,158 @@ function initCartPage() {
 }
 
 // =========================
+// 🔍 SEARCH & FILTER LOGIC
+// =========================
+function initProductFilters() {
+  const searchInput = document.getElementById('searchInput');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const sortFilter = document.getElementById('sortFilter');
+  const resetBtn = document.getElementById('resetFilter');
+  const productGrid = document.getElementById('productGrid');
+  const noResults = document.getElementById('noResults');
+  const resultCount = document.getElementById('resultCount');
+
+  // Check if we're on products page
+  if (!searchInput || !productGrid) {
+    console.log("ℹ️ Not on products page, skipping filter initialization");
+    return;
+  }
+
+  console.log("🔍 Initializing product filters...");
+
+  // Get all products
+  let allProducts = Array.from(productGrid.querySelectorAll('.product-card'));
+
+  // Store original order
+  const originalProducts = [...allProducts];
+
+  // Update result count
+  function updateResultCount(count) {
+    if (resultCount) {
+      resultCount.textContent = count;
+    }
+  }
+
+  // Apply all filters
+  function applyFilters() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const category = categoryFilter.value;
+    const sortBy = sortFilter.value;
+
+    console.log("🔄 Applying filters:", { searchTerm, category, sortBy });
+
+    // Filter products
+    let filteredProducts = allProducts.filter(product => {
+      const name = product.dataset.name.toLowerCase();
+      const productCategory = product.dataset.category;
+
+      // Search filter
+      const matchesSearch = searchTerm === '' || name.includes(searchTerm);
+
+      // Category filter
+      const matchesCategory = category === 'all' || productCategory === category;
+
+      return matchesSearch && matchesCategory;
+    });
+
+    // Sort products
+    if (sortBy !== 'default') {
+      filteredProducts.sort((a, b) => {
+        const priceA = parseInt(a.dataset.price);
+        const priceB = parseInt(b.dataset.price);
+        const nameA = a.dataset.name.toLowerCase();
+        const nameB = b.dataset.name.toLowerCase();
+
+        switch (sortBy) {
+          case 'price-low':
+            return priceA - priceB;
+          case 'price-high':
+            return priceB - priceA;
+          case 'name-asc':
+            return nameA.localeCompare(nameB);
+          case 'name-desc':
+            return nameB.localeCompare(nameA);
+          default:
+            return 0;
+        }
+      });
+    }
+
+    // Update DOM
+    updateProductDisplay(filteredProducts);
+  }
+
+  // Update product display
+  function updateProductDisplay(filteredProducts) {
+    // Hide all products first
+    allProducts.forEach(product => {
+      product.classList.add('hidden');
+      product.classList.remove('visible');
+    });
+
+    // Clear grid
+    productGrid.innerHTML = '';
+
+    if (filteredProducts.length === 0) {
+      // Show no results message
+      noResults.style.display = 'block';
+      updateResultCount(0);
+    } else {
+      // Hide no results message
+      noResults.style.display = 'none';
+
+      // Show filtered products with animation
+      filteredProducts.forEach((product, index) => {
+        product.classList.remove('hidden');
+        product.classList.add('visible');
+        product.style.animationDelay = `${index * 0.1}s`;
+        productGrid.appendChild(product);
+      });
+
+      updateResultCount(filteredProducts.length);
+    }
+
+    console.log("✅ Displayed", filteredProducts.length, "products");
+  }
+
+  // Reset filters
+  function resetFilters() {
+    searchInput.value = '';
+    categoryFilter.value = 'all';
+    sortFilter.value = 'default';
+    
+    // Restore original order
+    allProducts = [...originalProducts];
+    updateProductDisplay(allProducts);
+    
+    console.log("🔄 Filters reset");
+    showToast("🔄 Filter direset", "success");
+  }
+
+  // Event listeners
+  searchInput.addEventListener('input', () => {
+    console.log("🔍 Search:", searchInput.value);
+    applyFilters();
+  });
+
+  categoryFilter.addEventListener('change', () => {
+    console.log("📁 Category:", categoryFilter.value);
+    applyFilters();
+  });
+
+  sortFilter.addEventListener('change', () => {
+    console.log("🔢 Sort:", sortFilter.value);
+    applyFilters();
+  });
+
+  resetBtn.addEventListener('click', resetFilters);
+
+  // Initial count
+  updateResultCount(allProducts.length);
+  console.log("✅ Product filters initialized with", allProducts.length, "products");
+}
+
+// =========================
 // 🚀 Initialize on Load
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
@@ -261,9 +413,12 @@ document.addEventListener("DOMContentLoaded", () => {
   
   updateCartCount();
   initCartPage();
+  initProductFilters();
 });
 
-// Debug helper - hapus setelah selesai debugging
+// =========================
+// 🐛 Debug Helper (Optional - hapus di production)
+// =========================
 window.debugCart = () => {
   console.log("=== CART DEBUG ===");
   console.log("Items:", cart.items);
