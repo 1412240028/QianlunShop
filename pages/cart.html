@@ -29,8 +29,8 @@
   <section class="section cart-section">
     <div class="cart-container">
       <div class="cart-header">
-        <h2>Keranjang Belanja Anda</h2>
-        <p>Review produk yang telah Anda pilih</p>
+        <h2>🛒 Keranjang Belanja Anda</h2>
+        <p>Review produk eksklusif Qianlun yang telah Anda pilih</p>
       </div>
 
       <div class="cart-items" id="cartItems">
@@ -38,31 +38,57 @@
         
         <!-- Empty Cart State -->
         <div class="empty-cart" id="emptyCart">
-          <h3>🛒 Keranjang Kosong</h3>
-          <p>Belum ada produk di keranjang Anda</p>
-          <a href="products.html" class="btn btn-primary">Jelajahi Produk</a>
+          <div class="empty-cart-icon">✨</div>
+          <h3>Keranjang Masih Kosong</h3>
+          <p>Temukan koleksi luxury terbaik dari QianlunShop</p>
+          <a href="products.html" class="btn btn-primary">Jelajahi Koleksi</a>
         </div>
       </div>
 
       <!-- Cart Summary -->
       <div class="cart-summary" id="cartSummary">
-        <div class="summary-row">
-          <span>Subtotal</span>
-          <span id="subtotal">Rp 0</span>
+        <h3>Ringkasan Pesanan</h3>
+        
+        <div class="summary-details">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="subtotal">Rp 0</span>
+          </div>
+          <div class="summary-row">
+            <span>Pengiriman</span>
+            <span id="shipping">Gratis</span>
+          </div>
+          <div class="summary-row">
+            <span>Pajak</span>
+            <span id="tax">Termasuk</span>
+          </div>
+          <div class="summary-row grand-total">
+            <span>Total</span>
+            <span id="total" class="summary-total">Rp 0</span>
+          </div>
         </div>
-        <div class="summary-row">
-          <span>Pengiriman</span>
-          <span id="shipping">Gratis</span>
+
+        <!-- Promo Code Section -->
+        <div class="promo-section">
+          <label for="promoCode">Kode Promo</label>
+          <div class="promo-input">
+            <input type="text" id="promoCode" placeholder="Masukkan kode promo">
+            <button class="btn btn-promo" id="applyPromo">Terapkan</button>
+          </div>
         </div>
-        <div class="summary-row">
-          <span>Pajak</span>
-          <span id="tax">Termasuk</span>
+
+        <!-- Checkout Actions -->
+        <div class="checkout-actions">
+          <a href="checkout.html" class="btn btn-checkout" id="checkoutBtn">
+            🛍️ Lanjutkan ke Checkout
+          </a>
+          <a href="products.html" class="btn btn-secondary">Lanjutkan Belanja</a>
         </div>
-        <div class="summary-row">
-          <span>Total</span>
-          <span id="total" class="summary-total">Rp 0</span>
+
+        <!-- Security Badge -->
+        <div class="security-badge">
+          <p>🔒 Transaksi 100% Aman & Terenkripsi</p>
         </div>
-        <button class="checkout-btn" id="checkoutBtn">Lanjut ke Checkout</button>
       </div>
     </div>
   </section>
@@ -99,5 +125,6 @@
 
   <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
+  
 </body>
 </html>

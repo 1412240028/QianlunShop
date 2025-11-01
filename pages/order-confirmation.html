@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation - QianlunShop</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">QIANLUNSHOP</div>
+    <ul>
+      <li><a href="../index.html">Beranda</a></li>
+      <li><a href="products.html">Produk</a></li>
+      <li>
+        <a href="cart.html" id="cartIcon">
+          Keranjang <span class="cart-count">0</span>
+        </a>
+      </li>
+      <li><a href="about.html">Tentang</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+    </ul>
+  </nav>
+
+  <section class="section">
+    <div class="container">
+      <div class="order-confirmation">
+        <div class="confirmation-icon">🎉</div>
+        <h2>Pesanan Berhasil!</h2>
+        <p class="order-id">Order ID: <span id="orderId">-</span></p>
+        <p>Terima kasih telah berbelanja di QianlunShop. Pesanan Anda sedang diproses.</p>
+        
+        <div class="confirmation-details">
+          <div class="detail-item">
+            <strong>Estimasi Pengiriman:</strong>
+            <span id="deliveryDate">-</span>
+          </div>
+          <div class="detail-item">
+            <strong>Total Pembayaran:</strong>
+            <span id="orderTotal">-</span>
+          </div>
+          <div class="detail-item">
+            <strong>Metode Pengiriman:</strong>
+            <span id="shippingMethod">-</span>
+          </div>
+        </div>
+
+        <div class="confirmation-actions">
+          <a href="../index.html" class="btn btn-primary">Kembali ke Beranda</a>
+          <a href="products.html" class="btn btn-secondary">Lanjutkan Belanja</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>QIANLUNSHOP</h4>
+          <p>Where Heritage Meets Modern Luxury</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="products.html">Koleksi</a></li>
+            <li><a href="about.html">Tentang Kami</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>hello@qianlunshop.com</p>
+          <p>+62 812-3456-7890</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 <span>QianlunShop</span>. Semua hak dilindungi.</p>
+        <p>Desain oleh Dhoni Prasetya</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Get order details from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('orderId');
+    
+    if (orderId) {
+      const orders = JSON.parse(localStorage.getItem('qianlun_orders')) || [];
+      const order = orders.find(o => o.id === orderId);
+      
+      if (order) {
+        document.getElementById('orderId').textContent = order.id;
+        document.getElementById('deliveryDate').textContent = order.shipping.estimatedDelivery;
+        document.getElementById('orderTotal').textContent = new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          minimumFractionDigits: 0
+        }).format(order.totals.grandTotal);
+        
+        const shippingMethods = {
+          'regular': 'Regular Delivery',
+          'express': 'Express Delivery', 
+          'same-day': 'Same Day Delivery'
+        };
+        document.getElementById('shippingMethod').textContent = shippingMethods[order.shipping.method] || order.shipping.method;
+      }
+    }
+
+    // Update cart count
+    const cart = JSON.parse(localStorage.getItem('qianlun_cart')) || [];
+    const cartCount = document.querySelector('.cart-count');
+    if (cartCount) {
+      cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+    }
+  </script>
+</body>
+</html>
