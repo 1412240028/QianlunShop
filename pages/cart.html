@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Keranjang - QianlunShop</title>
   <link rel="stylesheet" href="../css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <script type="module" src="../js/script.js" defer></script>
 </head>
+
 <body>
   <!-- NAVBAR -->
   <nav class="navbar">
@@ -23,7 +27,7 @@
       <li><a href="about.html">Tentang</a></li>
       <li><a href="contact.html">Kontak</a></li>
     </ul>
-  </nav>  
+  </nav>
 
   <!-- CART SECTION -->
   <section class="section cart-section">
@@ -35,7 +39,7 @@
 
       <div class="cart-items" id="cartItems">
         <!-- Cart items will be dynamically inserted here -->
-        
+
         <!-- Empty Cart State -->
         <div class="empty-cart" id="emptyCart">
           <div class="empty-cart-icon">✨</div>
@@ -48,7 +52,7 @@
       <!-- Cart Summary -->
       <div class="cart-summary" id="cartSummary">
         <h3>Ringkasan Pesanan</h3>
-        
+
         <div class="summary-details">
           <div class="summary-row">
             <span>Subtotal</span>
@@ -125,6 +129,21 @@
 
   <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
-  
+
+  <!-- Delete Confirmation Modal -->
+  <div class="delete-modal-overlay" id="deleteModal">
+    <div class="delete-modal">
+      <div class="delete-icon">🗑️</div>
+      <h3>Hapus Produk?</h3>
+      <p>Apakah Anda yakin ingin menghapus produk ini dari keranjang?</p>
+      <p class="product-name" id="deleteProductName">Nama Produk</p>
+      <div class="delete-modal-actions">
+        <button class="btn-cancel-delete" id="cancelDelete">Batal</button>
+        <button class="btn-confirm-delete" id="confirmDelete">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
 </body>
+
 </html>

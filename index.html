@@ -12,7 +12,12 @@
 <body>
   <!-- NAVBAR -->
   <nav class="navbar">
-    <div class="logo">QIANLUNSHOP</div>
+    <div class="logo">
+      <a href="index.html">
+        <img src="assets/images/icons/QianLun Alphabet.png" alt="QianLun Logo" class="logo-img">
+      </a>
+    </div>
+    
     <ul>
       <li><a href="index.html" class="active">Beranda</a></li>
       <li><a href="pages/products.html">Produk</a></li>
@@ -29,6 +34,7 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-content">
+      <img src="assets/images/icons/QianLun Dragon.png" alt="QianLun Dragon Logo" class="hero-logo">
       <h1>QIANLUN - Where Heritage Meets Modern Luxury</h1>
       <p>Experience timeless elegance with our dragon-inspired collections. Crafted for the discerning few.</p>
       <div class="hero-buttons">
@@ -72,45 +78,54 @@
         <h2>Signature Collection</h2>
         <p>Koleksi andalan yang mendefinisikan elegansi QianLun</p>
       </div>
+      
+      <!-- Product Grid -->
       <div class="product-grid">
-        <div class="product-card" data-id="p001" data-price="8750000" data-category="watch" data-name="QIANLUN HERITAGE COLLECTION">
-          <div class="product-badge">Featured</div>
+        <!-- Product 1 -->
+        <div class="product-card" data-id="p001" data-price="8750000" data-category="watch"
+          data-name="QIANLUN HERITAGE COLLECTION">
           <img src="assets/images/products/QianLun Watch.jpg" alt="QIANLUN HERITAGE COLLECTION">
           <div class="product-info">
-            <h3>QIANLUN "HERITAGE COLLECTION"</h3>
-            <p class="product-category">Luxury Watch</p>
-            <p class="product-price">Rp 8.750.000</p>
-            <button class="btn view-product" onclick="window.location.href='pages/products.html#p001'">Discover More</button>
+            <h3>QIANLUN</h3>
+            <h4>"HERITAGE COLLECTION"</h4>
+            <p>Rp 8.750.000</p>
+            <button class="btn add-to-cart">Tambah ke Keranjang</button>
           </div>
         </div>
-        <div class="product-card" data-id="p002" data-price="5500000" data-category="bag" data-name="QIANLUN CELESTIAL DRAGON">
-          <div class="product-badge">Featured</div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-id="p002" data-price="5500000" data-category="bag"
+          data-name="QIANLUN CELESTIAL DRAGON">
           <img src="assets/images/products/QianLun Bag.jpg" alt="QIANLUN CELESTIAL DRAGON">
           <div class="product-info">
-            <h3>QIANLUN "CELESTIAL DRAGON"</h3>
-            <p class="product-category">Luxury Bag</p>
-            <p class="product-price">Rp 5.500.000</p>
-            <button class="btn view-product" onclick="window.location.href='pages/products.html#p002'">Discover More</button>
+            <h3>QIANLUN</h3>
+            <h4>"CELESTIAL DRAGON"</h4>
+            <p>Rp 5.500.000</p>
+            <button class="btn add-to-cart">Tambah ke Keranjang</button>
           </div>
         </div>
-        <div class="product-card" data-id="p003" data-price="3750000" data-category="shoes" data-name="QIANLUN QILIN SCALE">
-          <div class="product-badge">Featured</div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-id="p003" data-price="3750000" data-category="shoes"
+          data-name="QIANLUN QILIN SCALE">
           <img src="assets/images/products/QianLun Shoes.jpg" alt="QIANLUN QILIN SCALE">
           <div class="product-info">
-            <h3>QIANLUN "QILIN SCALE"</h3>
-            <p class="product-category">Luxury Shoes</p>
-            <p class="product-price">Rp 3.750.000</p>
-            <button class="btn view-product" onclick="window.location.href='pages/products.html#p003'">Discover More</button>
+            <h3>QIANLUN</h3>
+            <h4>"QILIN SCALE"</h4>
+            <p>Rp 3.750.000</p>
+            <button class="btn add-to-cart">Tambah ke Keranjang</button>
           </div>
         </div>
-        <div class="product-card" data-id="p004" data-price="2250000" data-category="wallet" data-name="QIANLUN DRAGON SCALES">
-          <div class="product-badge">Featured</div>
+
+        <!-- Product 4 -->
+        <div class="product-card" data-id="p004" data-price="2250000" data-category="wallet"
+          data-name="QIANLUN DRAGON SCALES">
           <img src="assets/images/products/QianLun Wallet.jpg" alt="QIANLUN DRAGON SCALES">
           <div class="product-info">
-            <h3>QIANLUN "DRAGON SCALES"</h3>
-            <p class="product-category">Luxury Wallet</p>
-            <p class="product-price">Rp 2.250.000</p>
-            <button class="btn view-product" onclick="window.location.href='pages/products.html#p004'">Discover More</button>
+            <h3>QIANLUN</h3>
+            <h4>"DRAGON SCALES"</h4>
+            <p>Rp 2.250.000</p>
+            <button class="btn add-to-cart">Tambah ke Keranjang</button>
           </div>
         </div>
       </div>
@@ -196,5 +211,8 @@
       </div>
     </div>
   </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
 </body>
 </html>

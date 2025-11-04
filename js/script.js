@@ -1,36 +1,196 @@
+// =========================
+// 🛒 QIANLUNSHOP - MAIN SCRIPT
+// WITH DELETE CONFIRMATION MODAL
+// =========================
+
 import { Cart } from "./cart.js";
 
+// Single cart instance untuk seluruh aplikasi
 const cart = new Cart();
 
+// Global variable untuk delete confirmation
+let itemToDelete = null;
+
 // =========================
-// 🏷️ Toast Notification
+// 🏷️ TOAST NOTIFICATION
 // =========================
 function showToast(message, type = "success") {
+  // Remove existing toast if any
+  const existingToast = document.querySelector('.toast');
+  if (existingToast) {
+    existingToast.remove();
+  }
+
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
   toast.innerHTML = `<span>${message}</span>`;
   document.body.appendChild(toast);
+  
+  // Trigger animation
   setTimeout(() => toast.classList.add("show"), 10);
+  
+  // Auto remove
   setTimeout(() => {
     toast.classList.remove("show");
     setTimeout(() => toast.remove(), 300);
   }, 2500);
 }
 
+// Export untuk digunakan globally
+window.showToast = showToast;
+
 // =========================
-// 🛒 Update Navbar Count
+// 🗑️ DELETE CONFIRMATION MODAL
+// =========================
+function showDeleteModal(productId, productName) {
+  itemToDelete = productId;
+  
+  // Update nama produk di modal
+  const productNameEl = document.getElementById('deleteProductName');
+  if (productNameEl) {
+    productNameEl.textContent = productName;
+  }
+  
+  // Tampilkan modal
+  const modal = document.getElementById('deleteModal');
+  if (modal) {
+    modal.classList.add('show');
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function hideDeleteModal() {
+  const modal = document.getElementById('deleteModal');
+  if (modal) {
+    modal.classList.remove('show');
+  }
+  itemToDelete = null;
+  
+  // Enable body scroll
+  document.body.style.overflow = 'auto';
+}
+
+function confirmDeleteItem() {
+  if (!itemToDelete) return;
+  
+  const item = cart.getItem(itemToDelete);
+  if (!item) return;
+  
+  // Animasi hapus item
+  const cartItemElement = document.querySelector(`[data-id="${itemToDelete}"]`);
+  if (cartItemElement) {
+    cartItemElement.classList.add('deleting');
+    
+    // Tunggu animasi selesai
+    setTimeout(() => {
+      // Hapus dari cart
+      cart.remove(itemToDelete);
+      
+      // Re-render cart
+      if (typeof renderCart === 'function') {
+        renderCart();
+      }
+      
+      // Update count
+      updateCartCount();
+      
+      // Show success toast
+      showToast(`✅ ${item.name} telah dihapus dari keranjang`, 'delete-success');
+      
+      // Cek apakah cart kosong
+      if (cart.getItemCount() === 0) {
+        showEmptyCartState();
+      }
+    }, 500);
+  } else {
+    // Jika element tidak ditemukan, langsung hapus
+    cart.remove(itemToDelete);
+    
+    if (typeof renderCart === 'function') {
+      renderCart();
+    }
+    
+    updateCartCount();
+    showToast(`✅ ${item.name} telah dihapus dari keranjang`, 'delete-success');
+  }
+  
+  // Hide modal
+  hideDeleteModal();
+}
+
+function showEmptyCartState() {
+  const container = document.querySelector(".cart-container");
+  if (!container) return;
+  
+  container.innerHTML = `
+    <div class="cart-header">
+      <h2>🛒 Keranjang Belanja Anda</h2>
+      <p>Keranjang Anda kosong</p>
+    </div>
+    <div class="empty-cart">
+      <div class="empty-cart-icon">🛒</div>
+      <h3>Keranjang Masih Kosong</h3>
+      <p>Temukan koleksi luxury terbaik dari QianlunShop</p>
+      <a href="products.html" class="btn btn-primary">Jelajahi Koleksi</a>
+    </div>
+  `;
+}
+
+// Initialize delete modal event listeners
+function initDeleteModal() {
+  // Cancel button
+  const cancelBtn = document.getElementById('cancelDelete');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', hideDeleteModal);
+  }
+  
+  // Confirm button
+  const confirmBtn = document.getElementById('confirmDelete');
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', confirmDeleteItem);
+  }
+  
+  // Click outside modal
+  const modalOverlay = document.getElementById('deleteModal');
+  if (modalOverlay) {
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        hideDeleteModal();
+      }
+    });
+  }
+  
+  // ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && itemToDelete) {
+      hideDeleteModal();
+    }
+  });
+}
+
+// =========================
+// 🛒 UPDATE CART COUNT
 // =========================
 function updateCartCount() {
-  const countEl = document.querySelector("#cartIcon .cart-count");
-  if (countEl) {
+  const countEls = document.querySelectorAll(".cart-count");
+  if (countEls.length > 0) {
     const count = cart.getItemCount();
-    countEl.textContent = count;
+    countEls.forEach(el => {
+      el.textContent = count;
+      
+      // Add bounce effect jika count berubah
+      if (count > 0) {
+        el.classList.add('bounce');
+        setTimeout(() => el.classList.remove('bounce'), 500);
+      }
+    });
     console.log("📊 Cart count updated:", count);
   }
 }
 
 // =========================
-// ✨ Animasi Terbang ke Cart
+// ✨ FLY TO CART ANIMATION
 // =========================
 function flyToCart(imgEl) {
   const cartIcon = document.querySelector("#cartIcon");
@@ -40,25 +200,31 @@ function flyToCart(imgEl) {
   const rect = imgEl.getBoundingClientRect();
   const cartRect = cartIcon.getBoundingClientRect();
 
-  imgClone.style.position = "fixed";
-  imgClone.style.top = `${rect.top}px`;
-  imgClone.style.left = `${rect.left}px`;
-  imgClone.style.width = `${rect.width}px`;
-  imgClone.style.height = `${rect.height}px`;
-  imgClone.style.transition = "all 0.8s cubic-bezier(0.55, 0.06, 0.68, 0.19)";
-  imgClone.style.zIndex = "9999";
-  imgClone.style.borderRadius = "10px";
-  imgClone.style.pointerEvents = "none";
+  // Setup clone
+  Object.assign(imgClone.style, {
+    position: "fixed",
+    top: `${rect.top}px`,
+    left: `${rect.left}px`,
+    width: `${rect.width}px`,
+    height: `${rect.height}px`,
+    transition: "all 0.8s cubic-bezier(0.55, 0.06, 0.68, 0.19)",
+    zIndex: "9999",
+    borderRadius: "10px",
+    pointerEvents: "none"
+  });
+  
   document.body.appendChild(imgClone);
 
-  setTimeout(() => {
+  // Start animation
+  requestAnimationFrame(() => {
     imgClone.style.top = `${cartRect.top + 10}px`;
     imgClone.style.left = `${cartRect.left + 10}px`;
     imgClone.style.width = "30px";
     imgClone.style.height = "30px";
     imgClone.style.opacity = "0.3";
-  }, 10);
+  });
 
+  // Cleanup
   setTimeout(() => {
     imgClone.remove();
     cartIcon.classList.add("bounce");
@@ -67,139 +233,117 @@ function flyToCart(imgEl) {
 }
 
 // =========================
-// 🛍️ Tambah ke Keranjang
+// 🛍️ ADD TO CART HANDLER
 // =========================
-document.addEventListener("click", e => {
-  if (e.target.classList.contains("add-to-cart")) {
-    e.preventDefault();
-    
-    const card = e.target.closest(".product-card");
-    if (!card) {
-      console.error("❌ Product card tidak ditemukan");
-      return;
-    }
-
-    const imgEl = card.querySelector("img");
-    if (imgEl) {
-      flyToCart(imgEl);
-    }
-
-    const nameEl = card.querySelector("h3");
-    const priceAttr = card.dataset.price;
-    const idAttr = card.dataset.id;
-    const categoryAttr = card.dataset.category;
-
-    if (!nameEl || !priceAttr || !idAttr) {
-      console.error("❌ Data produk tidak lengkap", { nameEl, priceAttr, idAttr });
-      showToast("❌ Gagal menambahkan produk", "error");
-      return;
-    }
-
-    const product = {
-      id: idAttr,
-      name: nameEl.textContent.trim(),
-      price: parseInt(priceAttr, 10),
-      image: imgEl ? imgEl.src : "",
-      category: categoryAttr || "general",
-      quantity: 1
-    };
-
-    console.log("✅ Menambahkan produk:", product);
-    cart.add(product);
-    updateCartCount();
-    showToast(`✅ ${product.name} ditambahkan ke keranjang!`);
+function handleAddToCart(e) {
+  if (!e.target.classList.contains("add-to-cart")) return;
+  
+  e.preventDefault();
+  
+  const card = e.target.closest(".product-card");
+  if (!card) {
+    console.error("❌ Product card not found");
+    showToast("❌ Terjadi kesalahan", "error");
+    return;
   }
-});
+
+  // Get product data
+  const productData = {
+    id: card.dataset.id,
+    name: card.dataset.name || card.querySelector("h3")?.textContent.trim(),
+    price: parseInt(card.dataset.price, 10),
+    image: card.querySelector("img")?.src || "",
+    category: card.dataset.category || "general",
+    quantity: 1
+  };
+
+  // Validate data
+  if (!productData.id || !productData.name || !productData.price) {
+    console.error("❌ Incomplete product data", productData);
+    showToast("❌ Data produk tidak lengkap", "error");
+    return;
+  }
+
+  // Animate
+  const imgEl = card.querySelector("img");
+  if (imgEl) {
+    flyToCart(imgEl);
+  }
+
+  // Add to cart
+  const success = cart.add(productData);
+  
+  if (success) {
+    updateCartCount();
+    showToast(`✅ ${productData.name} ditambahkan ke keranjang!`);
+  } else {
+    showToast("❌ Gagal menambahkan produk", "error");
+  }
+}
+
+// Attach global click handler
+document.addEventListener("click", handleAddToCart);
 
 // =========================
-// 🛒 Render Halaman Cart
+// 🛒 CART PAGE MANAGEMENT
 // =========================
 function initCartPage() {
   const container = document.querySelector(".cart-container");
   if (!container) {
-    console.log("ℹ️ Bukan halaman cart");
+    console.log("ℹ️ Not cart page");
     return;
   }
 
   console.log("🛒 Initializing cart page...");
-  console.log("📦 Cart items:", cart.items);
 
+  // Main render function
   function renderCart() {
-    const items = cart.items;
+    const items = cart.getItems();
     
-    console.log("🔄 Rendering cart with", items.length, "items");
-    console.log("📦 Raw items data:", JSON.stringify(items, null, 2));
+    console.log("🔄 Rendering", items.length, "items");
 
-    // Filter item yang valid
-    const validItems = items.filter(i => {
-      const isValid = i && i.id && i.name && i.price && i.quantity;
-      if (!isValid) {
-        console.warn("⚠️ Invalid item detected:", i);
-      }
-      return isValid;
-    });
-
-    console.log("✅ Valid items:", validItems.length);
-
-    if (!validItems || validItems.length === 0) {
-      container.innerHTML = `
-        <div class="empty-cart">
-          <div class="empty-cart-icon">🛒</div>
-          <h3>Keranjang Masih Kosong</h3>
-          <p>Temukan koleksi luxury terbaik dari QianlunShop</p>
-          <a href="products.html" class="btn btn-primary">Jelajahi Koleksi</a>
-        </div>
-      `;
-      
-      // Jika ada item invalid, bersihkan
-      if (items.length > 0) {
-        console.warn("🧹 Cleaning invalid items from cart");
-        cart.items = validItems;
-        cart.save();
-        updateCartCount();
-      }
+    // Empty cart state
+    if (items.length === 0) {
+      showEmptyCartState();
       return;
     }
 
-    const subtotal = validItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
-    const totalFormatted = subtotal.toLocaleString("id-ID");
-    
-    const itemsHTML = validItems.map(i => {
-      console.log("Rendering item:", {
-        id: i.id,
-        name: i.name,
-        price: i.price,
-        quantity: i.quantity,
-        image: i.image
-      });
-      
-      const itemPrice = (i.price || 0).toLocaleString("id-ID");
-      const itemTotal = (i.price * i.quantity).toLocaleString("id-ID");
-      const fallbackImage = i.image || '../assets/sample1.jpg';
-      
-      return `
-        <div class="cart-item" data-id="${i.id}">
-          <img src="${fallbackImage}" alt="${i.name}" onerror="this.src='../assets/sample1.jpg'">
-          <div class="cart-info">
-            <h3>${i.name}</h3>
-            <p class="item-price">Rp ${itemPrice}</p>
-            <div class="cart-actions">
-              <button class="decrease-quantity" data-id="${i.id}">-</button>
-              <input type="number" value="${i.quantity}" min="1" class="quantity-input" data-id="${i.id}" readonly>
-              <button class="increase-quantity" data-id="${i.id}">+</button>
-            </div>
-          </div>
-          <div class="item-total-section">
-            <p class="item-total">Rp ${itemTotal}</p>
-            <button class="remove-item" data-id="${i.id}" title="Hapus item">
-              🗑️
-            </button>
+    // Calculate totals
+    const subtotal = cart.getTotal();
+    const shipping = 0; // Free shipping
+    const discount = 0;
+    const total = subtotal + shipping - discount;
+
+    // Generate items HTML
+    const itemsHTML = items.map(item => `
+      <div class="cart-item" data-id="${item.id}">
+        <img src="${item.image}" alt="${item.name}" onerror="this.src='../assets/sample1.jpg'">
+        <div class="cart-info">
+          <h3>${item.name}</h3>
+          <p class="item-price">Rp ${item.price.toLocaleString('id-ID')}</p>
+          <div class="cart-actions">
+            <button class="decrease-quantity" data-id="${item.id}" ${item.quantity === 1 ? 'disabled' : ''}>-</button>
+            <input type="number" value="${item.quantity}" min="1" class="quantity-input" readonly>
+            <button class="increase-quantity" data-id="${item.id}">+</button>
           </div>
         </div>
-      `;
-    }).join("");
+        <div class="item-total-section">
+          <p class="item-total">Rp ${(item.price * item.quantity).toLocaleString('id-ID')}</p>
+          <button class="remove-item" 
+                  data-id="${item.id}" 
+                  data-name="${item.name}"
+                  title="Hapus item">🗑️</button>
+        </div>
+      </div>
+    `).join('');
 
+    // Render full cart
     container.innerHTML = `
+      <div class="cart-header">
+        <h2>🛒 Keranjang Belanja Anda</h2>
+        <p>Review produk eksklusif Qianlun yang telah Anda pilih</p>
+      </div>
+
       <div class="cart-with-items">
         <div class="cart-items">
           ${itemsHTML}
@@ -219,15 +363,14 @@ function initCartPage() {
             </div>
             <div class="summary-row discount">
               <span>Diskon:</span>
-              <span>- Rp 0</span>
+              <span id="cartDiscount">- Rp ${discount.toLocaleString('id-ID')}</span>
             </div>
             <div class="summary-row grand-total">
               <span>Total:</span>
-              <span id="cartTotal">Rp ${totalFormatted}</span>
+              <span id="cartTotal">Rp ${total.toLocaleString('id-ID')}</span>
             </div>
           </div>
 
-          <!-- Promo Code Section -->
           <div class="promo-section">
             <label for="cartPromoCode">Kode Promo</label>
             <div class="promo-input-group">
@@ -236,15 +379,11 @@ function initCartPage() {
             </div>
           </div>
 
-          <!-- Checkout Actions -->
           <div class="checkout-actions">
-            <a href="checkout.html" class="btn btn-checkout" id="proceedToCheckout">
-              🛍️ Lanjutkan ke Checkout
-            </a>
+            <a href="checkout.html" class="btn btn-checkout">🛍️ Lanjutkan ke Checkout</a>
             <a href="products.html" class="btn btn-secondary">Lanjutkan Belanja</a>
           </div>
 
-          <!-- Security Badge -->
           <div class="security-badge">
             <p>🔒 Transaksi 100% Aman & Terenkripsi</p>
           </div>
@@ -252,298 +391,145 @@ function initCartPage() {
       </div>
     `;
 
-    // Add event listeners for new elements
+    // Attach event listeners
     attachCartEventListeners();
-    console.log("✅ Cart rendered successfully");
   }
 
+  // Make renderCart available globally for delete function
+  window.renderCart = renderCart;
+
+  // Event listeners for cart actions
   function attachCartEventListeners() {
-    // Quantity increase
-    document.querySelectorAll('.increase-quantity').forEach(button => {
-      button.addEventListener('click', function() {
-        const productId = this.getAttribute('data-id');
-        const item = cart.items.find(i => i.id === productId);
+    // Event delegation untuk better performance
+    const cartItems = document.querySelector('.cart-items');
+    if (!cartItems) return;
+
+    cartItems.addEventListener('click', (e) => {
+      const target = e.target;
+      const productId = target.dataset.id;
+
+      if (!productId) return;
+
+      // Increase quantity
+      if (target.classList.contains('increase-quantity')) {
+        const item = cart.getItem(productId);
         if (item) {
-          console.log("➕ Increasing quantity for:", productId);
           cart.update(productId, item.quantity + 1);
           renderCart();
           updateCartCount();
+          showToast("➕ Kuantitas ditambah", "success");
         }
-      });
-    });
+      }
 
-    // Quantity decrease
-    document.querySelectorAll('.decrease-quantity').forEach(button => {
-      button.addEventListener('click', function() {
-        const productId = this.getAttribute('data-id');
-        const item = cart.items.find(i => i.id === productId);
+      // Decrease quantity
+      else if (target.classList.contains('decrease-quantity')) {
+        const item = cart.getItem(productId);
         if (item && item.quantity > 1) {
-          console.log("➖ Decreasing quantity for:", productId);
           cart.update(productId, item.quantity - 1);
           renderCart();
           updateCartCount();
+          showToast("➖ Kuantitas dikurangi", "success");
         }
-      });
+      }
+
+      // Remove item - GUNAKAN MODAL KONFIRMASI
+      else if (target.classList.contains('remove-item')) {
+        const productName = target.dataset.name;
+        showDeleteModal(productId, productName);
+      }
     });
 
-    // Remove item
-    document.querySelectorAll('.remove-item').forEach(button => {
-      button.addEventListener('click', function() {
-        const productId = this.getAttribute('data-id');
-        console.log("🗑️ Removing item:", productId);
-        cart.remove(productId);
-        renderCart();
-        updateCartCount();
-        showToast("🗑️ Item dihapus dari keranjang", "error");
-      });
-    });
-
-    // Checkout validation
-    const checkoutBtn = document.getElementById('proceedToCheckout');
-    if (checkoutBtn) {
-      checkoutBtn.addEventListener('click', function(e) {
-        const cartItems = cart.items;
-        if (cartItems.length === 0) {
-          e.preventDefault();
-          showToast('❌ Keranjang kosong. Tambahkan produk terlebih dahulu.', 'error');
-        }
-      });
-    }
-
-    // Promo code
+    // Promo code handler
     const applyPromoBtn = document.getElementById('applyCartPromo');
     if (applyPromoBtn) {
-      applyPromoBtn.addEventListener('click', function() {
-        const promoCode = document.getElementById('cartPromoCode').value;
-        if (promoCode === 'QIANLUN10') {
-          showToast('🎉 Diskon 10% berhasil diterapkan!', 'success');
+      applyPromoBtn.addEventListener('click', () => {
+        const promoInput = document.getElementById('cartPromoCode');
+        const promoCode = promoInput.value.trim().toUpperCase();
+        
+        const validCodes = {
+          'QIANLUN10': 0.1,
+          'DRAGON20': 0.2,
+          'LUXURY15': 0.15
+        };
+
+        if (validCodes[promoCode]) {
+          const discount = cart.getTotal() * validCodes[promoCode];
+          showToast(`🎉 Diskon ${validCodes[promoCode] * 100}% berhasil diterapkan!`, 'success');
+          
+          // Update discount display
+          const discountEl = document.getElementById('cartDiscount');
+          const totalEl = document.getElementById('cartTotal');
+          if (discountEl && totalEl) {
+            discountEl.textContent = `- Rp ${discount.toLocaleString('id-ID')}`;
+            totalEl.textContent = `Rp ${(cart.getTotal() - discount).toLocaleString('id-ID')}`;
+          }
         } else if (promoCode) {
           showToast('❌ Kode promo tidak valid', 'error');
         }
       });
     }
+
+    // Checkout button validation
+    const checkoutBtn = document.querySelector('.btn-checkout');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', (e) => {
+        if (cart.getItemCount() === 0) {
+          e.preventDefault();
+          showToast('❌ Keranjang kosong!', 'error');
+        }
+      });
+    }
   }
 
+  // Initial render
   renderCart();
+  
+  // Initialize delete modal
+  initDeleteModal();
 }
 
 // =========================
-// 💳 Checkout Page Integration
+// 💳 CHECKOUT PAGE MANAGEMENT
 // =========================
 function initCheckoutPage() {
   const checkoutContainer = document.querySelector(".checkout-container");
   if (!checkoutContainer) {
-    console.log("ℹ️ Bukan halaman checkout");
+    console.log("ℹ️ Not checkout page");
     return;
   }
 
   console.log("💳 Initializing checkout page...");
   
-  const checkoutManager = new CheckoutManager();
+  const checkoutManager = new CheckoutManager(cart);
 }
 
 // =========================
-// 🔍 SEARCH & FILTER LOGIC
-// =========================
-function initProductFilters() {
-  const searchInput = document.getElementById('searchInput');
-  const categoryFilter = document.getElementById('categoryFilter');
-  const sortFilter = document.getElementById('sortFilter');
-  const resetBtn = document.getElementById('resetFilter');
-  const productGrid = document.getElementById('productGrid');
-  const noResults = document.getElementById('noResults');
-  const resultCount = document.getElementById('resultCount');
-
-  // Check if we're on products page
-  if (!searchInput || !productGrid) {
-    console.log("ℹ️ Not on products page, skipping filter initialization");
-    return;
-  }
-
-  console.log("🔍 Initializing product filters...");
-
-  // Get all products
-  let allProducts = Array.from(productGrid.querySelectorAll('.product-card'));
-
-  // Store original order
-  const originalProducts = [...allProducts];
-
-  // Update result count
-  function updateResultCount(count) {
-    if (resultCount) {
-      resultCount.textContent = count;
-    }
-  }
-
-  // Apply all filters
-  function applyFilters() {
-    const searchTerm = searchInput.value.toLowerCase().trim();
-    const category = categoryFilter.value;
-    const sortBy = sortFilter.value;
-
-    console.log("🔄 Applying filters:", { searchTerm, category, sortBy });
-
-    // Filter products
-    let filteredProducts = allProducts.filter(product => {
-      const name = product.dataset.name.toLowerCase();
-      const productCategory = product.dataset.category;
-
-      // Search filter
-      const matchesSearch = searchTerm === '' || name.includes(searchTerm);
-
-      // Category filter
-      const matchesCategory = category === 'all' || productCategory === category;
-
-      return matchesSearch && matchesCategory;
-    });
-
-    // Sort products
-    if (sortBy !== 'default') {
-      filteredProducts.sort((a, b) => {
-        const priceA = parseInt(a.dataset.price);
-        const priceB = parseInt(b.dataset.price);
-        const nameA = a.dataset.name.toLowerCase();
-        const nameB = b.dataset.name.toLowerCase();
-
-        switch (sortBy) {
-          case 'price-low':
-            return priceA - priceB;
-          case 'price-high':
-            return priceB - priceA;
-          case 'name-asc':
-            return nameA.localeCompare(nameB);
-          case 'name-desc':
-            return nameB.localeCompare(nameA);
-          default:
-            return 0;
-        }
-      });
-    }
-
-    // Update DOM
-    updateProductDisplay(filteredProducts);
-  }
-
-  // Update product display
-  function updateProductDisplay(filteredProducts) {
-    // Hide all products first
-    allProducts.forEach(product => {
-      product.classList.add('hidden');
-      product.classList.remove('visible');
-    });
-
-    // Clear grid
-    productGrid.innerHTML = '';
-
-    if (filteredProducts.length === 0) {
-      // Show no results message
-      noResults.style.display = 'block';
-      updateResultCount(0);
-    } else {
-      // Hide no results message
-      noResults.style.display = 'none';
-
-      // Show filtered products with animation
-      filteredProducts.forEach((product, index) => {
-        product.classList.remove('hidden');
-        product.classList.add('visible');
-        product.style.animationDelay = `${index * 0.1}s`;
-        productGrid.appendChild(product);
-      });
-
-      updateResultCount(filteredProducts.length);
-    }
-
-    console.log("✅ Displayed", filteredProducts.length, "products");
-  }
-
-  // Reset filters
-  function resetFilters() {
-    searchInput.value = '';
-    categoryFilter.value = 'all';
-    sortFilter.value = 'default';
-    
-    // Restore original order
-    allProducts = [...originalProducts];
-    updateProductDisplay(allProducts);
-    
-    console.log("🔄 Filters reset");
-    showToast("🔄 Filter direset", "success");
-  }
-
-  // Event listeners
-  searchInput.addEventListener('input', () => {
-    console.log("🔍 Search:", searchInput.value);
-    applyFilters();
-  });
-
-  categoryFilter.addEventListener('change', () => {
-    console.log("📁 Category:", categoryFilter.value);
-    applyFilters();
-  });
-
-  sortFilter.addEventListener('change', () => {
-    console.log("🔢 Sort:", sortFilter.value);
-    applyFilters();
-  });
-
-  resetBtn.addEventListener('click', resetFilters);
-
-  // Initial count
-  updateResultCount(allProducts.length);
-  console.log("✅ Product filters initialized with", allProducts.length, "products");
-}
-
-// =========================
-// 🚀 Initialize on Load
-// =========================
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("🚀 QianlunShop script loaded");
-  console.log("📦 Initial cart state:", cart.items);
-  console.log("🔢 Total items:", cart.getItemCount());
-  
-  updateCartCount();
-  initCartPage();
-  initCheckoutPage();
-  initProductFilters();
-});
-
-// =========================
-// 🐛 Debug Helper (Optional - hapus di production)
-// =========================
-window.debugCart = () => {
-  console.log("=== CART DEBUG ===");
-  console.log("Items:", cart.items);
-  console.log("Count:", cart.getItemCount());
-  console.log("Total:", cart.getTotal());
-  console.log("localStorage:", localStorage.getItem('qianlunshop_cart'));
-};
-
-// Export showToast untuk digunakan di file lain
-window.showToast = showToast;
-
-// =========================
-// 💳 Checkout Manager Class
+// 💳 CHECKOUT MANAGER CLASS
 // =========================
 class CheckoutManager {
-  constructor() {
-    this.cart = JSON.parse(localStorage.getItem('qianlunshop_cart')) || [];
+  constructor(cartInstance) {
+    this.cart = cartInstance;
+    this.cartItems = this.cart.getItems();
     this.shippingCost = 0;
     this.discount = 0;
     this.init();
   }
 
   init() {
+    if (this.cartItems.length === 0) {
+      this.showEmptyCart();
+      return;
+    }
+
     this.displayCheckoutItems();
     this.calculateTotals();
     this.setupEventListeners();
-    this.updateCartCount();
+    updateCartCount();
   }
 
-  displayCheckoutItems() {
+  showEmptyCart() {
     const checkoutItems = document.getElementById('checkoutItems');
-    
-    if (this.cart.length === 0) {
+    if (checkoutItems) {
       checkoutItems.innerHTML = `
         <div class="empty-cart">
           <div class="empty-cart-icon">🛒</div>
@@ -552,10 +538,14 @@ class CheckoutManager {
           <a href="products.html" class="btn btn-primary">Belanja Sekarang</a>
         </div>
       `;
-      return;
     }
+  }
 
-    checkoutItems.innerHTML = this.cart.map(item => `
+  displayCheckoutItems() {
+    const checkoutItems = document.getElementById('checkoutItems');
+    if (!checkoutItems) return;
+
+    checkoutItems.innerHTML = this.cartItems.map(item => `
       <div class="checkout-item">
         <img src="${item.image}" alt="${item.name}" onerror="this.src='../assets/sample1.jpg'">
         <div class="item-details">
@@ -569,41 +559,31 @@ class CheckoutManager {
   }
 
   calculateTotals() {
-    const subtotal = this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-    
-    // Update shipping cost based on selection
-    const shippingSelect = document.getElementById('shipping');
-    if (shippingSelect) {
-      this.updateShippingCost(shippingSelect.value);
-    }
-
+    const subtotal = this.cart.getTotal();
     const grandTotal = subtotal + this.shippingCost - this.discount;
 
-    // Update DOM
-    document.getElementById('subtotal').textContent = this.formatPrice(subtotal);
-    document.getElementById('shippingCost').textContent = this.formatPrice(this.shippingCost);
-    document.getElementById('grandTotal').textContent = this.formatPrice(grandTotal);
+    this.updateElement('subtotal', this.formatPrice(subtotal));
+    this.updateElement('shippingCost', this.formatPrice(this.shippingCost));
+    this.updateElement('grandTotal', this.formatPrice(grandTotal));
+  }
+
+  updateElement(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
   }
 
   updateShippingCost(method) {
-    switch(method) {
-      case 'regular':
-        this.shippingCost = 25000;
-        break;
-      case 'express':
-        this.shippingCost = 50000;
-        break;
-      case 'same-day':
-        this.shippingCost = 75000;
-        break;
-      default:
-        this.shippingCost = 0;
-    }
+    const costs = {
+      'regular': 25000,
+      'express': 50000,
+      'same-day': 75000
+    };
+    
+    this.shippingCost = costs[method] || 0;
     this.calculateTotals();
   }
 
   setupEventListeners() {
-    // Shipping method change
     const shippingSelect = document.getElementById('shipping');
     if (shippingSelect) {
       shippingSelect.addEventListener('change', (e) => {
@@ -611,29 +591,22 @@ class CheckoutManager {
       });
     }
 
-    // Payment method change
     const paymentMethods = document.querySelectorAll('input[name="payment"]');
     const creditCardForm = document.getElementById('creditCardForm');
     
     paymentMethods.forEach(method => {
       method.addEventListener('change', (e) => {
-        if (e.target.value === 'creditCard') {
-          creditCardForm.style.display = 'block';
-        } else {
-          creditCardForm.style.display = 'none';
+        if (creditCardForm) {
+          creditCardForm.style.display = e.target.value === 'creditCard' ? 'block' : 'none';
         }
       });
     });
 
-    // Promo code
     const applyPromoBtn = document.getElementById('applyPromo');
     if (applyPromoBtn) {
-      applyPromoBtn.addEventListener('click', () => {
-        this.applyPromoCode();
-      });
+      applyPromoBtn.addEventListener('click', () => this.applyPromoCode());
     }
 
-    // Place order
     const placeOrderBtn = document.getElementById('placeOrder');
     if (placeOrderBtn) {
       placeOrderBtn.addEventListener('click', (e) => {
@@ -642,59 +615,58 @@ class CheckoutManager {
       });
     }
 
-    // Form validation
     const checkoutForm = document.getElementById('checkoutForm');
     if (checkoutForm) {
-      checkoutForm.addEventListener('input', this.validateForm.bind(this));
+      checkoutForm.addEventListener('input', () => this.validateForm());
     }
   }
 
   applyPromoCode() {
-    const promoCode = document.getElementById('promoCode').value.trim().toUpperCase();
+    const promoInput = document.getElementById('promoCode');
+    if (!promoInput) return;
+
+    const promoCode = promoInput.value.trim().toUpperCase();
     const discountRules = {
-      'WELCOME10': 0.1,    // 10% discount
-      'DRAGON20': 0.2,     // 20% discount
-      'QIANLUN15': 0.15,   // 15% discount
-      'LUXURY25': 0.25     // 25% discount
+      'WELCOME10': 0.1,
+      'DRAGON20': 0.2,
+      'QIANLUN15': 0.15,
+      'LUXURY25': 0.25
     };
 
     if (discountRules[promoCode]) {
-      const subtotal = this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+      const subtotal = this.cart.getTotal();
       this.discount = subtotal * discountRules[promoCode];
-      
-      // Show success message
-      showToast(`Promo code "${promoCode}" berhasil diterapkan!`, 'success');
+      showToast(`🎉 Promo "${promoCode}" berhasil diterapkan!`, 'success');
       this.calculateTotals();
-    } else {
-      showToast('Kode promo tidak valid', 'error');
-      this.discount = 0;
-      this.calculateTotals();
+    } else if (promoCode) {
+      showToast('❌ Kode promo tidak valid', 'error');
     }
   }
 
   validateForm() {
     const form = document.getElementById('checkoutForm');
-    const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+    if (!form) return false;
+
+    const requiredInputs = form.querySelectorAll('input[required], select[required], textarea[required]');
     let isValid = true;
 
-    inputs.forEach(input => {
+    requiredInputs.forEach(input => {
       if (!input.value.trim()) {
         isValid = false;
       }
     });
 
-    // Check if payment method is selected
     const paymentSelected = document.querySelector('input[name="payment"]:checked');
     if (!paymentSelected) {
       isValid = false;
     }
 
-    // If credit card selected, validate card fields
-    if (document.getElementById('creditCard').checked) {
+    const creditCardRadio = document.getElementById('creditCard');
+    if (creditCardRadio && creditCardRadio.checked) {
       const cardFields = ['cardNumber', 'expiryDate', 'cvv', 'cardName'];
       cardFields.forEach(field => {
-        const element = document.getElementById(field);
-        if (!element.value.trim()) {
+        const el = document.getElementById(field);
+        if (el && !el.value.trim()) {
           isValid = false;
         }
       });
@@ -704,112 +676,95 @@ class CheckoutManager {
     if (placeOrderBtn) {
       placeOrderBtn.disabled = !isValid;
     }
-    
+
     return isValid;
   }
 
   async placeOrder() {
     if (!this.validateForm()) {
-      showToast('Harap lengkapi semua field yang wajib diisi', 'error');
+      showToast('❌ Harap lengkapi semua field', 'error');
       return;
     }
 
-    if (this.cart.length === 0) {
-      showToast('Keranjang belanja kosong', 'error');
+    if (this.cartItems.length === 0) {
+      showToast('❌ Keranjang kosong', 'error');
       return;
     }
+
+    const placeOrderBtn = document.getElementById('placeOrder');
+    if (!placeOrderBtn) return;
 
     try {
-      // Show loading state
-      const placeOrderBtn = document.getElementById('placeOrder');
       const originalText = placeOrderBtn.innerHTML;
       placeOrderBtn.innerHTML = '🔄 Memproses...';
       placeOrderBtn.disabled = true;
 
-      // Simulate API call
-      await this.simulatePayment();
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Create order object
       const order = {
         id: 'ORD-' + Date.now(),
         date: new Date().toISOString(),
-        items: [...this.cart],
+        items: this.cartItems,
         customerInfo: this.getCustomerInfo(),
         shipping: this.getShippingInfo(),
         payment: this.getPaymentInfo(),
         totals: {
-          subtotal: this.cart.reduce((total, item) => total + (item.price * item.quantity), 0),
+          subtotal: this.cart.getTotal(),
           shipping: this.shippingCost,
           discount: this.discount,
-          grandTotal: this.cart.reduce((total, item) => total + (item.price * item.quantity), 0) + this.shippingCost - this.discount
+          grandTotal: this.cart.getTotal() + this.shippingCost - this.discount
         },
         status: 'completed'
       };
 
-      // Save order to localStorage
       this.saveOrder(order);
+      this.cart.clear();
+      updateCartCount();
 
-      // Clear cart
-      this.clearCart();
+      showToast('✅ Pesanan berhasil diproses!', 'success');
 
-      // Show success message
-      showToast('Pesanan berhasil diproses!', 'success');
-
-      // Redirect to confirmation page
       setTimeout(() => {
         window.location.href = `order-confirmation.html?orderId=${order.id}`;
-      }, 2000);
+      }, 1500);
 
     } catch (error) {
       console.error('Order error:', error);
-      showToast('Terjadi kesalahan saat memproses pesanan', 'error');
+      showToast('❌ Terjadi kesalahan', 'error');
       
-      // Reset button
-      const placeOrderBtn = document.getElementById('placeOrder');
       placeOrderBtn.innerHTML = '🛍️ Bayar Sekarang';
       placeOrderBtn.disabled = false;
     }
   }
 
-  simulatePayment() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simulate 90% success rate
-        if (Math.random() > 0.1) {
-          resolve();
-        } else {
-          reject(new Error('Payment failed'));
-        }
-      }, 2000);
-    });
-  }
-
   getCustomerInfo() {
     return {
-      fullName: document.getElementById('fullName').value,
-      email: document.getElementById('email').value,
-      phone: document.getElementById('phone').value,
-      address: document.getElementById('address').value,
-      city: document.getElementById('city').value,
-      postalCode: document.getElementById('postalCode').value
+      fullName: document.getElementById('fullName')?.value || '',
+      email: document.getElementById('email')?.value || '',
+      phone: document.getElementById('phone')?.value || '',
+      address: document.getElementById('address')?.value || '',
+      city: document.getElementById('city')?.value || '',
+      postalCode: document.getElementById('postalCode')?.value || ''
     };
   }
 
   getShippingInfo() {
     const shippingSelect = document.getElementById('shipping');
+    const method = shippingSelect?.value || 'regular';
+    
     return {
-      method: shippingSelect.value,
+      method: method,
       cost: this.shippingCost,
-      estimatedDelivery: this.getEstimatedDelivery(shippingSelect.value)
+      estimatedDelivery: this.getEstimatedDelivery(method)
     };
   }
 
   getPaymentInfo() {
-    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-    const info = { method: paymentMethod };
+    const paymentMethod = document.querySelector('input[name="payment"]:checked');
+    const info = { method: paymentMethod?.value || 'unknown' };
 
-    if (paymentMethod === 'creditCard') {
-      info.cardLastFour = document.getElementById('cardNumber').value.slice(-4);
+    if (info.method === 'creditCard') {
+      const cardNumber = document.getElementById('cardNumber')?.value || '';
+      info.cardLastFour = cardNumber.slice(-4);
     }
 
     return info;
@@ -817,33 +772,25 @@ class CheckoutManager {
 
   getEstimatedDelivery(method) {
     const today = new Date();
-    switch(method) {
-      case 'same-day':
-        return new Date(today.setDate(today.getDate())).toLocaleDateString('id-ID');
-      case 'express':
-        return new Date(today.setDate(today.getDate() + 2)).toLocaleDateString('id-ID');
-      case 'regular':
-      default:
-        return new Date(today.setDate(today.getDate() + 5)).toLocaleDateString('id-ID');
-    }
+    const days = {
+      'same-day': 0,
+      'express': 2,
+      'regular': 5
+    };
+    
+    const deliveryDate = new Date(today);
+    deliveryDate.setDate(today.getDate() + (days[method] || 5));
+    
+    return deliveryDate.toLocaleDateString('id-ID');
   }
 
   saveOrder(order) {
-    const orders = JSON.parse(localStorage.getItem('qianlun_orders')) || [];
-    orders.push(order);
-    localStorage.setItem('qianlun_orders', JSON.stringify(orders));
-  }
-
-  clearCart() {
-    localStorage.removeItem('qianlunshop_cart');
-    this.cart = [];
-    this.updateCartCount();
-  }
-
-  updateCartCount() {
-    const cartCount = document.querySelector('.cart-count');
-    if (cartCount) {
-      cartCount.textContent = this.cart.reduce((total, item) => total + item.quantity, 0);
+    try {
+      const orders = JSON.parse(localStorage.getItem('qianlun_orders') || '[]');
+      orders.push(order);
+      localStorage.setItem('qianlun_orders', JSON.stringify(orders));
+    } catch (error) {
+      console.error('Failed to save order:', error);
     }
   }
 
@@ -864,4 +811,160 @@ class CheckoutManager {
     };
     return categories[category] || category;
   }
+}
+
+// =========================
+// 🔍 PRODUCT FILTERS
+// =========================
+function initProductFilters() {
+  const searchInput = document.getElementById('searchInput');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const sortFilter = document.getElementById('sortFilter');
+  const resetBtn = document.getElementById('resetFilter');
+  const productGrid = document.getElementById('productGrid');
+  const noResults = document.getElementById('noResults');
+  const resultCount = document.getElementById('resultCount');
+
+  if (!searchInput || !productGrid) {
+    console.log("ℹ️ Not on products page");
+    return;
+  }
+
+  console.log("🔍 Initializing product filters...");
+
+  const allProducts = Array.from(productGrid.querySelectorAll('.product-card'));
+  const originalOrder = [...allProducts];
+
+  function updateResultCount(count) {
+    if (resultCount) {
+      resultCount.textContent = count;
+    }
+  }
+
+  function applyFilters() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const category = categoryFilter.value;
+    const sortBy = sortFilter.value;
+
+    let filtered = allProducts.filter(product => {
+      const name = (product.dataset.name || '').toLowerCase();
+      const productCategory = product.dataset.category || '';
+
+      const matchesSearch = !searchTerm || name.includes(searchTerm);
+      const matchesCategory = category === 'all' || productCategory === category;
+
+      return matchesSearch && matchesCategory;
+    });
+
+    if (sortBy !== 'default') {
+      filtered.sort((a, b) => {
+        const priceA = parseInt(a.dataset.price) || 0;
+        const priceB = parseInt(b.dataset.price) || 0;
+        const nameA = (a.dataset.name || '').toLowerCase();
+        const nameB = (b.dataset.name || '').toLowerCase();
+
+        switch (sortBy) {
+          case 'price-low': return priceA - priceB;
+          case 'price-high': return priceB - priceA;
+          case 'name-asc': return nameA.localeCompare(nameB);
+          case 'name-desc': return nameB.localeCompare(nameA);
+          default: return 0;
+        }
+      });
+    }
+
+    updateDisplay(filtered);
+  }
+
+  function updateDisplay(filtered) {
+    productGrid.innerHTML = '';
+
+    if (filtered.length === 0) {
+      if (noResults) noResults.style.display = 'block';
+      updateResultCount(0);
+    } else {
+      if (noResults) noResults.style.display = 'none';
+      
+      filtered.forEach((product, index) => {
+        product.style.animationDelay = `${index * 0.1}s`;
+        productGrid.appendChild(product);
+      });
+      
+      updateResultCount(filtered.length);
+    }
+  }
+
+  function resetFilters() {
+    searchInput.value = '';
+    categoryFilter.value = 'all';
+    sortFilter.value = 'default';
+    updateDisplay(originalOrder);
+    showToast("🔄 Filter direset", "success");
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+  categoryFilter.addEventListener('change', applyFilters);
+  sortFilter.addEventListener('change', applyFilters);
+  resetBtn.addEventListener('click', resetFilters);
+
+  updateResultCount(allProducts.length);
+}
+
+// =========================
+// 🌐 SMART HEADER (Auto-hide Navbar)
+// =========================
+function initSmartHeader() {
+  const navbar = document.querySelector('.navbar');
+  if (!navbar) {
+    console.log("ℹ️ Navbar element not found for Smart Header initialization.");
+    return;
+  }
+  
+  let lastScrollTop = 0;
+  const navbarHeight = navbar.offsetHeight;
+
+  window.addEventListener('scroll', function() {
+    let currentScroll = window.scrollY || document.documentElement.scrollTop;
+
+    if (currentScroll > lastScrollTop && currentScroll > navbarHeight) {
+      navbar.classList.add('navbar-hidden');
+    } 
+    else if (currentScroll < lastScrollTop || currentScroll <= 0) {
+      navbar.classList.remove('navbar-hidden');
+    }
+    
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+  });
+
+  console.log("🌐 Smart Header initialized.");
+}
+
+// =========================
+// 🚀 INITIALIZE
+// =========================
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("🚀 QianlunShop initialized");
+  console.log("📦 Cart:", cart.getSummary());
+  
+  // Initialize all features
+  updateCartCount();
+  initSmartHeader();
+  initCartPage();
+  initCheckoutPage();
+  initProductFilters();
+  
+  console.log("✅ All features loaded");
+});
+
+// =========================
+// 🐛 DEBUG HELPERS
+// =========================
+if (typeof window !== 'undefined') {
+  window.debugCart = () => cart.debug();
+  window.testCart = () => cart.validate();
+  window.clearCart = () => {
+    cart.clear();
+    updateCartCount();
+    showToast("🧹 Cart cleared", "success");
+  };
 }
