@@ -1,8 +1,8 @@
 # 🐉 QianlunShop - Luxury E-Commerce Platform
 
-<div align="center">
+<div allign="center">
 
-![QianlunShop Logo](assets/logo.png)
+![QianlunShop Logo](/assets/images/icons/QianLun%20Dragon.png)
 
 **Where Heritage Meets Modern Luxury**
 
