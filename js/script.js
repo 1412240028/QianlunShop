@@ -80,7 +80,7 @@ function flyToCart(imgEl) {
 // 🛍️ Add to Cart Handler
 // =========================
 document.addEventListener("click", e => {
-  if (e.target.classList.contains("add-to-cart")) {
+    if (e.target.classList.contains("add-to-cart")) {
     e.preventDefault();
     
     const card = e.target.closest(".product-card");
@@ -116,11 +116,10 @@ document.addEventListener("click", e => {
 
     console.log("✅ Menambahkan produk:", product);
     cart.add(product);
-    updateCartCount();
+    updateCartCount(); // ✅ Pastikan ini dipanggil
     showToast(`✅ ${product.name} ditambahkan ke keranjang!`);
   }
 });
-
 // =========================
 // 🛒 Cart Page Renderer
 // =========================
