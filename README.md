@@ -1,6 +1,6 @@
 # 🐉 QianlunShop - Luxury E-Commerce Platform
 
-<div allign="center">
+<div align="center">
 
 ![QianlunShop Logo](/assets/images/icons/QianLun%20Dragon.png)
 
