@@ -689,23 +689,26 @@ function initCheckoutPage() {
 }
 
 // =========================
-// 📦 Order Confirmation Page - FIXED
+// 📦 Order Confirmation Page - FIXED & COMPLETE
 // =========================
 function initOrderConfirmation() {
   const confirmationContainer = document.querySelector(".order-confirmation");
   if (!confirmationContainer) return;
+
+  console.log("📦 Initializing order confirmation...");
 
   const urlParams = new URLSearchParams(window.location.search);
   const orderId = urlParams.get('orderId');
 
   if (!orderId) {
     confirmationContainer.innerHTML = `
-      <div class="error-state">
-        <h2>❌ Pesanan Tidak Ditemukan</h2>
-        <p>Silakan kembali ke halaman checkout atau periksa riwayat pesanan Anda.</p>
-        <div class="action-buttons">
-          <a href="checkout.html" class="btn btn-primary">Kembali ke Checkout</a>
-          <a href="products.html" class="btn btn-secondary">Lanjutkan Belanja</a>
+      <div class="empty-cart">
+        <div class="empty-cart-icon">⚠️</div>
+        <h3>Pesanan Tidak Ditemukan</h3>
+        <p>Sepertinya Anda membuka halaman ini tanpa menyelesaikan transaksi.</p>
+        <div class="confirmation-actions">
+          <a href="products.html" class="btn btn-primary">🛍️ Belanja Sekarang</a>
+          <a href="../index.html" class="btn btn-secondary">🏠 Kembali ke Beranda</a>
         </div>
       </div>
     `;
@@ -717,20 +720,68 @@ function initOrderConfirmation() {
 
   if (!order) {
     confirmationContainer.innerHTML = `
-      <div class="error-state">
-        <h2>❌ Data Pesanan Tidak Ditemukan</h2>
-        <p>Pesanan dengan ID ${orderId} tidak dapat ditemukan dalam sistem.</p>
-        <div class="action-buttons">
-          <a href="checkout.html" class="btn btn-primary">Kembali ke Checkout</a>
-          <a href="../index.html" class="btn btn-secondary">Kembali ke Beranda</a>
+      <div class="empty-cart">
+        <div class="empty-cart-icon">❌</div>
+        <h3>Data Pesanan Tidak Ditemukan</h3>
+        <p>Kami tidak dapat menemukan pesanan dengan ID tersebut.</p>
+        <div class="confirmation-actions">
+          <a href="checkout.html" class="btn btn-primary">🛒 Kembali ke Checkout</a>
+          <a href="products.html" class="btn btn-secondary">🛍️ Lanjutkan Belanja</a>
         </div>
       </div>
     `;
     return;
   }
 
-  // Display order confirmation (implementation dari kode asli)
-  console.log("✅ Order confirmation loaded");
+  // Helper function to format price
+  function formatPrice(price) {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(price);
+  }
+
+  // Format shipping method
+  const shippingMethods = {
+    'regular': 'Regular Delivery (5 Hari)',
+    'express': 'Express Delivery (2 Hari)',
+    'same-day': 'Same Day Delivery'
+  };
+
+  // Render complete order confirmation
+  confirmationContainer.innerHTML = `
+    <div class="confirmation-icon">🎉</div>
+    <h2>Pesanan Berhasil!</h2>
+    <p class="order-id">Order ID: <span>${order.id}</span></p>
+    <p>Terima kasih telah berbelanja di QianlunShop. Pesanan Anda sedang diproses dengan aman.</p>
+    
+    <div class="confirmation-details">
+      <div class="detail-item">
+        <strong>📅 Estimasi Pengiriman:</strong>
+        <span>${order.shipping.estimatedDelivery}</span>
+      </div>
+      <div class="detail-item">
+        <strong>💰 Total Pembayaran:</strong>
+        <span>${formatPrice(order.totals.grandTotal)}</span>
+      </div>
+      <div class="detail-item">
+        <strong>🚚 Metode Pengiriman:</strong>
+        <span>${shippingMethods[order.shipping.method] || 'Standard Shipping'}</span>
+      </div>
+      <div class="detail-item">
+        <strong>📧 Email Konfirmasi:</strong>
+        <span>${order.customerInfo.email}</span>
+      </div>
+    </div>
+
+    <div class="confirmation-actions">
+      <a href="../index.html" class="btn btn-primary">🏠 Kembali ke Beranda</a>
+      <a href="products.html" class="btn btn-secondary">🛍️ Lanjutkan Belanja</a>
+    </div>
+  `;
+
+  console.log("✅ Order confirmation loaded successfully");
 }
 
 // =========================
