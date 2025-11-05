@@ -19,7 +19,7 @@ function showToast(message, type = "success") {
   toast.className = `toast ${type}`;
   toast.innerHTML = `<span>${message}</span>`;
   document.body.appendChild(toast);
-  
+
   setTimeout(() => toast.classList.add("show"), 10);
   setTimeout(() => {
     toast.classList.remove("show");
@@ -80,9 +80,9 @@ function flyToCart(imgEl) {
 // 🛍️ Add to Cart Handler
 // =========================
 document.addEventListener("click", e => {
-    if (e.target.classList.contains("add-to-cart")) {
+  if (e.target.classList.contains("add-to-cart")) {
     e.preventDefault();
-    
+
     const card = e.target.closest(".product-card");
     if (!card) {
       console.error("❌ Product card tidak ditemukan");
@@ -130,178 +130,137 @@ function initCartPage() {
     return;
   }
 
-  console.log("🛒 Initializing cart page...");
-  console.log("📦 Cart items:", cart.items);
+  console.log("🛒 Initializing new glass cart page...");
 
   function renderCart() {
-    const items = cart.items;
-    
-    console.log("🔄 Rendering cart with", items.length, "items");
-
-    const validItems = items.filter(i => {
-      const isValid = i && i.id && i.name && i.price && i.quantity;
-      if (!isValid) {
-        console.warn("⚠️ Invalid item detected:", i);
-      }
-      return isValid;
-    });
-
-    console.log("✅ Valid items:", validItems.length);
-
-    if (!validItems || validItems.length === 0) {
+    const items = cart.items.filter(i => i && i.id && i.name && i.price && i.quantity);
+    if (items.length === 0) {
       container.innerHTML = `
         <div class="empty-cart">
           <div class="empty-cart-icon">🛒</div>
-          <h3>Keranjang Masih Kosong</h3>
-          <p>Temukan koleksi luxury terbaik dari QianlunShop</p>
-          <a href="products.html" class="btn btn-primary">Jelajahi Koleksi</a>
+          <h3>Keranjang Kamu Masih Kosong</h3>
+          <p>Temukan koleksi terbaik dari QianlunShop dan rasakan kemewahannya ✨</p>
+          <a href="products.html" class="btn btn-primary">Jelajahi Produk</a>
         </div>
       `;
-      
-      if (items.length > 0) {
-        console.warn("🧹 Cleaning invalid items from cart");
-        cart.items = validItems;
-        cart.save();
-        updateCartCount();
-      }
+      updateCartCount();
       return;
     }
 
-    const subtotal = validItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
     const totalFormatted = subtotal.toLocaleString("id-ID");
-    
-    const itemsHTML = validItems.map(i => {
-      const itemPrice = (i.price || 0).toLocaleString("id-ID");
+
+    const itemsHTML = items.map(i => {
+      const itemPrice = i.price.toLocaleString("id-ID");
       const itemTotal = (i.price * i.quantity).toLocaleString("id-ID");
-      const fallbackImage = i.image || '../assets/sample1.jpg';
-      
+      const image = i.image || "../assets/sample1.jpg";
+
       return `
-        <div class="cart-item" data-id="${i.id}">
-          <img src="${fallbackImage}" alt="${i.name}" onerror="this.src='../assets/sample1.jpg'">
+        <div class="cart-item fade-in" data-id="${i.id}">
+          <img src="${image}" alt="${i.name}" onerror="this.src='../assets/sample1.jpg'">
           <div class="cart-info">
             <h3>${i.name}</h3>
             <p class="item-price">Rp ${itemPrice}</p>
+
             <div class="cart-actions">
               <button class="decrease-quantity" data-id="${i.id}">-</button>
               <input type="number" value="${i.quantity}" min="1" class="quantity-input" data-id="${i.id}" readonly>
               <button class="increase-quantity" data-id="${i.id}">+</button>
             </div>
+
+            <button class="remove-item" data-id="${i.id}" title="Hapus item">🗑️ Hapus</button>
           </div>
+
           <div class="item-total-section">
             <p class="item-total">Rp ${itemTotal}</p>
-            <button class="remove-item" data-id="${i.id}" title="Hapus item">🗑️</button>
           </div>
         </div>
       `;
     }).join("");
 
     container.innerHTML = `
-      <div class="cart-with-items">
-        <div class="cart-items">
-          ${itemsHTML}
-        </div>
+    <div class="cart-header"> 
+    <h2>🛒 Keranjang Belanja</h2>
+    <p>Kelola produk favorit kamu sebelum checkout</p>
+    </div>
 
-        <div class="cart-summary">
+    <div class="cart-items">
+    ${itemsHTML}
+    </div>
+
+    <div class="cart-summary">
           <h3>Ringkasan Pesanan</h3>
-          
           <div class="summary-details">
-            <div class="summary-row">
-              <span>Subtotal:</span>
-              <span id="cartSubtotal">Rp ${subtotal.toLocaleString('id-ID')}</span>
-            </div>
-            <div class="summary-row">
-              <span>Pengiriman:</span>
-              <span id="cartShipping">Gratis</span>
-            </div>
-            <div class="summary-row discount">
-              <span>Diskon:</span>
-              <span>- Rp 0</span>
-            </div>
-            <div class="summary-row grand-total">
-              <span>Total:</span>
-              <span id="cartTotal">Rp ${totalFormatted}</span>
-            </div>
+            <div class="summary-row"><span>Subtotal:</span><span>Rp ${subtotal.toLocaleString("id-ID")}</span></div>
+            <div class="summary-row"><span>Pengiriman:</span><span>Gratis</span></div>
+            <div class="summary-row"><span>Diskon:</span><span>- Rp 0</span></div>
+            <div class="summary-row grand-total"><span>Total:</span><span>Rp ${totalFormatted}</span></div>
           </div>
 
           <div class="promo-section">
             <label for="cartPromoCode">Kode Promo</label>
             <div class="promo-input-group">
-              <input type="text" id="cartPromoCode" placeholder="Masukkan kode promo">
+              <input type="text" id="cartPromoCode" placeholder="Masukkan kode promo...">
               <button class="btn btn-promo" id="applyCartPromo">Terapkan</button>
             </div>
           </div>
 
           <div class="checkout-actions">
-            <a href="checkout.html" class="btn btn-checkout" id="proceedToCheckout">
-              🛍️ Lanjutkan ke Checkout
-            </a>
-            <a href="products.html" class="btn btn-secondary">Lanjutkan Belanja</a>
+            <a href="checkout.html" class="btn btn-checkout">🛍️ Lanjutkan ke Checkout</a>
+            <a href="products.html" class="btn btn-secondary">⬅️ Kembali Belanja</a>
           </div>
 
-          <div class="security-badge">
-            <p>🔒 Transaksi 100% Aman & Terenkripsi</p>
-          </div>
+          <p class="security-info">🔒 Transaksi Aman & Terlindungi</p>
         </div>
       </div>
     `;
 
     attachCartEventListeners();
-    console.log("✅ Cart rendered successfully");
   }
 
   function attachCartEventListeners() {
-    document.querySelectorAll('.increase-quantity').forEach(button => {
-      button.addEventListener('click', function() {
-        const productId = this.getAttribute('data-id');
-        const item = cart.items.find(i => i.id === productId);
+    document.querySelectorAll(".increase-quantity").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.id;
+        const item = cart.items.find(i => i.id === id);
         if (item) {
-          cart.update(productId, item.quantity + 1);
+          cart.update(id, item.quantity + 1);
           renderCart();
           updateCartCount();
         }
       });
     });
 
-    document.querySelectorAll('.decrease-quantity').forEach(button => {
-      button.addEventListener('click', function() {
-        const productId = this.getAttribute('data-id');
-        const item = cart.items.find(i => i.id === productId);
+    document.querySelectorAll(".decrease-quantity").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.id;
+        const item = cart.items.find(i => i.id === id);
         if (item && item.quantity > 1) {
-          cart.update(productId, item.quantity - 1);
+          cart.update(id, item.quantity - 1);
           renderCart();
           updateCartCount();
         }
       });
     });
 
-    document.querySelectorAll('.remove-item').forEach(button => {
-      button.addEventListener('click', function() {
-        const productId = this.getAttribute('data-id');
-        cart.remove(productId);
+    document.querySelectorAll(".remove-item").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.id;
+        cart.remove(id);
         renderCart();
         updateCartCount();
         showToast("🗑️ Item dihapus dari keranjang", "error");
       });
     });
 
-    const checkoutBtn = document.getElementById('proceedToCheckout');
-    if (checkoutBtn) {
-      checkoutBtn.addEventListener('click', function(e) {
-        if (cart.items.length === 0) {
-          e.preventDefault();
-          showToast('❌ Keranjang kosong. Tambahkan produk terlebih dahulu.', 'error');
-        }
-      });
-    }
-
-    const applyPromoBtn = document.getElementById('applyCartPromo');
-    if (applyPromoBtn) {
-      applyPromoBtn.addEventListener('click', function() {
-        const promoCode = document.getElementById('cartPromoCode').value;
-        if (promoCode === 'QIANLUN10') {
-          showToast('🎉 Diskon 10% berhasil diterapkan!', 'success');
-        } else if (promoCode) {
-          showToast('❌ Kode promo tidak valid', 'error');
+    const applyPromo = document.getElementById("applyCartPromo");
+    if (applyPromo) {
+      applyPromo.addEventListener("click", () => {
+        const code = document.getElementById("cartPromoCode").value.trim().toUpperCase();
+        if (code === "QIANLUN10") {
+          showToast("🎉 Diskon 10% diterapkan!", "success");
+        } else if (code) {
+          showToast("❌ Kode promo tidak valid", "error");
         }
       });
     }
@@ -405,10 +364,10 @@ function initProductFilters() {
     searchInput.value = '';
     categoryFilter.value = 'all';
     sortFilter.value = 'default';
-    
+
     allProducts = [...originalProducts];
     updateProductDisplay(allProducts);
-    
+
     console.log("🔄 Filters reset");
     showToast("🔄 Filter direset", "success");
   }
@@ -418,7 +377,7 @@ function initProductFilters() {
   categoryFilter.addEventListener('change', applyFilters);
   sortFilter.addEventListener('change', applyFilters);
   resetBtn.addEventListener('click', resetFilters);
-  
+
   if (resetFromNoResults) {
     resetFromNoResults.addEventListener('click', resetFilters);
   }
@@ -436,7 +395,7 @@ function initDiscoverMore() {
    */
   function addHighlightStyles() {
     if (document.getElementById('discover-more-styles')) return;
-    
+
     const style = document.createElement('style');
     style.id = 'discover-more-styles';
     style.textContent = `
@@ -468,26 +427,26 @@ function initDiscoverMore() {
    */
   function handleProductAnchor() {
     const hash = window.location.hash;
-    
+
     if (hash && hash.startsWith('#p')) {
       setTimeout(() => {
         const productCard = document.querySelector(`[data-id="${hash.substring(1)}"]`);
-        
+
         if (productCard) {
           // Smooth scroll to product
-          productCard.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
+          productCard.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
           });
-          
+
           // Add highlight animation
           productCard.classList.add('highlighted');
-          
+
           // Remove highlight after animation
           setTimeout(() => {
             productCard.classList.remove('highlighted');
           }, 3000);
-          
+
           console.log(`✨ Navigated to product: ${hash}`);
         }
       }, 300);
@@ -499,14 +458,14 @@ function initDiscoverMore() {
    */
   function trackDiscoverMoreClicks() {
     document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('view-product') || 
-          e.target.classList.contains('view-details')) {
-        
+      if (e.target.classList.contains('view-product') ||
+        e.target.classList.contains('view-details')) {
+
         const productCard = e.target.closest('.product-card');
         if (productCard) {
           const productId = productCard.dataset.id;
           const productName = productCard.dataset.name;
-          
+
           console.log('🔍 Discover More clicked:', {
             id: productId,
             name: productName,
@@ -521,10 +480,10 @@ function initDiscoverMore() {
   addHighlightStyles();
   handleProductAnchor();
   trackDiscoverMoreClicks();
-  
+
   // Handle hash changes (browser back/forward)
   window.addEventListener('hashchange', handleProductAnchor);
-  
+
   console.log('✅ Discover More functionality initialized');
 }
 
@@ -549,7 +508,7 @@ class CheckoutManager {
   displayCheckoutItems() {
     const checkoutItems = document.getElementById('checkoutItems');
     if (!checkoutItems) return;
-    
+
     if (this.cart.length === 0) {
       checkoutItems.innerHTML = `
         <div class="empty-cart">
@@ -593,7 +552,7 @@ class CheckoutManager {
   }
 
   updateShippingCost(method) {
-    switch(method) {
+    switch (method) {
       case 'regular': this.shippingCost = 25000; break;
       case 'express': this.shippingCost = 50000; break;
       case 'same-day': this.shippingCost = 75000; break;
@@ -612,7 +571,7 @@ class CheckoutManager {
 
     const paymentMethods = document.querySelectorAll('input[name="payment"]');
     const creditCardForm = document.getElementById('creditCardForm');
-    
+
     paymentMethods.forEach(method => {
       method.addEventListener('change', (e) => {
         if (creditCardForm) {
@@ -691,7 +650,7 @@ class CheckoutManager {
     if (placeOrderBtn) {
       placeOrderBtn.disabled = !isValid;
     }
-    
+
     return isValid;
   }
 
@@ -742,7 +701,7 @@ class CheckoutManager {
     } catch (error) {
       console.error('Order error:', error);
       showToast('Terjadi kesalahan saat memproses pesanan', 'error');
-      
+
       const placeOrderBtn = document.getElementById('placeOrder');
       if (placeOrderBtn) {
         placeOrderBtn.innerHTML = '🛍️ Bayar Sekarang';
@@ -795,7 +754,7 @@ class CheckoutManager {
 
   getEstimatedDelivery(method) {
     const today = new Date();
-    switch(method) {
+    switch (method) {
       case 'same-day':
         return new Date(today.setDate(today.getDate())).toLocaleDateString('id-ID');
       case 'express':
@@ -867,11 +826,11 @@ function initOrderConfirmation() {
   }
 
   console.log("✅ Initializing order confirmation page...");
-  
+
   // Get order ID from URL parameters
   const urlParams = new URLSearchParams(window.location.search);
   const orderId = urlParams.get('orderId');
-  
+
   if (!orderId) {
     console.error("❌ Order ID tidak ditemukan");
     confirmationContainer.innerHTML = `
@@ -890,7 +849,7 @@ function initOrderConfirmation() {
   // Load order data from localStorage
   const orders = JSON.parse(localStorage.getItem('qianlun_orders')) || [];
   const order = orders.find(o => o.id === orderId);
-  
+
   if (!order) {
     console.error("❌ Data pesanan tidak ditemukan untuk ID:", orderId);
     confirmationContainer.innerHTML = `
@@ -912,7 +871,7 @@ function initOrderConfirmation() {
 
 function renderOrderConfirmation(order) {
   const container = document.querySelector(".order-confirmation");
-  
+
   const itemsHTML = order.items.map(item => `
     <div class="order-item">
       <img src="${item.image}" alt="${item.name}" onerror="this.src='../assets/sample1.jpg'">
@@ -987,8 +946,8 @@ function renderOrderConfirmation(order) {
         <div class="info-section">
           <h3>💳 Pembayaran</h3>
           <p><strong>Metode:</strong> ${getPaymentMethodName(order.payment.method)}</p>
-          ${order.payment.cardLastFour ? 
-            `<p><strong>Kartu:</strong> **** **** **** ${order.payment.cardLastFour}</p>` : ''}
+          ${order.payment.cardLastFour ?
+      `<p><strong>Kartu:</strong> **** **** **** ${order.payment.cardLastFour}</p>` : ''}
           <p class="payment-status"><strong>Status:</strong> <span class="status-completed">✅ Berhasil</span></p>
         </div>
       </div>
@@ -1058,7 +1017,7 @@ function getPaymentMethodName(method) {
 function initMobileMenu() {
   const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
   const navLinks = document.querySelector('.nav-links');
-  
+
   if (mobileMenuBtn && navLinks) {
     mobileMenuBtn.addEventListener('click', () => {
       navLinks.classList.toggle('active');
@@ -1086,9 +1045,9 @@ function initMobileMenu() {
 // =========================
 // 🎯 Main Initialization
 // =========================
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   console.log("🚀 QianlunShop Initializing...");
-  
+
   // Initialize all systems
   updateCartCount();
   initCartPage();
@@ -1104,6 +1063,6 @@ document.addEventListener("DOMContentLoaded", function() {
 // =========================
 // 🌐 Global Error Handler
 // =========================
-window.addEventListener('error', function(e) {
+window.addEventListener('error', function (e) {
   console.error('Global Error:', e.error);
 });
