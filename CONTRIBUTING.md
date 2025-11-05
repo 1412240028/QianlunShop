@@ -170,6 +170,9 @@ git checkout -b feature/your-feature-name
 - [ ] Responsive on all devices | Responsif di semua perangkat
 - [ ] No broken links | Tidak ada link rusak
 - [ ] LocalStorage works correctly | LocalStorage berfungsi dengan benar
+- [ ] Cart functionality intact | Fungsionalitas keranjang utuh
+- [ ] Checkout process works | Proses checkout berfungsi
+- [ ] PWA features functional | Fitur PWA berfungsi
 
 #### Step 5: Commit Your Changes | Commit Perubahan
 

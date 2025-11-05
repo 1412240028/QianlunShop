@@ -55,7 +55,7 @@ Proyek ini menampilkan arsitektur kode yang bersih, prinsip desain responsif, da
 - **Real-time Search** | **Pencarian Real-time**
   - Instant product search by name | Pencarian produk instan berdasarkan nama
   - Case-insensitive search | Pencarian tanpa case-sensitive
-  
+
 - **Category Filtering** | **Filter Kategori**
   - Filter by product category | Filter berdasarkan kategori produk
   - "All Categories" option | Opsi "Semua Kategori"
@@ -128,6 +128,38 @@ Proyek ini menampilkan arsitektur kode yang bersih, prinsip desain responsif, da
   - Contact form | Form kontak
   - Contact information cards | Kartu informasi kontak
 
+#### 🛒 Checkout System | Sistem Checkout
+- **Multi-Step Checkout** | **Checkout Multi-Langkah**
+  - Customer information form | Form informasi pelanggan
+  - Shipping method selection | Pemilihan metode pengiriman
+  - Payment method selection | Pemilihan metode pembayaran
+  - Order summary & confirmation | Ringkasan pesanan & konfirmasi
+
+- **Shipping & Tax Calculation** | **Kalkulasi Pengiriman & Pajak**
+  - Free shipping threshold (5M IDR) | Ambang batas gratis ongkir (5M IDR)
+  - Multiple shipping options | Berbagai opsi pengiriman
+  - 11% PPN tax calculation | Kalkulasi PPN 11%
+  - Real-time total updates | Pembaruan total secara real-time
+
+- **Order Processing** | **Pemrosesan Pesanan**
+  - Order ID generation | Pembuatan ID pesanan
+  - Order confirmation page | Halaman konfirmasi pesanan
+  - Receipt printing | Pencetakan struk
+  - Order history storage | Penyimpanan riwayat pesanan
+
+#### 📱 PWA Features | Fitur PWA
+- **Progressive Web App** | **Aplikasi Web Progresif**
+  - Offline functionality | Fungsionalitas offline
+  - Service Worker caching | Caching Service Worker
+  - Web App Manifest | Manifest Aplikasi Web
+  - Installable on mobile | Dapat diinstall di mobile
+
+- **Performance Optimization** | **Optimasi Performa**
+  - Fast loading times | Waktu loading cepat
+  - Smooth animations | Animasi halus
+  - Efficient caching | Caching efisien
+  - Mobile optimization | Optimasi mobile
+
 ---
 
 ## 🛠️ Tech Stack | Teknologi
@@ -149,6 +181,11 @@ Proyek ini menampilkan arsitektur kode yang bersih, prinsip desain responsif, da
 ### Hosting & Deployment
 - **GitHub Pages** - Static site hosting | Hosting situs statis
 - **Git** - Version control | Kontrol versi
+
+### Progressive Web App | Aplikasi Web Progresif
+- **Service Worker** - Offline caching & sync | Caching offline & sinkronisasi
+- **Web App Manifest** - App installation | Instalasi aplikasi
+- **Background Sync** - Order synchronization | Sinkronisasi pesanan
 
 ---
 
@@ -223,19 +260,32 @@ QianlunShop/
 ├── 📁 pages/                     # Additional pages | Halaman tambahan
 │   ├── products.html             # Products catalog | Katalog produk
 │   ├── cart.html                 # Shopping cart | Keranjang belanja
+│   ├── checkout.html             # Checkout process | Proses checkout
+│   ├── order-confirmation.html   # Order confirmation | Konfirmasi pesanan
 │   ├── about.html                # About page | Halaman tentang
 │   └── contact.html              # Contact page | Halaman kontak
 ├── 📁 css/
-│   └── style.css                 # Main stylesheet | Stylesheet utama
+│   ├── main.css                  # Main CSS import file | File import CSS utama
+│   ├── base/                     # Foundation styles | Gaya dasar
+│   ├── components/               # UI components | Komponen UI
+│   ├── layout/                   # Layout utilities | Utilitas layout
+│   ├── pages/                    # Page-specific styles | Gaya khusus halaman
+│   └── utilities/                # Utility classes | Kelas utilitas
 ├── 📁 js/
-│   ├── script.js                 # Main JavaScript | JavaScript utama
-│   └── cart.js                   # Cart logic | Logika keranjang
+│   ├── script.js                 # Main application logic | Logika aplikasi utama
+│   ├── cart.js                   # Cart management system | Sistem manajemen keranjang
+│   └── config.js                 # Configuration & utilities | Konfigurasi & utilitas
+├── 📁 data/
+│   └── products.json             # Product catalog data | Data katalog produk
 ├── 📁 assets/
 │   ├── 📁 images/
-│   │   └── 📁 products/          # Product images | Gambar produk
-│   └── logo.png                  # Brand logo | Logo brand
+│   │   ├── 📁 products/          # Product images | Gambar produk
+│   │   ├── 📁 icons/             # App icons | Ikon aplikasi
+│   │   └── 📁 banners/           # Banner images | Gambar banner
+│   └── 📁 fonts/                 # Custom fonts (if any) | Font kustom (jika ada)
+├── 📄 sw.js                      # Service Worker | Service Worker
+├── 📄 manifest.json              # PWA Manifest | Manifest PWA
 ├── 📄 README.md                  # This file | File ini
-├── 📄 DOCUMENTATION.md           # Detailed docs | Dokumentasi lengkap
 ├── 📄 CONTRIBUTING.md            # Contribution guide | Panduan kontribusi
 └── 📄 LICENSE                    # MIT License
 
@@ -247,17 +297,33 @@ QianlunShop/
 **EN:** Main landing page with hero section, featured products, testimonials, and newsletter.  
 **ID:** Halaman utama dengan bagian hero, produk unggulan, testimoni, dan newsletter.
 
-#### `css/style.css`
-**EN:** Comprehensive stylesheet with CSS custom properties, responsive design, and animations.  
-**ID:** Stylesheet komprehensif dengan CSS custom properties, desain responsif, dan animasi.
+#### `css/main.css`
+**EN:** Main CSS file that imports all modular stylesheets for consistent theming.  
+**ID:** File CSS utama yang mengimpor semua stylesheet modular untuk tema yang konsisten.
 
 #### `js/script.js`
-**EN:** Main JavaScript file handling UI interactions, search/filter logic, and cart integration.  
-**ID:** File JavaScript utama yang menangani interaksi UI, logika pencarian/filter, dan integrasi keranjang.
+**EN:** Main JavaScript file handling UI interactions, search/filter logic, cart integration, and checkout flow.  
+**ID:** File JavaScript utama yang menangani interaksi UI, logika pencarian/filter, integrasi keranjang, dan alur checkout.
 
 #### `js/cart.js`
-**EN:** Cart class with methods for add, remove, update, and persist cart data.  
-**ID:** Kelas Cart dengan metode untuk menambah, menghapus, memperbarui, dan menyimpan data keranjang.
+**EN:** Cart class with atomic operations, multi-tab synchronization, and persistent storage.  
+**ID:** Kelas Cart dengan operasi atomik, sinkronisasi multi-tab, dan penyimpanan persisten.
+
+#### `js/config.js`
+**EN:** Centralized configuration with pricing rules, shipping methods, promo codes, and utility functions.  
+**ID:** Konfigurasi terpusat dengan aturan harga, metode pengiriman, kode promo, dan fungsi utilitas.
+
+#### `data/products.json`
+**EN:** Product catalog with detailed specifications, pricing, and inventory data.  
+**ID:** Katalog produk dengan spesifikasi detail, harga, dan data inventaris.
+
+#### `sw.js`
+**EN:** Service Worker for offline functionality, caching strategies, and background sync.  
+**ID:** Service Worker untuk fungsionalitas offline, strategi caching, dan sinkronisasi latar belakang.
+
+#### `manifest.json`
+**EN:** PWA manifest for app installation, shortcuts, and app metadata.  
+**ID:** Manifest PWA untuk instalasi aplikasi, shortcut, dan metadata aplikasi.
 
 ---
 
@@ -284,6 +350,15 @@ QianlunShop/
 4. Remove items with ✕ button | Hapus item dengan tombol ✕
 5. Clear entire cart if needed | Kosongkan seluruh keranjang jika perlu
 6. Proceed to checkout | Lanjut ke checkout
+
+#### Checkout Process | Proses Checkout
+1. Click "Checkout" from cart page | Klik "Checkout" dari halaman keranjang
+2. Fill customer information form | Isi form informasi pelanggan
+3. Select shipping method | Pilih metode pengiriman
+4. Choose payment method | Pilih metode pembayaran
+5. Review order summary | Tinjau ringkasan pesanan
+6. Confirm and place order | Konfirmasi dan tempatkan pesanan
+7. Receive order confirmation | Terima konfirmasi pesanan
 
 ### For Developers | Untuk Developer
 
@@ -348,6 +423,21 @@ const totalPrice = cart.getTotal();
 cart.clear();
 ```
 
+#### Checkout Integration | Integrasi Checkout
+
+```javascript
+import { CheckoutManager } from "./script.js";
+
+const checkout = new CheckoutManager();
+
+// Initialize checkout
+checkout.init();
+
+// Process order
+const orderData = await checkout.processOrder(customerData, paymentData);
+console.log("Order placed:", orderData);
+```
+
 ---
 
 ## 🗺️ Development Roadmap | Roadmap Pengembangan
@@ -360,21 +450,26 @@ cart.clear();
 - [x] LocalStorage persistence | Penyimpanan LocalStorage
 - [x] Toast notifications | Notifikasi toast
 - [x] Animated interactions | Interaksi beranimasi
+- [x] Complete checkout system | Sistem checkout lengkap
+- [x] Order confirmation & receipt | Konfirmasi pesanan & struk
+- [x] PWA features (Service Worker, Manifest) | Fitur PWA (Service Worker, Manifest)
+- [x] Shipping & tax calculations | Kalkulasi pengiriman & pajak
+- [x] Multi-step checkout flow | Alur checkout multi-langkah
 
 ### 🚧 In Development | Dalam Pengembangan
 
 #### Phase 1: Core Improvements | Fase 1: Peningkatan Inti
-- [ ] **Checkout System** | **Sistem Checkout**
-  - Payment gateway integration | Integrasi payment gateway
-  - Order summary page | Halaman ringkasan pesanan
-  - Form validation | Validasi form
-  - Order confirmation | Konfirmasi pesanan
+- [ ] **Backend Integration** | **Integrasi Backend**
+  - Real payment gateway integration | Integrasi payment gateway nyata
+  - Order management system | Sistem manajemen pesanan
+  - Inventory synchronization | Sinkronisasi inventaris
+  - User authentication | Autentikasi pengguna
 
-- [ ] **Enhanced Notifications** | **Notifikasi yang Ditingkatkan**
-  - Delete confirmation modal | Modal konfirmasi hapus
-  - Checkout confirmation dialog | Dialog konfirmasi checkout
-  - Success/error states | Status sukses/error
-  - Animation improvements | Peningkatan animasi
+- [ ] **Enhanced User Experience** | **Pengalaman Pengguna yang Ditingkatkan**
+  - Loading states & skeleton screens | Status loading & skeleton screens
+  - Error boundaries & recovery | Batas error & pemulihan
+  - Progressive enhancement | Peningkatan progresif
+  - Accessibility improvements | Peningkatan aksesibilitas
 
 #### Phase 2: Feature Expansion | Fase 2: Ekspansi Fitur
 - [ ] User authentication | Autentikasi pengguna
@@ -382,6 +477,7 @@ cart.clear();
 - [ ] Product reviews and ratings | Ulasan dan rating produk
 - [ ] Order history | Riwayat pesanan
 - [ ] Product comparison | Perbandingan produk
+- [ ] Advanced search filters | Filter pencarian lanjutan
 
 #### Phase 3: Advanced Features | Fase 3: Fitur Lanjutan
 - [ ] Multi-language support | Dukungan multi-bahasa
@@ -389,6 +485,7 @@ cart.clear();
 - [ ] Product recommendations | Rekomendasi produk
 - [ ] Advanced analytics | Analitik lanjutan
 - [ ] Admin dashboard | Dashboard admin
+- [ ] Mobile app (React Native) | Aplikasi mobile (React Native)
 
 ### 🔮 Future Enhancements | Peningkatan Masa Depan
 - [ ] Progressive Web App (PWA) | Aplikasi Web Progresif
@@ -397,6 +494,7 @@ cart.clear();
 - [ ] Live chat support | Dukungan live chat
 - [ ] Email notifications | Notifikasi email
 - [ ] Inventory management | Manajemen inventaris
+- [ ] Multi-vendor marketplace | Marketplace multi-vendor
 
 ---
 
@@ -417,7 +515,8 @@ cart.clear();
 - No backend integration yet | Belum ada integrasi backend
 - Checkout is simulated | Checkout disimulasikan
 - No real payment processing | Tidak ada pemrosesan pembayaran nyata
-- Limited to 4 products (demo) | Terbatas pada 4 produk (demo)
+- Limited to 3 products (demo) | Terbatas pada 3 produk (demo)
+- No user authentication | Tidak ada autentikasi pengguna
 
 ---
 
@@ -500,7 +599,7 @@ Proyek ini dilisensikan di bawah MIT License - lihat file [LICENSE](LICENSE) unt
 - 🌐 Website: [https://1412240028.github.io/QianlunShop/](https://1412240028.github.io/QianlunShop/)
 - 📧 Email: hello@qianlunshop.com
 - 📱 Phone: +62 812-3456-7890
-- 🐙 GitHub: [@1412240028](https://github.com/1412240028)
+- 🐙 GitHub: [@1412240028](https://github.com/1412240028/QianlunShop)
 
 ### Project Links | Link Proyek
 
