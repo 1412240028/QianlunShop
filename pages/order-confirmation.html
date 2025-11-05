@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order Confirmation - QianlunShop</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/main.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -113,7 +113,7 @@
       }
 
       // Ambil data order dari localStorage
-      const orders = JSON.parse(localStorage.getItem("qianlun_orders")) || [];
+      const orders = JSON.parse(localStorage.getItem("qianlunshop_orders")) || [];
       const order = orders.find(o => o.id === orderId);
 
       if (order) {
