@@ -1,0 +1,29 @@
+/* =========================
+   QianlunShop - Reset & Base Styles
+   ========================= */
+
+/* 2️⃣ Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  padding-top: 70px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: var(--gold-primary); border-radius: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-tertiary); }

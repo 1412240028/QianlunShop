@@ -637,7 +637,12 @@ class CheckoutManager {
   updateShippingCost(method) {
     const shipping = CONFIG.SHIPPING[method.toUpperCase()];
     if (shipping) {
-      this.shippingCost = Utils.isFreeShippingEligible(this.cart.getTotal()) ? 0 : shipping.cost;
+      // Free shipping only applies if 'free' is selected and user is eligible
+      if (method === 'free' && Utils.isFreeShippingEligible(this.cart.getTotal())) {
+        this.shippingCost = 0;
+      } else {
+        this.shippingCost = shipping.cost;
+      }
     } else {
       this.shippingCost = 0;
     }
@@ -648,10 +653,14 @@ class CheckoutManager {
     // Shipping method selection
     const shippingSelect = document.getElementById('shipping');
     if (shippingSelect) {
-      // Populate shipping options
-      shippingSelect.innerHTML = Object.entries(CONFIG.SHIPPING).map(([key, method]) => `
+      const isEligible = Utils.isFreeShippingEligible(this.cart.getTotal());
+
+      // Populate shipping options - only show FREE if eligible
+      const shippingOptions = Object.entries(CONFIG.SHIPPING).filter(([key]) => key !== 'FREE' || isEligible);
+
+      shippingSelect.innerHTML = shippingOptions.map(([key, method]) => `
         <option value="${key.toLowerCase()}">
-          ${method.name} - ${Utils.formatPrice(method.cost)} 
+          ${method.name} - ${Utils.formatPrice(method.cost)}
           (${Utils.getEstimatedDelivery(key)})
         </option>
       `).join('');
@@ -659,6 +668,9 @@ class CheckoutManager {
       shippingSelect.addEventListener('change', (e) => {
         this.updateShippingCost(e.target.value);
       });
+
+      // Set default to free shipping if eligible, otherwise regular
+      shippingSelect.value = isEligible ? 'free' : 'regular';
 
       // Set initial shipping cost
       this.updateShippingCost(shippingSelect.value);
@@ -834,9 +846,8 @@ class CheckoutManager {
         }))
       });
 
-      setTimeout(() => {
-        window.location.href = `order-confirmation.html?orderId=${order.id}`;
-      }, 2000);
+      // Redirect immediately to order confirmation
+      window.location.href = `order-confirmation.html?orderId=${order.id}`;
 
     } catch (error) {
       console.error('Order error:', error);

@@ -1,0 +1,32 @@
+/* =========================
+   QianlunShop - Main CSS File
+   Import semua modul CSS
+   ========================= */
+
+/* Base Styles */
+@import 'base/variables.css';
+@import 'base/reset.css';
+
+/* Utilities */
+@import 'utilities/animations.css';
+
+/* Components */
+@import 'components/navbar.css';
+@import 'components/hero.css';
+@import 'components/buttons.css';
+@import 'components/cards.css';
+@import 'components/forms.css';
+
+/* Layout */
+@import 'layout/grid.css';
+@import 'layout/footer.css';
+
+/* Pages */
+@import 'pages/cart.css';
+@import 'pages/products.css';
+@import 'pages/about.css';
+@import 'pages/contact.css';
+@import 'pages/checkout.css';
+@import 'pages/order-confirmation.css';
+
+/* Import comprehensive styles for missing sections */
