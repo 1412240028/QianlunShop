@@ -4,6 +4,10 @@
 // =========================
 import { Cart } from "./cart.js";
 import { CONFIG, Utils } from "./config.js";
+import { ProductManager, productManager } from "./product-manager.js";
+import { LazyLoader, lazyLoader } from "./lazy-loader.js";
+import { AccessibilityEnhancer, accessibilityEnhancer } from "./accessibility.js";
+import { SEOEnhancer, seoEnhancer } from "./seo-enhancer.js";
 
 // Initialize cart with config
 const cart = new Cart();
@@ -122,9 +126,28 @@ document.addEventListener("click", async (e) => {
     const idAttr = card.dataset.id;
     const categoryAttr = card.dataset.category;
 
-    if (!nameEl || !priceAttr || !idAttr) {
-      console.error("❌ Data produk tidak lengkap", { nameEl, priceAttr, idAttr });
+    if (!nameEl || !idAttr) {
+      console.error("❌ Data produk tidak lengkap", { nameEl, idAttr, priceAttr });
       showToast(CONFIG.MESSAGES.FORM_INCOMPLETE, "error");
+      e.target.disabled = false;
+      return;
+    }
+
+    // Parse price more robustly
+    let price = 0;
+    if (priceAttr) {
+      price = parseInt(priceAttr.replace(/[^\d]/g, ''), 10);
+    } else {
+      // Fallback: find price in text content
+      const priceEl = card.querySelector('.price, .product-price, [class*="price"]');
+      if (priceEl) {
+        price = parseInt(priceEl.textContent.replace(/[^\d]/g, ''), 10);
+      }
+    }
+
+    if (isNaN(price) || price <= 0) {
+      console.error("❌ Invalid price:", priceAttr, price);
+      showToast("Harga produk tidak valid", "error");
       e.target.disabled = false;
       return;
     }
@@ -132,7 +155,7 @@ document.addEventListener("click", async (e) => {
     const product = {
       id: idAttr,
       name: nameEl.textContent.trim(),
-      price: parseInt(priceAttr, 10),
+      price: price,
       image: imgEl ? imgEl.src : "",
       category: categoryAttr || "general",
       quantity: 1
@@ -1079,6 +1102,33 @@ function initOrderConfirmation() {
 }
 
 // =========================
+// 🛍️ Add All Products to Cart Function
+// =========================
+async function addAllProductsToCart() {
+  const products = [
+    { id: 'p001', name: 'QIANLUN HERITAGE COLLECTION', price: 8750000, category: 'watch' },
+    { id: 'p002', name: 'QIANLUN CELESTIAL DRAGON', price: 5500000, category: 'bag' },
+    { id: 'p003', name: 'QIANLUN QILIN SCALE', price: 3750000, category: 'shoes' },
+    { id: 'p004', name: 'QIANLUN DRAGON SCALES', price: 2250000, category: 'wallet' }
+  ];
+
+  console.log("🛍️ Adding all products to cart...");
+
+  for (const productData of products) {
+    const card = document.querySelector(`[data-id="${productData.id}"]`);
+    if (card) {
+      const addBtn = card.querySelector('.add-to-cart');
+      if (addBtn) {
+        addBtn.click();
+        await new Promise(resolve => setTimeout(resolve, 500)); // Wait for animation
+      }
+    }
+  }
+
+  console.log("✅ All products added to cart!");
+}
+
+// =========================
 // 🎯 Initialize All Features
 // =========================
 document.addEventListener("DOMContentLoaded", function () {
@@ -1086,19 +1136,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize cart count on all pages
   updateCartCount();
-  
+
+  // Initialize new modules
+  productManager.init();
+  lazyLoader.init();
+  accessibilityEnhancer.init();
+  seoEnhancer.init();
+
   // Initialize cart page
   initCartPage();
-  
+
   // Initialize product filters
   initProductFilters();
-  
+
+  // Initialize add all to cart button
+  const addAllBtn = document.getElementById('addAllToCartBtn');
+  if (addAllBtn) {
+    addAllBtn.addEventListener('click', async () => {
+      addAllBtn.disabled = true;
+      addAllBtn.textContent = '⏳ Menambahkan...';
+
+      await addAllProductsToCart();
+
+      addAllBtn.disabled = false;
+      addAllBtn.textContent = '🛍️ Tambah Semua ke Keranjang';
+    });
+  }
+
   // Initialize discover more
   initDiscoverMore();
-  
+
   // Initialize checkout page
   initCheckoutPage();
-  
+
   // Initialize order confirmation
   initOrderConfirmation();
 
@@ -1106,7 +1176,7 @@ document.addEventListener("DOMContentLoaded", function () {
   cart.on('cart-synced', () => {
     console.log("🔄 Cart synced across tabs");
     updateCartCount();
-    
+
     // Re-render cart page if needed
     if (document.querySelector('.cart-container')) {
       initCartPage();

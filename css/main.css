@@ -9,6 +9,7 @@
 
 /* Utilities */
 @import 'utilities/animations.css';
+@import 'utilities/accessibility.css';
 
 /* Components */
 @import 'components/navbar.css';
@@ -16,6 +17,7 @@
 @import 'components/buttons.css';
 @import 'components/cards.css';
 @import 'components/forms.css';
+@import 'components/skeleton.css';
 
 /* Layout */
 @import 'layout/grid.css';

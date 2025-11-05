@@ -1,0 +1,242 @@
+/* =========================
+   Skeleton Loading Styles
+   Loading states and placeholders
+   ========================= */
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Product Card Skeleton */
+.product-card-skeleton {
+  background: var(--color-white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-border);
+}
+
+.product-card-skeleton .skeleton-image {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.product-card-skeleton .skeleton-title {
+  height: 24px;
+  width: 80%;
+  margin-bottom: 0.5rem;
+}
+
+.product-card-skeleton .skeleton-price {
+  height: 20px;
+  width: 40%;
+  margin-bottom: 1rem;
+}
+
+.product-card-skeleton .skeleton-button {
+  height: 40px;
+  width: 100%;
+  border-radius: 6px;
+}
+
+/* Hero Section Skeleton */
+.hero-skeleton {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  border-radius: 0 0 20px 20px;
+}
+
+.hero-skeleton .skeleton-content {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  padding: 2rem;
+}
+
+.hero-skeleton .skeleton-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 2rem;
+}
+
+.hero-skeleton .skeleton-title {
+  height: 48px;
+  width: 90%;
+  margin: 0 auto 1rem;
+}
+
+.hero-skeleton .skeleton-subtitle {
+  height: 24px;
+  width: 70%;
+  margin: 0 auto 2rem;
+}
+
+.hero-skeleton .skeleton-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.hero-skeleton .skeleton-button {
+  height: 48px;
+  width: 140px;
+  border-radius: 8px;
+}
+
+/* Product Grid Skeleton */
+.products-grid-skeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.products-grid-skeleton .product-card-skeleton {
+  animation-delay: calc(var(--index, 0) * 0.1s);
+}
+
+/* Filter Bar Skeleton */
+.filter-skeleton {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-skeleton .skeleton-search {
+  flex: 1;
+  min-width: 200px;
+  height: 40px;
+  border-radius: 6px;
+}
+
+.filter-skeleton .skeleton-filter {
+  width: 120px;
+  height: 40px;
+  border-radius: 6px;
+}
+
+/* Loading States */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--color-border);
+  border-top: 4px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 1rem;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Progressive Enhancement */
+.no-js .skeleton {
+  display: none;
+}
+
+.js-loading .skeleton {
+  display: block;
+}
+
+.js-loaded .skeleton {
+  display: none;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+
+  .loading-spinner {
+    animation: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 200% 100%;
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .products-grid-skeleton {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .filter-skeleton {
+    flex-direction: column;
+  }
+
+  .filter-skeleton .skeleton-search,
+  .filter-skeleton .skeleton-filter {
+    width: 100%;
+  }
+
+  .hero-skeleton .skeleton-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .skeleton {
+    background: linear-gradient(90deg, #000 25%, #fff 50%, #000 75%);
+    background-size: 200% 100%;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .skeleton,
+  .loading-overlay,
+  .loading-spinner {
+    display: none !important;
+  }
+}
