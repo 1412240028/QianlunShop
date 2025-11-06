@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil Saya - QianlunShop</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="module" src="../js/script.js" defer></script>
+  <script type="module" src="../js/auth.js" defer></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <a href="../index.html">
+        <img src="../assets/images/icons/QianLun Alphabet.png" alt="QianLun Logo" class="logo-img">
+      </a>
+    </div>
+
+    <button class="mobile-menu-btn" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul>
+      <li><a href="../index.html">Beranda</a></li>
+      <li><a href="products.html">Produk</a></li>
+      <li>
+        <a href="cart.html" id="cartIcon">
+          Keranjang <span class="cart-count">0</span>
+        </a>
+      </li>
+      <li><a href="about.html">Tentang</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+    </ul>
+  </nav>
+
+  <!-- Profile Section -->
+  <section class="profile-section">
+    <div class="container">
+      <div class="profile-container">
+        <!-- Profile Sidebar -->
+        <div class="profile-sidebar">
+          <div class="profile-avatar">
+            <span class="avatar-icon">👤</span>
+            <h3 id="userFullName">Nama User</h3>
+            <p id="userEmail">email@user.com</p>
+            <span class="member-since">Member sejak <span id="memberSince">-</span></span>
+          </div>
+
+          <nav class="profile-nav">
+            <a href="#profile" class="profile-nav-item active" data-section="profile">
+              <span class="nav-icon">👤</span>
+              Informasi Profil
+            </a>
+            <a href="#orders" class="profile-nav-item" data-section="orders">
+              <span class="nav-icon">📦</span>
+              Riwayat Pesanan
+            </a>
+            <a href="#wishlist" class="profile-nav-item" data-section="wishlist">
+              <span class="nav-icon">❤️</span>
+              Wishlist
+            </a>
+            <a href="#security" class="profile-nav-item" data-section="security">
+              <span class="nav-icon">🔒</span>
+              Keamanan
+            </a>
+          </nav>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="profile-content">
+          <!-- Profile Information -->
+          <div class="profile-section-content active" id="profile-section">
+            <div class="section-header">
+              <h2>Informasi Profil</h2>
+              <p>Kelola informasi akun Anda</p>
+            </div>
+
+            <form class="profile-form" id="profileForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="profileFirstName">Nama Depan</label>
+                  <input type="text" id="profileFirstName" required>
+                  <div class="error-message" id="profileFirstNameError"></div>
+                </div>
+                <div class="form-group">
+                  <label for="profileLastName">Nama Belakang</label>
+                  <input type="text" id="profileLastName" required>
+                  <div class="error-message" id="profileLastNameError"></div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="profileEmail">Email</label>
+                <input type="email" id="profileEmail" required readonly>
+                <small class="form-hint">Email tidak dapat diubah</small>
+              </div>
+
+              <div class="form-group">
+                <label for="profilePhone">Nomor Telepon</label>
+                <input type="tel" id="profilePhone">
+                <div class="error-message" id="profilePhoneError"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="profileAddress">Alamat</label>
+                <textarea id="profileAddress" rows="3"></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="profileCity">Kota</label>
+                  <input type="text" id="profileCity">
+                </div>
+                <div class="form-group">
+                  <label for="profilePostalCode">Kode Pos</label>
+                  <input type="text" id="profilePostalCode">
+                </div>
+              </div>
+
+              <div class="form-options">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="profileNewsletter">
+                  Berlangganan newsletter untuk update eksklusif
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary">
+                <span class="btn-text">Simpan Perubahan</span>
+                <span class="btn-loading" style="display: none;">⏳</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Order History -->
+          <div class="profile-section-content" id="orders-section">
+            <div class="section-header">
+              <h2>Riwayat Pesanan</h2>
+              <p>Lihat semua pesanan Anda</p>
+            </div>
+
+            <div class="orders-list" id="ordersList">
+              <div class="empty-state">
+                <div class="empty-icon">📦</div>
+                <h3>Belum ada pesanan</h3>
+                <p>Anda belum melakukan pembelian apapun</p>
+                <a href="products.html" class="btn btn-primary">Mulai Belanja</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wishlist -->
+          <div class="profile-section-content" id="wishlist-section">
+            <div class="section-header">
+              <h2>Wishlist</h2>
+              <p>Produk yang Anda simpan untuk dibeli nanti</p>
+            </div>
+
+            <div class="wishlist-grid" id="wishlistGrid">
+              <div class="empty-state">
+                <div class="empty-icon">❤️</div>
+                <h3>Wishlist kosong</h3>
+                <p>Tambahkan produk favorit Anda ke wishlist</p>
+                <a href="products.html" class="btn btn-primary">Jelajahi Produk</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Security -->
+          <div class="profile-section-content" id="security-section">
+            <div class="section-header">
+              <h2>Keamanan Akun</h2>
+              <p>Kelola password dan pengaturan keamanan</p>
+            </div>
+
+            <form class="security-form" id="changePasswordForm">
+              <h3>Ubah Password</h3>
+
+              <div class="form-group">
+                <label for="currentPassword">Password Saat Ini</label>
+                <input type="password" id="currentPassword" required>
+                <div class="error-message" id="currentPasswordError"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="newPassword">Password Baru</label>
+                <input type="password" id="newPassword" required>
+                <div class="error-message" id="newPasswordError"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="confirmNewPassword">Konfirmasi Password Baru</label>
+                <input type="password" id="confirmNewPassword" required>
+                <div class="error-message" id="confirmNewPasswordError"></div>
+              </div>
+
+              <button type="submit" class="btn btn-primary">
+                <span class="btn-text">Ubah Password</span>
+                <span class="btn-loading" style="display: none;">⏳</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Profile page functionality
+    document.addEventListener('DOMContentLoaded', async function() {
+      const { userManager } = await import('../js/user-manager.js');
+      const { productManager } = await import('../js/product-manager.js');
+
+      let currentUser = null;
+
+      // Check authentication
+      if (!userManager.isLoggedIn()) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      currentUser = userManager.getCurrentUser();
+      loadProfileData();
+
+      // Navigation
+      document.querySelectorAll('.profile-nav-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          const section = this.dataset.section;
+
+          // Update active nav
+          document.querySelectorAll('.profile-nav-item').forEach(nav => nav.classList.remove('active'));
+          this.classList.add('active');
+
+          // Show section
+          document.querySelectorAll('.profile-section-content').forEach(content => content.classList.remove('active'));
+          document.getElementById(section + '-section').classList.add('active');
+        });
+      });
+
+      // Profile form
+      document.getElementById('profileForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitBtn = e.target.querySelector('.btn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoading = submitBtn.querySelector('.btn-loading');
+
+        const updates = {
+          firstName: document.getElementById('profileFirstName').value.trim(),
+          lastName: document.getElementById('profileLastName').value.trim(),
+          phone: document.getElementById('profilePhone').value.trim(),
+          address: document.getElementById('profileAddress').value.trim(),
+          city: document.getElementById('profileCity').value.trim(),
+          postalCode: document.getElementById('profilePostalCode').value.trim(),
+          preferences: {
+            newsletter: document.getElementById('profileNewsletter').checked
+          }
+        };
+
+        // Show loading
+        submitBtn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline';
+
+        try {
+          const result = await userManager.updateProfile(currentUser.id, updates);
+          if (result.success) {
+            currentUser = result.user;
+            showToast('Profil berhasil diperbarui!', 'success');
+            loadProfileData(); // Refresh display
+          } else {
+            showFormError('profileFirstName', result.error);
+          }
+        } catch (error) {
+          console.error('Profile update error:', error);
+          showToast('Gagal memperbarui profil', 'error');
+        } finally {
+          submitBtn.disabled = false;
+          btnText.style.display = 'inline';
+          btnLoading.style.display = 'none';
+        }
+      });
+
+      // Change password form
+      document.getElementById('changePasswordForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmNewPassword').value;
+
+        // Clear errors
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+
+        if (newPassword !== confirmPassword) {
+          showFormError('confirmNewPassword', 'Konfirmasi password tidak cocok');
+          return;
+        }
+
+        if (newPassword.length < 6) {
+          showFormError('newPassword', 'Password minimal 6 karakter');
+          return;
+        }
+
+        const submitBtn = e.target.querySelector('.btn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoading = submitBtn.querySelector('.btn-loading');
+
+        submitBtn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline';
+
+        try {
+          const result = await userManager.changePassword(currentUser.id, currentPassword, newPassword);
+          if (result.success) {
+            showToast('Password berhasil diubah!', 'success');
+            e.target.reset();
+          } else {
+            showFormError('currentPassword', result.error);
+          }
+        } catch (error) {
+          console.error('Password change error:', error);
+          showToast('Gagal mengubah password', 'error');
+        } finally {
+          submitBtn.disabled = false;
+          btnText.style.display = 'inline';
+          btnLoading.style.display = 'none';
+        }
+      });
+
+      function loadProfileData() {
+        if (!currentUser) return;
+
+        // Sidebar
+        document.getElementById('userFullName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+        document.getElementById('userEmail').textContent = currentUser.email;
+        document.getElementById('memberSince').textContent = new Date(currentUser.dateJoined).toLocaleDateString('id-ID', {
+          year: 'numeric',
+          month: 'long'
+        });
+
+        // Profile form
+        document.getElementById('profileFirstName').value = currentUser.firstName || '';
+        document.getElementById('profileLastName').value = currentUser.lastName || '';
+        document.getElementById('profileEmail').value = currentUser.email || '';
+        document.getElementById('profilePhone').value = currentUser.phone || '';
+        document.getElementById('profileAddress').value = currentUser.address || '';
+        document.getElementById('profileCity').value = currentUser.city || '';
+        document.getElementById('profilePostalCode').value = currentUser.postalCode || '';
+        document.getElementById('profileNewsletter').checked = currentUser.preferences?.newsletter || false;
+
+        // Load orders
+        loadOrderHistory();
+
+        // Load wishlist
+        loadWishlist();
+      }
+
+      function loadOrderHistory() {
+        const orders = userManager.getUserOrders(currentUser.id);
+        const ordersList = document.getElementById('ordersList');
+
+        if (orders.length === 0) return;
+
+        ordersList.innerHTML = orders.map(order => `
+          <div class="order-card">
+            <div class="order-header">
+              <div class="order-info">
+                <h4>Order #${order.id}</h4>
+                <span class="order-date">${new Date(order.date).toLocaleDateString('id-ID')}</span>
+                <span class="order-status status-${order.status}">${order.status}</span>
+              </div>
+              <div class="order-total">Rp ${order.totals.grandTotal.toLocaleString('id-ID')}</div>
+            </div>
+            <div class="order-items">
+              ${order.items.map(item => `
+                <div class="order-item">
+                  <img src="${item.image}" alt="${item.name}" onerror="this.src='../assets/sample1.jpg'">
+                  <div class="item-details">
+                    <strong>${item.name}</strong>
+                    <span>Qty: ${item.quantity}</span>
+                  </div>
+                  <div class="item-price">Rp ${(item.price * item.quantity).toLocaleString('id-ID')}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      async function loadWishlist() {
+        const wishlist = userManager.getUserWishlist(currentUser.id);
+        const wishlistGrid = document.getElementById('wishlistGrid');
+
+        if (wishlist.length === 0) return;
+
+        // Load products data
+        await productManager.init();
+        const products = productManager.products;
+
+        const wishlistItems = wishlist.map(productId => {
+          const product = products.find(p => p.id === productId);
+          if (!product) return null;
+
+          return `
+            <div class="wishlist-item" data-id="${product.id}">
+              <img src="${product.thumbnail}" alt="${product.name}" onerror="this.src='../assets/sample1.jpg'">
+              <div class="wishlist-info">
+                <h4>${product.name}</h4>
+                <p class="price">Rp ${product.price.toLocaleString('id-ID')}</p>
+                <div class="wishlist-actions">
+                  <button class="btn btn-sm add-to-cart-wishlist" data-id="${product.id}">Tambah ke Keranjang</button>
+                  <button class="btn btn-outline btn-sm remove-wishlist" data-id="${product.id}">Hapus</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).filter(item => item !== null);
+
+        wishlistGrid.innerHTML = wishlistItems.join('');
+
+        // Add event listeners for wishlist actions
+        document.querySelectorAll('.add-to-cart-wishlist').forEach(btn => {
+          btn.addEventListener('click', async function() {
+            const productId = this.dataset.id;
+            const product = products.find(p => p.id === productId);
+            if (product) {
+              // Add to cart logic would go here
+              showToast('Produk ditambahkan ke keranjang!', 'success');
+            }
+          });
+        });
+
+        document.querySelectorAll('.remove-wishlist').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const productId = this.dataset.id;
+            userManager.removeFromWishlist(currentUser.id, productId);
+            loadWishlist(); // Refresh
+            showToast('Dihapus dari wishlist', 'success');
+          });
+        });
+      }
+
+      function showFormError(fieldId, message) {
+        const errorEl = document.getElementById(fieldId + 'Error');
+        if (errorEl) errorEl.textContent = message;
+      }
+
+      function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `<span>${message}</span>`;
+        toast.style.display = 'block';
+
+        setTimeout(() => {
+          toast.classList.add('show');
+        }, 10);
+
+        setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => toast.style.display = 'none', 300);
+        }, 3000);
+      }
+    });
+  </script>
+</body>
+</html>

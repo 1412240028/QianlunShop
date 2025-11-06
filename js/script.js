@@ -1,20 +1,47 @@
 // =========================
-// 🏪 QIANLUNSHOP - ENHANCED VERSION
-// Integrated with Cart & Config modules
+// 🏪 QIANLUNSHOP - WITH AUTH INTEGRATION
+// Enhanced with proper authentication guards
 // =========================
 import { Cart } from "./cart.js";
 import { CONFIG, Utils } from "./config.js";
 import { ProductManager, productManager } from "./product-manager.js";
-import { LazyLoader, lazyLoader } from "./lazy-loader.js";
-import { AccessibilityEnhancer, accessibilityEnhancer } from "./accessibility.js";
-import { SEOEnhancer, seoEnhancer } from "./seo-enhancer.js";
+import { userManager } from "./user-manager.js";
+import { authGuard } from "./auth-guard.js";
 
-// Initialize cart with config
+// Initialize cart
 const cart = new Cart();
+
+// Make showToast globally available
+window.showToast = showToast;
+
+// =========================
+// 🔐 PROTECTED ACTION WRAPPER
+// =========================
+
+function requireAuth(action, message = "Silakan login untuk melanjutkan") {
+  if (!userManager.isLoggedIn()) {
+    showToast(message, "warning");
+    
+    // Store intended action for after login
+    sessionStorage.setItem('intended_action', window.location.pathname);
+    
+    // Redirect to login
+    setTimeout(() => {
+      const isInPagesDir = window.location.pathname.includes('/pages/');
+      window.location.href = isInPagesDir ? 'login.html' : 'pages/login.html';
+    }, 1500);
+    
+    return false;
+  }
+  
+  if (action) action();
+  return true;
+}
 
 // =========================
 // 🏷️ Toast Notification System
 // =========================
+
 function showToast(message, type = "success") {
   const existingToast = document.querySelector('.toast');
   if (existingToast) {
@@ -34,8 +61,9 @@ function showToast(message, type = "success") {
 }
 
 // =========================
-// 🛒 Update Navbar Cart Count - ENHANCED
+// 🛒 Update Navbar Cart Count
 // =========================
+
 function updateCartCount() {
   const countElements = document.querySelectorAll(".cart-count");
   if (countElements.length === 0) return;
@@ -47,7 +75,6 @@ function updateCartCount() {
     el.textContent = count;
     el.classList.toggle('empty', count === 0);
     
-    // Add animation for cart updates
     if (count > 0) {
       el.classList.add('pulse');
       setTimeout(() => el.classList.remove('pulse'), 500);
@@ -55,14 +82,13 @@ function updateCartCount() {
   });
 
   console.log("📊 Cart count updated:", count, "items");
-  
-  // Emit cart update event
   cart.emit('cart-updated', { summary });
 }
 
 // =========================
 // ✨ Product Fly Animation
 // =========================
+
 function flyToCart(imgEl) {
   const cartIcon = document.querySelector("#cartIcon") || document.querySelector(".cart-icon");
   if (!cartIcon || !imgEl) return;
@@ -99,8 +125,9 @@ function flyToCart(imgEl) {
 }
 
 // =========================
-// 🛍️ Add to Cart Handler - ENHANCED
+// 🛍️ Add to Cart Handler - WITH AUTH CHECK
 // =========================
+
 document.addEventListener("click", async (e) => {
   if (e.target.classList.contains("add-to-cart")) {
     e.preventDefault();
@@ -127,18 +154,17 @@ document.addEventListener("click", async (e) => {
     const categoryAttr = card.dataset.category;
 
     if (!nameEl || !idAttr) {
-      console.error("❌ Data produk tidak lengkap", { nameEl, idAttr, priceAttr });
+      console.error("❌ Data produk tidak lengkap");
       showToast(CONFIG.MESSAGES.FORM_INCOMPLETE, "error");
       e.target.disabled = false;
       return;
     }
 
-    // Parse price more robustly
+    // Parse price
     let price = 0;
     if (priceAttr) {
       price = parseInt(priceAttr.replace(/[^\d]/g, ''), 10);
     } else {
-      // Fallback: find price in text content
       const priceEl = card.querySelector('.price, .product-price, [class*="price"]');
       if (priceEl) {
         price = parseInt(priceEl.textContent.replace(/[^\d]/g, ''), 10);
@@ -190,16 +216,14 @@ document.addEventListener("click", async (e) => {
 });
 
 // =========================
-// 🛒 Cart Page Renderer - ENHANCED
+// 🛒 Cart Page Renderer - WITH AUTH
 // =========================
+
 function initCartPage() {
   const container = document.querySelector(".cart-container");
-  if (!container) {
-    console.log("ℹ️ Bukan halaman cart");
-    return;
-  }
+  if (!container) return;
 
-  console.log("🛒 Initializing enhanced cart page...");
+  console.log("🛒 Initializing cart page...");
 
   function renderCart() {
     const items = cart.getItems();
@@ -209,7 +233,7 @@ function initCartPage() {
         <div class="empty-cart">
           <div class="empty-cart-icon">🛒</div>
           <h3>${CONFIG.MESSAGES.CART_EMPTY}</h3>
-          <p>Temukan koleksi terbaik dari QianlunShop dan rasakan kemewahannya ✨</p>
+          <p>Temukan koleksi terbaik dari QianlunShop ✨</p>
           <a href="products.html" class="btn btn-primary">Jelajahi Produk</a>
         </div>
       `;
@@ -269,14 +293,6 @@ function initCartPage() {
             <span>Subtotal (${summary.count} items):</span>
             <span>${Utils.formatPrice(subtotal)}</span>
           </div>
-          <div class="summary-row">
-            <span>Pengiriman:</span>
-            <span>${Utils.isFreeShippingEligible(subtotal) ? 'Gratis' : Utils.formatPrice(CONFIG.SHIPPING.REGULAR.cost)}</span>
-          </div>
-          <div class="summary-row">
-            <span>Diskon:</span>
-            <span>- ${Utils.formatPrice(0)}</span>
-          </div>
           <div class="summary-row grand-total">
             <span>Total:</span>
             <span>${Utils.formatPrice(subtotal)}</span>
@@ -288,18 +304,10 @@ function initCartPage() {
           `<div class="shipping-info">Tambahkan ${Utils.formatPrice(CONFIG.FREE_SHIPPING_THRESHOLD - subtotal)} lagi untuk gratis ongkir!</div>`
         }
 
-        <div class="promo-section">
-          <label for="cartPromoCode">Kode Promo</label>
-          <div class="promo-input-group">
-            <input type="text" id="cartPromoCode" placeholder="Masukkan kode promo...">
-            <button class="btn btn-promo" id="applyCartPromo">Terapkan</button>
-          </div>
-        </div>
-
         <div class="checkout-actions">
-          <a href="checkout.html" class="btn btn-checkout" ${items.length === 0 ? 'style="display:none"' : ''}>
+          <button class="btn btn-checkout" id="proceedToCheckout">
             🛍️ Lanjutkan ke Checkout
-          </a>
+          </button>
           <a href="products.html" class="btn btn-secondary">⬅️ Kembali Belanja</a>
         </div>
 
@@ -311,7 +319,7 @@ function initCartPage() {
   }
 
   function attachCartEventListeners() {
-    // Quantity increase
+    // Quantity controls
     document.querySelectorAll(".increase-quantity").forEach(btn => {
       btn.addEventListener("click", async () => {
         const id = btn.dataset.id;
@@ -326,7 +334,6 @@ function initCartPage() {
       });
     });
 
-    // Quantity decrease
     document.querySelectorAll(".decrease-quantity").forEach(btn => {
       btn.addEventListener("click", async () => {
         const id = btn.dataset.id;
@@ -350,86 +357,48 @@ function initCartPage() {
           renderCart();
           updateCartCount();
           showToast(CONFIG.MESSAGES.REMOVE_FROM_CART, "error");
-          
-          // Track analytics
-          Utils.trackEvent(CONFIG.ANALYTICS_EVENTS.REMOVE_FROM_CART, {
-            product_id: id,
-            product_name: item.name
-          });
         }
       });
     });
 
-    // Apply promo code
-    const applyPromo = document.getElementById("applyCartPromo");
-    if (applyPromo) {
-      applyPromo.addEventListener("click", () => {
-        const code = document.getElementById("cartPromoCode").value.trim().toUpperCase();
-        const promo = CONFIG.PROMO_CODES[code];
+    // Proceed to checkout - REQUIRES AUTH
+    const checkoutBtn = document.getElementById("proceedToCheckout");
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener("click", (e) => {
+        e.preventDefault();
         
-        if (promo) {
-          const subtotal = cart.getTotal();
-          if (subtotal >= promo.minPurchase) {
-            showToast(CONFIG.MESSAGES.PROMO_APPLIED, "success");
-            Utils.trackEvent(CONFIG.ANALYTICS_EVENTS.APPLY_PROMO, { promo_code: code });
-          } else {
-            showToast(CONFIG.MESSAGES.PROMO_MIN_PURCHASE, "error");
-          }
-        } else if (code) {
-          showToast(CONFIG.MESSAGES.PROMO_INVALID, "error");
-        }
+        requireAuth(() => {
+          window.location.href = 'checkout.html';
+        }, "Silakan login untuk melanjutkan ke checkout");
       });
     }
   }
 
-  // Initial render
   renderCart();
   
-  // Listen for cart changes from other tabs
   cart.on('cart-synced', () => {
-    console.log("🔄 Cart synced in cart page");
+    console.log("🔄 Cart synced");
     renderCart();
     updateCartCount();
   });
 }
 
 // =========================
-// 🔍 Product Search & Filter - ENHANCED
+// 🔍 Product Search & Filter
 // =========================
+
 function initProductFilters() {
   const searchInput = document.getElementById('searchInput');
   const categoryFilter = document.getElementById('categoryFilter');
   const sortFilter = document.getElementById('sortFilter');
   const resetBtn = document.getElementById('resetFilter');
   const productGrid = document.getElementById('productGrid');
-  const noResults = document.getElementById('noResults');
-  const resultCount = document.getElementById('resultCount');
 
-  if (!searchInput || !productGrid) {
-    console.log("ℹ️ Not on products page");
-    return;
-  }
+  if (!searchInput || !productGrid) return;
 
-  console.log("🔍 Initializing enhanced product filters...");
+  console.log("🔍 Initializing product filters...");
 
   let allProducts = Array.from(productGrid.querySelectorAll('.product-card'));
-  const originalProducts = [...allProducts];
-
-  // Populate category filter
-  if (categoryFilter) {
-    categoryFilter.innerHTML = `
-      <option value="all">Semua Kategori</option>
-      ${Object.values(CONFIG.CATEGORIES).map(cat => 
-        `<option value="${cat.id}">${cat.icon} ${cat.name}</option>`
-      ).join('')}
-    `;
-  }
-
-  function updateResultCount(count) {
-    if (resultCount) {
-      resultCount.textContent = `${count} produk ditemukan`;
-    }
-  }
 
   function applyFilters() {
     const searchTerm = searchInput.value.toLowerCase().trim();
@@ -450,19 +419,15 @@ function initProductFilters() {
       return matchesSearch && matchesCategory;
     });
 
-    // Sort products
+    // Sort
     if (sortBy !== 'default') {
       filteredProducts.sort((a, b) => {
         const priceA = parseInt(a.dataset.price) || 0;
         const priceB = parseInt(b.dataset.price) || 0;
-        const nameA = a.dataset.name?.toLowerCase() || '';
-        const nameB = b.dataset.name?.toLowerCase() || '';
 
         switch (sortBy) {
           case 'price-low': return priceA - priceB;
           case 'price-high': return priceB - priceA;
-          case 'name-asc': return nameA.localeCompare(nameB);
-          case 'name-desc': return nameB.localeCompare(nameA);
           default: return 0;
         }
       });
@@ -475,106 +440,33 @@ function initProductFilters() {
     productGrid.innerHTML = '';
 
     if (filteredProducts.length === 0) {
-      noResults.style.display = 'block';
-      updateResultCount(0);
+      productGrid.innerHTML = '<div class="no-results">Tidak ada produk ditemukan</div>';
     } else {
-      noResults.style.display = 'none';
-
       filteredProducts.forEach((product, index) => {
         product.style.animationDelay = `${index * 0.1}s`;
         productGrid.appendChild(product);
       });
-
-      updateResultCount(filteredProducts.length);
     }
   }
 
-  function resetFilters() {
-    searchInput.value = '';
-    categoryFilter.value = 'all';
-    sortFilter.value = 'default';
-    allProducts = [...originalProducts];
-    updateProductDisplay(allProducts);
-    showToast(CONFIG.MESSAGES.FILTER_RESET, "success");
-    
-    // Track analytics
-    Utils.trackEvent('filters_reset');
-  }
-
-  // Event listeners with debouncing
   searchInput.addEventListener('input', Utils.debounce(applyFilters));
   categoryFilter.addEventListener('change', applyFilters);
   sortFilter.addEventListener('change', applyFilters);
-  resetBtn.addEventListener('click', resetFilters);
-
-  // Reset button from no-results
-  const resetFromNoResults = document.getElementById('resetFromNoResults');
-  if (resetFromNoResults) {
-    resetFromNoResults.addEventListener('click', resetFilters);
-  }
-
-  updateResultCount(allProducts.length);
+  resetBtn?.addEventListener('click', () => {
+    searchInput.value = '';
+    categoryFilter.value = 'all';
+    sortFilter.value = 'default';
+    applyFilters();
+  });
 }
 
 // =========================
-// 🔍 Discover More - Product Navigation
+// 💳 Checkout Manager - REQUIRES AUTH
 // =========================
-function initDiscoverMore() {
-  function addHighlightStyles() {
-    if (document.getElementById('discover-more-styles')) return;
 
-    const style = document.createElement('style');
-    style.id = 'discover-more-styles';
-    style.textContent = `
-      .product-card.highlighted {
-        animation: highlightProduct 2s ease;
-        border-color: ${CONFIG.THEME.PRIMARY} !important;
-      }
-      
-      @keyframes highlightProduct {
-        0%, 100% { 
-          transform: scale(1); 
-          box-shadow: 0 4px 12px ${CONFIG.THEME.PRIMARY}30; 
-        }
-        25%, 75% { 
-          transform: scale(1.03); 
-          box-shadow: 0 12px 35px ${CONFIG.THEME.PRIMARY}60; 
-        }
-        50% { 
-          transform: scale(1.05); 
-          box-shadow: 0 16px 45px ${CONFIG.THEME.SECONDARY}70; 
-        }
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  function handleProductAnchor() {
-    const hash = window.location.hash;
-
-    if (hash && hash.startsWith('#p')) {
-      setTimeout(() => {
-        const productCard = document.querySelector(`[data-id="${hash.substring(1)}"]`);
-
-        if (productCard) {
-          productCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          productCard.classList.add('highlighted');
-          setTimeout(() => productCard.classList.remove('highlighted'), 3000);
-        }
-      }, 300);
-    }
-  }
-
-  addHighlightStyles();
-  handleProductAnchor();
-  window.addEventListener('hashchange', handleProductAnchor);
-}
-
-// =========================
-// 💳 Checkout Manager - ENHANCED
-// =========================
 class CheckoutManager {
   constructor() {
+    // Auth check already done by auth-guard.js
     this.cart = new Cart();
     this.shippingCost = 0;
     this.discount = 0;
@@ -588,7 +480,7 @@ class CheckoutManager {
     this.setupEventListeners();
     updateCartCount();
     
-    console.log("💳 Enhanced checkout manager initialized");
+    console.log("💳 Checkout manager initialized");
   }
 
   displayCheckoutItems() {
@@ -602,7 +494,7 @@ class CheckoutManager {
         <div class="empty-cart">
           <div class="empty-cart-icon">🛒</div>
           <h3>Keranjang Kosong</h3>
-          <p>Silakan tambahkan produk ke keranjang terlebih dahulu</p>
+          <p>Silakan tambahkan produk ke keranjang</p>
           <a href="products.html" class="btn btn-primary">Belanja Sekarang</a>
         </div>
       `;
@@ -614,7 +506,6 @@ class CheckoutManager {
         <img src="${item.image}" alt="${item.name}" onerror="this.src='../assets/sample1.jpg'">
         <div class="item-details">
           <h4>${item.name}</h4>
-          <p>${this.formatCategory(item.category)}</p>
           <p>Qty: ${item.quantity}</p>
         </div>
         <div class="item-total">${Utils.formatPrice(item.price * item.quantity)}</div>
@@ -627,7 +518,6 @@ class CheckoutManager {
     const tax = subtotal * CONFIG.TAX_RATE;
     const grandTotal = subtotal + this.shippingCost + tax - this.discount;
 
-    // Update UI elements
     const elements = {
       'subtotal': subtotal,
       'shippingCost': this.shippingCost,
@@ -642,82 +532,18 @@ class CheckoutManager {
         element.textContent = Utils.formatPrice(value);
       }
     });
-
-    // Update free shipping message
-    const freeShippingMsg = document.getElementById('freeShippingMsg');
-    if (freeShippingMsg) {
-      if (Utils.isFreeShippingEligible(subtotal)) {
-        freeShippingMsg.style.display = 'block';
-        freeShippingMsg.innerHTML = `🎉 Anda mendapatkan <strong>gratis ongkir</strong>!`;
-      } else {
-        const needed = CONFIG.FREE_SHIPPING_THRESHOLD - subtotal;
-        freeShippingMsg.style.display = needed > 0 ? 'block' : 'none';
-        freeShippingMsg.innerHTML = `Tambahkan <strong>${Utils.formatPrice(needed)}</strong> lagi untuk gratis ongkir!`;
-      }
-    }
-  }
-
-  updateShippingCost(method) {
-    const shipping = CONFIG.SHIPPING[method.toUpperCase()];
-    if (shipping) {
-      // Free shipping only applies if 'free' is selected and user is eligible
-      if (method === 'free' && Utils.isFreeShippingEligible(this.cart.getTotal())) {
-        this.shippingCost = 0;
-      } else {
-        this.shippingCost = shipping.cost;
-      }
-    } else {
-      this.shippingCost = 0;
-    }
-    this.calculateTotals();
   }
 
   setupEventListeners() {
-    // Shipping method selection
     const shippingSelect = document.getElementById('shipping');
     if (shippingSelect) {
-      const isEligible = Utils.isFreeShippingEligible(this.cart.getTotal());
-
-      // Populate shipping options - only show FREE if eligible
-      const shippingOptions = Object.entries(CONFIG.SHIPPING).filter(([key]) => key !== 'FREE' || isEligible);
-
-      shippingSelect.innerHTML = shippingOptions.map(([key, method]) => `
-        <option value="${key.toLowerCase()}">
-          ${method.name} - ${Utils.formatPrice(method.cost)}
-          (${Utils.getEstimatedDelivery(key)})
-        </option>
-      `).join('');
-
       shippingSelect.addEventListener('change', (e) => {
-        this.updateShippingCost(e.target.value);
+        const method = CONFIG.SHIPPING[e.target.value.toUpperCase()];
+        this.shippingCost = method?.cost || 0;
+        this.calculateTotals();
       });
-
-      // Set default to free shipping if eligible, otherwise regular
-      shippingSelect.value = isEligible ? 'free' : 'regular';
-
-      // Set initial shipping cost
-      this.updateShippingCost(shippingSelect.value);
     }
 
-    // Payment methods
-    const paymentMethods = document.querySelectorAll('input[name="payment"]');
-    const creditCardForm = document.getElementById('creditCardForm');
-
-    paymentMethods.forEach(method => {
-      method.addEventListener('change', (e) => {
-        if (creditCardForm) {
-          creditCardForm.style.display = e.target.value === 'creditCard' ? 'block' : 'none';
-        }
-      });
-    });
-
-    // Promo code
-    const applyPromoBtn = document.getElementById('applyPromo');
-    if (applyPromoBtn) {
-      applyPromoBtn.addEventListener('click', () => this.applyPromoCode());
-    }
-
-    // Place order
     const placeOrderBtn = document.getElementById('placeOrder');
     if (placeOrderBtn) {
       placeOrderBtn.addEventListener('click', (e) => {
@@ -725,98 +551,17 @@ class CheckoutManager {
         this.placeOrder();
       });
     }
-
-    // Form validation
-    this.setupFormValidation();
-  }
-
-  setupFormValidation() {
-    const forms = document.querySelectorAll('input, select');
-    forms.forEach(form => {
-      form.addEventListener('blur', (e) => {
-        this.validateField(e.target);
-      });
-    });
-  }
-
-  validateField(field) {
-    const value = field.value.trim();
-    let isValid = true;
-    let message = '';
-
-    switch (field.type) {
-      case 'email':
-        isValid = Utils.validateEmail(value);
-        message = isValid ? '' : 'Format email tidak valid';
-        break;
-      case 'tel':
-        isValid = Utils.validatePhone(value);
-        message = isValid ? '' : 'Format nomor telepon tidak valid';
-        break;
-      default:
-        if (field.required) {
-          isValid = value.length > 0;
-          message = isValid ? '' : 'Field ini wajib diisi';
-        }
-    }
-
-    // Update UI
-    field.classList.toggle('error', !isValid);
-    
-    // Show/hide error message
-    let errorElement = field.nextElementSibling;
-    if (!errorElement || !errorElement.classList.contains('error-message')) {
-      errorElement = document.createElement('div');
-      errorElement.className = 'error-message';
-      field.parentNode.insertBefore(errorElement, field.nextSibling);
-    }
-    
-    errorElement.textContent = message;
-    errorElement.style.display = message ? 'block' : 'none';
-
-    return isValid;
-  }
-
-  applyPromoCode() {
-    const promoCodeEl = document.getElementById('promoCode');
-    if (!promoCodeEl) return;
-
-    const promoCode = promoCodeEl.value.trim().toUpperCase();
-    const subtotal = this.cart.getTotal();
-
-    this.discount = Utils.calculateDiscount(subtotal, promoCode);
-    
-    if (this.discount > 0) {
-      this.promoCode = promoCode;
-      showToast(CONFIG.MESSAGES.PROMO_APPLIED, 'success');
-      this.calculateTotals();
-      
-      // Track analytics
-      Utils.trackEvent(CONFIG.ANALYTICS_EVENTS.APPLY_PROMO, {
-        promo_code: promoCode,
-        discount_amount: this.discount
-      });
-    } else {
-      showToast(CONFIG.MESSAGES.PROMO_INVALID, 'error');
-      this.promoCode = '';
-      this.discount = 0;
-      this.calculateTotals();
-    }
   }
 
   async placeOrder() {
-    if (this.cart.getItems().length === 0) {
-      showToast('Keranjang belanja kosong', 'error');
-      return;
-    }
-
     // Validate form
     const requiredFields = document.querySelectorAll('[required]');
     let allValid = true;
 
     requiredFields.forEach(field => {
-      if (!this.validateField(field)) {
+      if (!field.value.trim()) {
         allValid = false;
+        field.classList.add('error');
       }
     });
 
@@ -832,16 +577,13 @@ class CheckoutManager {
         placeOrderBtn.disabled = true;
       }
 
-      await this.processPayment();
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       const order = {
         id: Utils.generateId('ORD'),
         date: new Date().toISOString(),
         items: this.cart.getItems(),
         customerInfo: this.getCustomerInfo(),
-        shipping: this.getShippingInfo(),
-        payment: this.getPaymentInfo(),
-        promoCode: this.promoCode,
         totals: {
           subtotal: this.cart.getTotal(),
           shipping: this.shippingCost,
@@ -852,43 +594,21 @@ class CheckoutManager {
         status: 'completed'
       };
 
-      this.saveOrder(order);
+      // Save order to user history
+      const currentUser = userManager.getCurrentUser();
+      if (currentUser) {
+        userManager.addOrderToHistory(currentUser.id, order);
+      }
+
       await this.cart.clear();
       showToast(CONFIG.MESSAGES.ORDER_SUCCESS, 'success');
 
-      // Track analytics
-      Utils.trackEvent(CONFIG.ANALYTICS_EVENTS.PURCHASE, {
-        transaction_id: order.id,
-        value: order.totals.grandTotal,
-        currency: 'IDR',
-        items: order.items.map(item => ({
-          item_id: item.id,
-          item_name: item.name,
-          price: item.price,
-          quantity: item.quantity
-        }))
-      });
-
-      // Redirect immediately to order confirmation
       window.location.href = `order-confirmation.html?orderId=${order.id}`;
 
     } catch (error) {
       console.error('Order error:', error);
       showToast(CONFIG.MESSAGES.ORDER_FAILED, 'error');
-
-      const placeOrderBtn = document.getElementById('placeOrder');
-      if (placeOrderBtn) {
-        placeOrderBtn.innerHTML = '🛍️ Bayar Sekarang';
-        placeOrderBtn.disabled = false;
-      }
     }
-  }
-
-  async processPayment() {
-    // Simulate payment processing
-    return new Promise((resolve) => {
-      setTimeout(resolve, 2000);
-    });
   }
 
   getCustomerInfo() {
@@ -896,70 +616,32 @@ class CheckoutManager {
       fullName: document.getElementById('fullName')?.value || '',
       email: document.getElementById('email')?.value || '',
       phone: document.getElementById('phone')?.value || '',
-      address: document.getElementById('address')?.value || '',
-      city: document.getElementById('city')?.value || '',
-      postalCode: document.getElementById('postalCode')?.value || ''
+      address: document.getElementById('address')?.value || ''
     };
-  }
-
-  getShippingInfo() {
-    const shippingSelect = document.getElementById('shipping');
-    const method = shippingSelect?.value || 'regular';
-    
-    return {
-      method: method,
-      cost: this.shippingCost,
-      estimatedDelivery: Utils.getEstimatedDelivery(method)
-    };
-  }
-
-  getPaymentInfo() {
-    const paymentMethod = document.querySelector('input[name="payment"]:checked');
-    const info = { 
-      method: paymentMethod?.value || 'unknown',
-      methodName: CONFIG.PAYMENT_METHODS[paymentMethod?.value.toUpperCase()]?.name || 'Unknown'
-    };
-
-    if (paymentMethod?.value === 'creditCard') {
-      const cardNumber = document.getElementById('cardNumber');
-      if (cardNumber) {
-        info.cardLastFour = cardNumber.value.slice(-4);
-      }
-    }
-
-    return info;
-  }
-
-  saveOrder(order) {
-    const orders = Utils.loadFromStorage(CONFIG.STORAGE_KEYS.ORDERS, []);
-    orders.push(order);
-    Utils.saveToStorage(CONFIG.STORAGE_KEYS.ORDERS, orders);
-  }
-
-  formatCategory(category) {
-    return CONFIG.CATEGORIES[category.toUpperCase()]?.name || category;
   }
 }
 
 // =========================
 // 💳 Initialize Checkout Page
 // =========================
+
 function initCheckoutPage() {
   const checkoutContainer = document.querySelector(".checkout-container");
   if (!checkoutContainer) return;
   
-  console.log("💳 Initializing enhanced checkout page...");
+  console.log("💳 Initializing checkout page...");
   new CheckoutManager();
 }
 
 // =========================
-// 📦 Order Confirmation Page - ENHANCED
+// 📦 Order Confirmation - REQUIRES AUTH
 // =========================
+
 function initOrderConfirmation() {
   const confirmationContainer = document.querySelector(".order-confirmation");
   if (!confirmationContainer) return;
 
-  console.log("📦 Initializing enhanced order confirmation...");
+  console.log("📦 Initializing order confirmation...");
 
   const urlParams = new URLSearchParams(window.location.search);
   const orderId = urlParams.get('orderId');
@@ -969,7 +651,6 @@ function initOrderConfirmation() {
       <div class="empty-cart">
         <div class="empty-cart-icon">⚠️</div>
         <h3>Pesanan Tidak Ditemukan</h3>
-        <p>Sepertinya Anda membuka halaman ini tanpa menyelesaikan transaksi.</p>
         <div class="confirmation-actions">
           <a href="products.html" class="btn btn-primary">🛍️ Belanja Sekarang</a>
           <a href="../index.html" class="btn btn-secondary">🏠 Kembali ke Beranda</a>
@@ -979,30 +660,39 @@ function initOrderConfirmation() {
     return;
   }
 
-  const orders = Utils.loadFromStorage(CONFIG.STORAGE_KEYS.ORDERS, []);
+  // Get order from user's history
+  const currentUser = userManager.getCurrentUser();
+  if (!currentUser) {
+    confirmationContainer.innerHTML = `
+      <div class="empty-cart">
+        <div class="empty-cart-icon">🔒</div>
+        <h3>Akses Ditolak</h3>
+        <p>Silakan login untuk melihat pesanan Anda</p>
+        <a href="login.html" class="btn btn-primary">Login</a>
+      </div>
+    `;
+    return;
+  }
+
+  const orders = userManager.getUserOrders(currentUser.id);
   const order = orders.find(o => o.id === orderId);
 
   if (!order) {
     confirmationContainer.innerHTML = `
       <div class="empty-cart">
         <div class="empty-cart-icon">❌</div>
-        <h3>Data Pesanan Tidak Ditemukan</h3>
-        <p>Kami tidak dapat menemukan pesanan dengan ID tersebut.</p>
-        <div class="confirmation-actions">
-          <a href="checkout.html" class="btn btn-primary">🛒 Kembali ke Checkout</a>
-          <a href="products.html" class="btn btn-secondary">🛍️ Lanjutkan Belanja</a>
-        </div>
+        <h3>Pesanan Tidak Ditemukan</h3>
+        <a href="products.html" class="btn btn-primary">Belanja Lagi</a>
       </div>
     `;
     return;
   }
 
-  // Render complete order confirmation
   confirmationContainer.innerHTML = `
     <div class="confirmation-icon">🎉</div>
     <h2>Pesanan Berhasil!</h2>
     <p class="order-id">Order ID: <span>${order.id}</span></p>
-    <p class="confirmation-message">Terima kasih telah berbelanja di QianlunShop. Pesanan Anda sedang diproses dengan aman.</p>
+    <p class="confirmation-message">Terima kasih ${currentUser.firstName}! Pesanan Anda sedang diproses.</p>
     
     <div class="confirmation-details">
       <div class="detail-section">
@@ -1020,171 +710,48 @@ function initOrderConfirmation() {
       </div>
 
       <div class="detail-section">
-        <h4>📋 Ringkasan Pembayaran</h4>
-        <div class="summary-row">
-          <span>Subtotal:</span>
-          <span>${Utils.formatPrice(order.totals.subtotal)}</span>
-        </div>
-        <div class="summary-row">
-          <span>Ongkos Kirim:</span>
-          <span>${Utils.formatPrice(order.totals.shipping)}</span>
-        </div>
-        <div class="summary-row">
-          <span>Pajak (${(CONFIG.TAX_RATE * 100)}%):</span>
-          <span>${Utils.formatPrice(order.totals.tax)}</span>
-        </div>
-        ${order.totals.discount > 0 ? `
-          <div class="summary-row discount">
-            <span>Diskon:</span>
-            <span>- ${Utils.formatPrice(order.totals.discount)}</span>
-          </div>
-        ` : ''}
+        <h4>📋 Ringkasan</h4>
         <div class="summary-row grand-total">
           <span>Total:</span>
           <span>${Utils.formatPrice(order.totals.grandTotal)}</span>
         </div>
       </div>
-
-      <div class="detail-section">
-        <h4>🚚 Informasi Pengiriman</h4>
-        <div class="detail-item">
-          <strong>Metode:</strong>
-          <span>${order.shipping.methodName || order.shipping.method}</span>
-        </div>
-        <div class="detail-item">
-          <strong>Estimasi Tiba:</strong>
-          <span>${order.shipping.estimatedDelivery}</span>
-        </div>
-        <div class="detail-item">
-          <strong>Alamat:</strong>
-          <span>${order.customerInfo.address}, ${order.customerInfo.city} ${order.customerInfo.postalCode}</span>
-        </div>
-      </div>
-
-      <div class="detail-section">
-        <h4>💳 Informasi Pembayaran</h4>
-        <div class="detail-item">
-          <strong>Metode:</strong>
-          <span>${order.payment.methodName || order.payment.method}</span>
-        </div>
-        ${order.payment.cardLastFour ? `
-          <div class="detail-item">
-            <strong>Kartu:</strong>
-            <span>•••• ${order.payment.cardLastFour}</span>
-          </div>
-        ` : ''}
-      </div>
     </div>
 
     <div class="confirmation-actions">
       <a href="products.html" class="btn btn-primary">🛍️ Lanjutkan Belanja</a>
-      <a href="../index.html" class="btn btn-secondary">🏠 Kembali ke Beranda</a>
-      <button class="btn btn-outline" id="printReceipt">🖨️ Cetak Struk</button>
-    </div>
-
-    <div class="confirmation-security">
-      <p>🔒 Transaksi Anda aman dan terlindungi</p>
-      <small>Jika ada pertanyaan, hubungi customer service kami</small>
+      <a href="profile.html" class="btn btn-secondary">👤 Lihat Profil</a>
     </div>
   `;
-
-  // Print receipt functionality
-  document.getElementById('printReceipt')?.addEventListener('click', () => {
-    window.print();
-  });
-
-  // Track successful purchase
-  Utils.trackEvent(CONFIG.ANALYTICS_EVENTS.PURCHASE, {
-    transaction_id: order.id,
-    value: order.totals.grandTotal,
-    currency: 'IDR'
-  });
-}
-
-// =========================
-// 🛍️ Add All Products to Cart Function
-// =========================
-async function addAllProductsToCart() {
-  const products = [
-    { id: 'p001', name: 'QIANLUN HERITAGE COLLECTION', price: 8750000, category: 'watch' },
-    { id: 'p002', name: 'QIANLUN CELESTIAL DRAGON', price: 5500000, category: 'bag' },
-    { id: 'p003', name: 'QIANLUN QILIN SCALE', price: 3750000, category: 'shoes' },
-    { id: 'p004', name: 'QIANLUN DRAGON SCALES', price: 2250000, category: 'wallet' }
-  ];
-
-  console.log("🛍️ Adding all products to cart...");
-
-  for (const productData of products) {
-    const card = document.querySelector(`[data-id="${productData.id}"]`);
-    if (card) {
-      const addBtn = card.querySelector('.add-to-cart');
-      if (addBtn) {
-        addBtn.click();
-        await new Promise(resolve => setTimeout(resolve, 500)); // Wait for animation
-      }
-    }
-  }
-
-  console.log("✅ All products added to cart!");
 }
 
 // =========================
 // 🎯 Initialize All Features
 // =========================
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("🚀 QianlunShop Enhanced Version Initializing...");
 
-  // Initialize cart count on all pages
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("🚀 QianlunShop Initializing...");
+
+  // Update cart count
   updateCartCount();
 
-  // Initialize new modules
-  productManager.init();
-  lazyLoader.init();
-  accessibilityEnhancer.init();
-  seoEnhancer.init();
-
-  // Initialize cart page
+  // Initialize features
   initCartPage();
-
-  // Initialize product filters
   initProductFilters();
-
-  // Initialize add all to cart button
-  const addAllBtn = document.getElementById('addAllToCartBtn');
-  if (addAllBtn) {
-    addAllBtn.addEventListener('click', async () => {
-      addAllBtn.disabled = true;
-      addAllBtn.textContent = '⏳ Menambahkan...';
-
-      await addAllProductsToCart();
-
-      addAllBtn.disabled = false;
-      addAllBtn.textContent = '🛍️ Tambah Semua ke Keranjang';
-    });
-  }
-
-  // Initialize discover more
-  initDiscoverMore();
-
-  // Initialize checkout page
   initCheckoutPage();
-
-  // Initialize order confirmation
   initOrderConfirmation();
 
-  // Listen for cart updates from other tabs
+  // Listen for cart updates
   cart.on('cart-synced', () => {
-    console.log("🔄 Cart synced across tabs");
+    console.log("🔄 Cart synced");
     updateCartCount();
-
-    // Re-render cart page if needed
     if (document.querySelector('.cart-container')) {
       initCartPage();
     }
   });
 
-  console.log("✅ QianlunShop Enhanced Version Ready!");
+  console.log("✅ QianlunShop Ready!");
 });
 
 // Export for use in other modules
-export { showToast, updateCartCount, initCartPage, initProductFilters };
+export { showToast, updateCartCount, requireAuth };
