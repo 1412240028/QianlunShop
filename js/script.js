@@ -620,6 +620,9 @@ class CheckoutManager {
       }
     });
 
+    // Auto-update shipping selection when cart total changes
+    this.updateShippingSelection(subtotal);
+
     // Update free shipping message
     const freeShippingMsg = document.getElementById('freeShippingMsg');
     if (freeShippingMsg) {
@@ -631,6 +634,53 @@ class CheckoutManager {
         freeShippingMsg.style.display = needed > 0 ? 'block' : 'none';
         freeShippingMsg.innerHTML = `Tambahkan <strong>${Utils.formatPrice(needed)}</strong> lagi untuk gratis ongkir!`;
       }
+    }
+  }
+
+  updateShippingSelection(subtotal) {
+    const shippingSelect = document.getElementById('shipping');
+    if (!shippingSelect) return;
+
+    const isEligible = Utils.isFreeShippingEligible(subtotal);
+    const currentValue = shippingSelect.value;
+
+    // If user is now eligible for free shipping and not already selected, auto-select it
+    if (isEligible && currentValue !== 'free') {
+      shippingSelect.value = 'free';
+      this.updateShippingCost('free');
+      console.log("🚚 Auto-selected free shipping - user is eligible");
+    }
+    // If user is no longer eligible and has free shipping selected, switch to regular
+    else if (!isEligible && currentValue === 'free') {
+      shippingSelect.value = 'regular';
+      this.updateShippingCost('regular');
+      console.log("🚚 Switched from free to regular shipping - user no longer eligible");
+    }
+
+    // Update shipping options visibility
+    this.updateShippingOptions(isEligible);
+  }
+
+  updateShippingOptions(isEligible) {
+    const shippingSelect = document.getElementById('shipping');
+    if (!shippingSelect) return;
+
+    // Populate shipping options - only show FREE if eligible
+    const shippingOptions = Object.entries(CONFIG.SHIPPING).filter(([key]) => key !== 'FREE' || isEligible);
+
+    shippingSelect.innerHTML = shippingOptions.map(([key, method]) => `
+      <option value="${key.toLowerCase()}">
+        ${method.name} - ${Utils.formatPrice(method.cost)}
+        (${Utils.getEstimatedDelivery(key)})
+      </option>
+    `).join('');
+
+    // Ensure the current selection is still valid
+    const currentValue = shippingSelect.value;
+    const validOptions = shippingOptions.map(([key]) => key.toLowerCase());
+    if (!validOptions.includes(currentValue)) {
+      shippingSelect.value = validOptions[0] || 'regular';
+      this.updateShippingCost(shippingSelect.value);
     }
   }
 
@@ -811,6 +861,12 @@ class CheckoutManager {
 
       await this.processPayment();
 
+      // Calculate totals with correct discount application (discount applied before tax)
+      const subtotal = this.cart.getTotal();
+      const discountedSubtotal = subtotal - this.discount;
+      const tax = discountedSubtotal * CONFIG.TAX_RATE;
+      const grandTotal = discountedSubtotal + this.shippingCost + tax;
+
       const order = {
         id: Utils.generateId('ORD'),
         date: new Date().toISOString(),
@@ -820,11 +876,11 @@ class CheckoutManager {
         payment: this.getPaymentInfo(),
         promoCode: this.promoCode,
         totals: {
-          subtotal: this.cart.getTotal(),
+          subtotal: subtotal,
           shipping: this.shippingCost,
-          tax: this.cart.getTotal() * CONFIG.TAX_RATE,
+          tax: tax,
           discount: this.discount,
-          grandTotal: this.cart.getTotal() + this.shippingCost + (this.cart.getTotal() * CONFIG.TAX_RATE) - this.discount
+          grandTotal: grandTotal
         },
         status: 'completed'
       };

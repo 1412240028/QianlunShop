@@ -10,7 +10,13 @@ export class Cart {
     this.listeners = new Map();
     this.lastModified = 0;
     this.saveTimeout = null;
-    
+
+    // Update queue for race condition prevention
+    this.updateQueue = [];
+    this.isProcessingQueue = false;
+    this.maxRetries = 3;
+    this.baseRetryDelay = 100;
+
     // Multi-tab sync
     this.setupStorageSync();
   }
@@ -283,12 +289,59 @@ export class Cart {
     }
   }
 
+  // Queue-based update to prevent race conditions
   async update(id, quantity) {
+    return new Promise((resolve, reject) => {
+      this.updateQueue.push({
+        id,
+        quantity,
+        resolve,
+        reject,
+        timestamp: Date.now()
+      });
+
+      this.processUpdateQueue();
+    });
+  }
+
+  async processUpdateQueue() {
+    if (this.isProcessingQueue || this.updateQueue.length === 0) {
+      return;
+    }
+
+    this.isProcessingQueue = true;
+
+    while (this.updateQueue.length > 0) {
+      const updateRequest = this.updateQueue.shift();
+
+      try {
+        const result = await this._performUpdate(updateRequest.id, updateRequest.quantity);
+        updateRequest.resolve(result);
+      } catch (error) {
+        console.error("❌ Queued update failed:", error);
+        updateRequest.reject(error);
+      }
+
+      // Small delay between updates to prevent overwhelming the system
+      await new Promise(resolve => setTimeout(resolve, 10));
+    }
+
+    this.isProcessingQueue = false;
+  }
+
+  async _performUpdate(id, quantity, retryCount = 0) {
     try {
-      await this.acquireLock();
-      
+      const lockAcquired = await this.acquireLock(2000); // Shorter timeout for queued operations
+
+      if (!lockAcquired) {
+        throw new Error('Could not acquire lock for update');
+      }
+
+      // Reload fresh data to ensure consistency
+      this.items = this.load();
+
       const item = this.items.find(i => i.id === id);
-      
+
       if (!item) {
         console.warn(`⚠️ Item ${id} not found`);
         this.releaseLock();
@@ -296,7 +349,7 @@ export class Cart {
       }
 
       const newQty = Math.max(1, Math.min(this.maxQuantityPerItem, parseInt(quantity, 10) || 1));
-      
+
       if (newQty === item.quantity) {
         this.releaseLock();
         return true;
@@ -304,23 +357,33 @@ export class Cart {
 
       item.quantity = newQty;
       item.updatedAt = Date.now();
-      
+
       this.save();
       this.releaseLock();
-      
-      this.emit('item-updated', { 
-        id, 
-        quantity: newQty, 
-        cart: this.getSummary() 
+
+      this.emit('item-updated', {
+        id,
+        quantity: newQty,
+        cart: this.getSummary()
       });
-      
+
       return true;
 
     } catch (error) {
-      console.error("❌ Error updating cart:", error);
       this.releaseLock();
-      this.emit('error', { type: 'update-failed', error });
-      return false;
+
+      // Retry logic with exponential backoff
+      if (retryCount < this.maxRetries) {
+        const delay = this.baseRetryDelay * Math.pow(2, retryCount);
+        console.warn(`⚠️ Update failed, retrying in ${delay}ms (attempt ${retryCount + 1}/${this.maxRetries})`);
+
+        await new Promise(resolve => setTimeout(resolve, delay));
+        return this._performUpdate(id, quantity, retryCount + 1);
+      }
+
+      console.error("❌ Update failed after retries:", error);
+      this.emit('error', { type: 'update-failed', error, id, quantity });
+      throw error;
     }
   }
 
