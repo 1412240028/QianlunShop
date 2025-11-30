@@ -559,4 +559,133 @@ export class Cart {
   }
 }
 
+// =========================
+// 🛒 CART PAGE INITIALIZATION
+// =========================
+export function initCartPage() {
+  console.log("🛒 Initializing cart page...");
+
+  // Initialize cart instance
+  const cart = new Cart();
+
+  // Update cart display
+  function updateCartDisplay() {
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const cartCount = document.getElementById('cartCount');
+    const emptyCart = document.getElementById('emptyCart');
+
+    if (!cartItems || !cartTotal) return;
+
+    const items = cart.getItems();
+    const summary = cart.getSummary();
+
+    // Update cart count
+    if (cartCount) {
+      cartCount.textContent = summary.count;
+    }
+
+    // Show/hide empty cart message
+    if (emptyCart) {
+      emptyCart.style.display = items.length === 0 ? 'block' : 'none';
+    }
+
+    // Update cart items
+    cartItems.innerHTML = '';
+
+    if (items.length === 0) {
+      cartItems.innerHTML = '<p class="empty-cart-message">Keranjang Anda kosong</p>';
+    } else {
+      items.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.className = 'cart-item';
+        itemElement.innerHTML = `
+          <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+          <div class="cart-item-details">
+            <h4>${item.name}</h4>
+            <p class="cart-item-price">Rp ${item.price.toLocaleString('id-ID')}</p>
+            <div class="cart-item-controls">
+              <button class="quantity-btn decrease" data-id="${item.id}">-</button>
+              <span class="quantity">${item.quantity}</span>
+              <button class="quantity-btn increase" data-id="${item.id}">+</button>
+              <button class="remove-btn" data-id="${item.id}">Hapus</button>
+            </div>
+          </div>
+        `;
+        cartItems.appendChild(itemElement);
+      });
+    }
+
+    // Update total
+    if (cartTotal) {
+      cartTotal.textContent = `Rp ${summary.total.toLocaleString('id-ID')}`;
+    }
+  }
+
+  // Event listeners for cart actions
+  document.addEventListener('click', async (e) => {
+    const target = e.target;
+
+    // Quantity increase
+    if (target.classList.contains('increase')) {
+      e.preventDefault();
+      const id = target.dataset.id;
+      const item = cart.getItem(id);
+      if (item) {
+        await cart.update(id, item.quantity + 1);
+        updateCartDisplay();
+      }
+    }
+
+    // Quantity decrease
+    if (target.classList.contains('decrease')) {
+      e.preventDefault();
+      const id = target.dataset.id;
+      const item = cart.getItem(id);
+      if (item && item.quantity > 1) {
+        await cart.update(id, item.quantity - 1);
+        updateCartDisplay();
+      }
+    }
+
+    // Remove item
+    if (target.classList.contains('remove-btn')) {
+      e.preventDefault();
+      const id = target.dataset.id;
+      await cart.remove(id);
+      updateCartDisplay();
+    }
+
+    // Clear cart
+    if (target.id === 'clearCart') {
+      e.preventDefault();
+      if (confirm('Apakah Anda yakin ingin mengosongkan keranjang?')) {
+        await cart.clear();
+        updateCartDisplay();
+      }
+    }
+
+    // Checkout
+    if (target.id === 'checkoutBtn') {
+      e.preventDefault();
+      if (cart.getItemCount() > 0) {
+        window.location.href = 'checkout.html';
+      } else {
+        alert('Keranjang Anda kosong!');
+      }
+    }
+  });
+
+  // Initial display update
+  updateCartDisplay();
+
+  // Listen for cart changes
+  cart.on('item-added', updateCartDisplay);
+  cart.on('item-removed', updateCartDisplay);
+  cart.on('item-updated', updateCartDisplay);
+  cart.on('cart-cleared', updateCartDisplay);
+
+  console.log("✅ Cart page initialized");
+}
+
 export default Cart;

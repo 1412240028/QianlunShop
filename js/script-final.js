@@ -179,15 +179,13 @@ document.addEventListener("DOMContentLoaded", function () {
   initProductFilters();
   initDiscoverMore();
   initProductAddToCart();
-  initLazyLoading();
-  initOptimizedSearch();
   initCheckoutPage();
   initOrderConfirmation();
 
   // Listen for cart updates from other tabs
   cart.on('cart-synced', () => {
     console.log("🔄 Cart synced across tabs");
-    updateCartCount();
+    updateCartCount(cart);
 
     // Re-render cart page if needed
     if (document.querySelector('.cart-container')) {

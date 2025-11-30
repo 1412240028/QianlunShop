@@ -93,7 +93,7 @@ export function flyToCart(imgEl) {
 // =========================
 // ⏳ Loading State Manager
 // =========================
-export const LoadingState = {
+export const loadingState = {
   show(elementId, text = 'Loading...') {
     const el = document.getElementById(elementId);
     if (!el) return;
@@ -114,13 +114,36 @@ export const LoadingState = {
 
     el.disabled = false;
     el.classList.remove('loading-state');
+  },
+
+  // Show loading on button
+  showButton(buttonElement, text = 'Loading...') {
+    if (!buttonElement) return;
+    
+    buttonElement.dataset.originalText = buttonElement.innerHTML;
+    buttonElement.innerHTML = `
+      <span class="button-spinner"></span>
+      <span>${text}</span>
+    `;
+    buttonElement.disabled = true;
+  },
+
+  // Hide loading on button
+  hideButton(buttonElement) {
+    if (!buttonElement) return;
+    
+    buttonElement.innerHTML = buttonElement.dataset.originalText || 'Submit';
+    buttonElement.disabled = false;
   }
 };
+
+// Backward compatibility
+export const LoadingState = loadingState;
 
 // =========================
 // ❌ Error Display Manager
 // =========================
-export const ErrorDisplay = {
+export const errorDisplay = {
   show(elementId, message, type = 'error') {
     const el = document.getElementById(elementId);
     if (!el) return;
@@ -140,8 +163,42 @@ export const ErrorDisplay = {
     if (el) {
       el.style.display = 'none';
     }
+  },
+
+  // Show inline error on form field
+  showField(fieldElement, message) {
+    if (!fieldElement) return;
+
+    // Remove existing error
+    const existingError = fieldElement.parentElement.querySelector('.field-error');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Add error class to field
+    fieldElement.classList.add('error');
+
+    // Create error message
+    const errorMsg = document.createElement('div');
+    errorMsg.className = 'field-error';
+    errorMsg.textContent = message;
+    fieldElement.parentElement.appendChild(errorMsg);
+  },
+
+  // Hide inline error on form field
+  hideField(fieldElement) {
+    if (!fieldElement) return;
+
+    fieldElement.classList.remove('error');
+    const errorMsg = fieldElement.parentElement.querySelector('.field-error');
+    if (errorMsg) {
+      errorMsg.remove();
+    }
   }
 };
+
+// Backward compatibility
+export const ErrorDisplay = errorDisplay;
 
 // =========================
 // 🍞 Toast Manager - Advanced Toast System
@@ -168,7 +225,17 @@ export class ToastManager {
   show(message, type = 'info', duration = CONFIG.PERFORMANCE.TOAST_DURATION) {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
+    
+    // Add icon based on type
+    const icons = {
+      success: '✅',
+      error: '❌',
+      warning: '⚠️',
+      info: 'ℹ️'
+    };
+
     toast.innerHTML = `
+      <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
       <span class="toast-message">${message}</span>
       <button class="toast-close" onclick="this.parentElement.remove()">×</button>
     `;
@@ -210,3 +277,234 @@ export class ToastManager {
 
 // Create global toast manager instance
 export const toastManager = new ToastManager();
+
+// =========================
+// 🎬 Animation Helpers
+// =========================
+export const Animation = {
+  /**
+   * Fade in element
+   */
+  fadeIn(element, duration = 300) {
+    if (!element) return;
+
+    element.style.opacity = '0';
+    element.style.display = 'block';
+
+    let start = null;
+    const animate = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      
+      element.style.opacity = Math.min(progress / duration, 1);
+      
+      if (progress < duration) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  },
+
+  /**
+   * Fade out element
+   */
+  fadeOut(element, duration = 300) {
+    if (!element) return;
+
+    let start = null;
+    const animate = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      
+      element.style.opacity = 1 - Math.min(progress / duration, 1);
+      
+      if (progress < duration) {
+        requestAnimationFrame(animate);
+      } else {
+        element.style.display = 'none';
+      }
+    };
+
+    requestAnimationFrame(animate);
+  },
+
+  /**
+   * Slide down element
+   */
+  slideDown(element, duration = 300) {
+    if (!element) return;
+
+    element.style.height = '0px';
+    element.style.overflow = 'hidden';
+    element.style.display = 'block';
+
+    const height = element.scrollHeight;
+    let start = null;
+
+    const animate = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      
+      element.style.height = Math.min((progress / duration) * height, height) + 'px';
+      
+      if (progress < duration) {
+        requestAnimationFrame(animate);
+      } else {
+        element.style.height = '';
+        element.style.overflow = '';
+      }
+    };
+
+    requestAnimationFrame(animate);
+  },
+
+  /**
+   * Slide up element
+   */
+  slideUp(element, duration = 300) {
+    if (!element) return;
+
+    const height = element.scrollHeight;
+    element.style.height = height + 'px';
+    element.style.overflow = 'hidden';
+
+    let start = null;
+    const animate = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      
+      element.style.height = height - Math.min((progress / duration) * height, height) + 'px';
+      
+      if (progress < duration) {
+        requestAnimationFrame(animate);
+      } else {
+        element.style.display = 'none';
+        element.style.height = '';
+        element.style.overflow = '';
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }
+};
+
+// =========================
+// 🎨 Modal Manager
+// =========================
+export const Modal = {
+  /**
+   * Show modal
+   */
+  show(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        this.hide(modalId);
+      }
+    });
+  },
+
+  /**
+   * Hide modal
+   */
+  hide(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+  },
+
+  /**
+   * Create dynamic modal
+   */
+  create(content, options = {}) {
+    const modalId = 'dynamic-modal-' + Date.now();
+    const modal = document.createElement('div');
+    modal.id = modalId;
+    modal.className = 'modal';
+    
+    modal.innerHTML = `
+      <div class="modal-content">
+        <button class="modal-close" onclick="document.getElementById('${modalId}').remove()">×</button>
+        ${options.title ? `<h2 class="modal-title">${options.title}</h2>` : ''}
+        <div class="modal-body">
+          ${content}
+        </div>
+        ${options.footer ? `<div class="modal-footer">${options.footer}</div>` : ''}
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+    
+    setTimeout(() => this.show(modalId), 10);
+
+    return modalId;
+  }
+};
+
+// =========================
+// 📊 Progress Bar
+// =========================
+export const ProgressBar = {
+  /**
+   * Show progress bar
+   */
+  show(elementId, progress = 0) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    el.innerHTML = `
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: ${progress}%"></div>
+        <span class="progress-text">${progress}%</span>
+      </div>
+    `;
+  },
+
+  /**
+   * Update progress
+   */
+  update(elementId, progress) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    const fill = el.querySelector('.progress-fill');
+    const text = el.querySelector('.progress-text');
+
+    if (fill) fill.style.width = progress + '%';
+    if (text) text.textContent = progress + '%';
+  }
+};
+
+// =========================
+// 🔔 Notification Badge
+// =========================
+export const Badge = {
+  /**
+   * Update badge count
+   */
+  update(elementId, count) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    if (count > 0) {
+      el.textContent = count > 99 ? '99+' : count;
+      el.classList.remove('empty');
+      el.classList.add('pulse');
+      setTimeout(() => el.classList.remove('pulse'), 500);
+    } else {
+      el.textContent = '0';
+      el.classList.add('empty');
+    }
+  }
+};
+
+console.log('✅ UI module loaded');

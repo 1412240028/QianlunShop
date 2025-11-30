@@ -4,6 +4,9 @@
 // =========================
 import { CONFIG, Utils } from "./config.js";
 
+// Global reference for filter function (used by optimized search)
+let globalApplyFilters = null;
+
 // =========================
 // 🔍 Product Search & Filter - ENHANCED
 // =========================
@@ -111,6 +114,9 @@ export function initProductFilters() {
     // Track analytics
     Utils.trackEvent('filters_reset');
   }
+
+  // Store applyFilters globally for use by initOptimizedSearch
+  globalApplyFilters = applyFilters;
 
   // Event listeners with debouncing
   searchInput.addEventListener('input', Utils.debounce(applyFilters));
@@ -229,15 +235,16 @@ export function initProductAddToCart() {
       console.log("🛍️ Adding product to cart:", product);
 
       try {
-        // Import cart dynamically to avoid circular dependencies
+        // Dynamic import to avoid circular dependencies
         const { Cart } = await import('./cart.js');
+        const { showToast: toastFn, updateCartCount: updateFn } = await import('./ui.js');
+        
         const cart = new Cart();
-
         const success = await cart.add(product);
 
         if (success) {
-          updateCartCount();
-          showToast(CONFIG.MESSAGES.ADD_TO_CART_SUCCESS, "success");
+          updateFn(cart);
+          toastFn(CONFIG.MESSAGES.ADD_TO_CART_SUCCESS, "success");
 
           // Track analytics
           Utils.trackEvent(CONFIG.ANALYTICS_EVENTS.ADD_TO_CART, {
@@ -247,7 +254,7 @@ export function initProductAddToCart() {
             category: product.category
           });
         } else {
-          showToast("⚠️ Gagal menambahkan ke keranjang", "error");
+          toastFn("⚠️ Gagal menambahkan ke keranjang", "error");
         }
       } catch (error) {
         console.error("❌ Error adding to cart:", error);
@@ -259,27 +266,142 @@ export function initProductAddToCart() {
   });
 }
 
-// Helper functions that need to be imported or defined
+// =========================
+// 🖼️ LAZY LOADING IMAGES
+// =========================
+export function initLazyLoading() {
+  if (!('IntersectionObserver' in window)) {
+    console.log("⚠️ IntersectionObserver not supported");
+    return;
+  }
+
+  const imageObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        if (img.dataset.src) {
+          img.src = img.dataset.src;
+          img.classList.add('loaded');
+          observer.unobserve(img);
+        }
+      }
+    });
+  }, {
+    rootMargin: '50px'
+  });
+
+  // Observe all images with data-src
+  document.querySelectorAll('img[data-src]').forEach(img => {
+    imageObserver.observe(img);
+  });
+
+  console.log("✅ Lazy loading initialized");
+}
+
+// =========================
+// 🔍 OPTIMIZED SEARCH (Debounced)
+// =========================
+export function initOptimizedSearch() {
+  const searchInput = document.getElementById('searchInput');
+  if (!searchInput) return;
+
+  let searchTimeout;
+  const DEBOUNCE_DELAY = 300;
+
+  searchInput.addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
+    
+    searchTimeout = setTimeout(() => {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      console.log("🔍 Searching for:", searchTerm);
+      
+      // Trigger existing filter logic
+      if (globalApplyFilters) {
+        globalApplyFilters();
+      }
+    }, DEBOUNCE_DELAY);
+  });
+
+  console.log("✅ Optimized search initialized");
+}
+
+// =========================
+// 🛠️ HELPER FUNCTIONS
+// =========================
+
+/**
+ * Show toast notification
+ */
 function showToast(message, type = "success") {
-  if (typeof window.showToast === 'function') {
+  // Try global function first
+  if (typeof window.QianlunShop?.showToast === 'function') {
+    window.QianlunShop.showToast(message, type);
+  } else if (typeof window.showToast === 'function') {
     window.showToast(message, type);
   } else {
+    // Fallback: console log
     console.log(`${type.toUpperCase()}: ${message}`);
   }
 }
 
-function updateCartCount() {
-  if (typeof window.updateCartCount === 'function') {
-    window.updateCartCount();
+/**
+ * Update cart count in navbar
+ */
+function updateCartCount(cart) {
+  // Try global function first
+  if (typeof window.QianlunShop?.updateCartCount === 'function') {
+    window.QianlunShop.updateCartCount(cart);
+  } else if (typeof window.updateCartCount === 'function') {
+    window.updateCartCount(cart);
   } else {
-    console.log("updateCartCount function not available");
+    console.log("ℹ️ updateCartCount function not available");
   }
 }
 
+/**
+ * Fly to cart animation
+ */
 function flyToCart(imgEl) {
-  if (typeof window.flyToCart === 'function') {
+  // Try global function first
+  if (typeof window.QianlunShop?.flyToCart === 'function') {
+    window.QianlunShop.flyToCart(imgEl);
+  } else if (typeof window.flyToCart === 'function') {
     window.flyToCart(imgEl);
   } else {
-    console.log("flyToCart function not available");
+    // Fallback: simple animation
+    const cartIcon = document.querySelector("#cartIcon") || document.querySelector(".cart-icon");
+    if (!cartIcon || !imgEl) return;
+
+    const imgClone = imgEl.cloneNode(true);
+    const rect = imgEl.getBoundingClientRect();
+    const cartRect = cartIcon.getBoundingClientRect();
+
+    imgClone.style.position = "fixed";
+    imgClone.style.top = `${rect.top}px`;
+    imgClone.style.left = `${rect.left}px`;
+    imgClone.style.width = `${rect.width}px`;
+    imgClone.style.height = `${rect.height}px`;
+    imgClone.style.transition = "all 0.8s cubic-bezier(0.55, 0.06, 0.68, 0.19)";
+    imgClone.style.zIndex = "9999";
+    imgClone.style.borderRadius = "10px";
+    imgClone.style.pointerEvents = "none";
+    imgClone.style.objectFit = "cover";
+    document.body.appendChild(imgClone);
+
+    setTimeout(() => {
+      imgClone.style.top = `${cartRect.top + 10}px`;
+      imgClone.style.left = `${cartRect.left + 10}px`;
+      imgClone.style.width = "30px";
+      imgClone.style.height = "30px";
+      imgClone.style.opacity = "0.3";
+    }, 10);
+
+    setTimeout(() => {
+      imgClone.remove();
+      cartIcon.classList.add("bounce");
+      setTimeout(() => cartIcon.classList.remove("bounce"), 500);
+    }, 900);
   }
 }
+
+console.log("✅ Products module loaded")
