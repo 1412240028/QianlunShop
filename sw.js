@@ -17,7 +17,7 @@ const STATIC_ASSETS = [
   '/pages/about.html',
   '/pages/contact.html',
   '/css/style.css',
-  '/js/script.js',
+  '/js/script-final.js',
   '/js/cart.js',
   '/js/config.js',
   '/assets/images/icons/QianLun Alphabet.png',

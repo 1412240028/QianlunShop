@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("🚀 QianlunShop Modular Version Initializing...");
 
   // Initialize cart count on all pages
-  updateCartCount();
+  updateCartCount(cart);
 
   // Initialize all page-specific features
   initCartPage();

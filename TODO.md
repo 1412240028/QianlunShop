@@ -13,10 +13,10 @@
 - [ ] Update imports in script.js
 
 ### 1.3 Create ui.js module
-- [ ] Extract UI-related functions (showToast, flyToCart, updateCartCount)
-- [ ] Add loading state management
-- [ ] Add animation utilities
-- [ ] Update imports in script.js
+- [x] Extract UI-related functions (showToast, flyToCart, updateCartCount)
+- [x] Add loading state management
+- [x] Add animation utilities
+- [x] Update imports in script.js
 
 ### 1.4 Create error-handler.js module
 - [ ] Implement global error boundary
