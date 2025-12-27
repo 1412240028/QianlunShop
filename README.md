@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![QianlunShop Logo](/assets/images/icons/QianLun%20Dragon.png)
+![QianlunShop Logo](/assets/image/Icon/Logo.png)
 
 **Where Heritage Meets Modern Luxury**
 
@@ -101,6 +101,39 @@ Proyek ini menampilkan arsitektur kode yang bersih, prinsip desain responsif, da
   - Desktop enhancement | Peningkatan desktop
   - Breakpoints: 360px, 480px, 600px, 768px, 992px, 1400px
 
+#### 🏷️ Enhanced Product Cards | Kartu Produk Canggih
+- **Interactive Quick Actions** | **Aksi Cepat Interaktif**
+  - Wishlist button with heart icon | Tombol wishlist dengan ikon hati
+  - Quick view functionality | Fungsi tampilan cepat
+  - Product comparison feature | Fitur perbandingan produk
+  - Smooth hover animations | Animasi hover halus
+
+- **Dynamic Badges & Labels** | **Badge & Label Dinamis**
+  - "NEW" for latest products | "NEW" untuk produk terbaru
+  - "BESTSELLER" for popular items | "BESTSELLER" untuk item populer
+  - "SALE" for discounted products | "SALE" untuk produk diskon
+  - "LIMITED" for exclusive items | "LIMITED" untuk item eksklusif
+  - Floating animation effects | Efek animasi mengambang
+
+- **Advanced Visual Effects** | **Efek Visual Canggih**
+  - Mouse-following spotlight effect | Efek spotlight mengikuti mouse
+  - 3D hover transformations | Transformasi hover 3D
+  - Golden border shimmer animation | Animasi shimmer border emas
+  - Background glow effects | Efek glow latar belakang
+  - Staggered load animations | Animasi pemuatan bertahap
+
+- **Product Ratings & Reviews** | **Rating & Ulasan Produk**
+  - 5-star rating system | Sistem rating 5 bintang
+  - Review count display | Tampilan jumlah ulasan
+  - Interactive star animations | Animasi bintang interaktif
+  - Customer feedback integration | Integrasi umpan balik pelanggan
+
+- **Premium Interactions** | **Interaksi Premium**
+  - "Fly to cart" animation | Animasi "terbang ke keranjang"
+  - Enhanced add-to-cart buttons | Tombol tambah ke keranjang yang ditingkatkan
+  - View details functionality | Fungsi lihat detail
+  - Accessibility-compliant focus states | Status fokus yang sesuai aksesibilitas
+
 #### 📄 Pages | Halaman
 - **Home Page** | **Halaman Beranda**
   - Hero section with CTA | Bagian hero dengan CTA
@@ -119,6 +152,19 @@ Proyek ini menampilkan arsitektur kode yang bersih, prinsip desain responsif, da
   - Quantity controls | Kontrol kuantitas
   - Total summary | Ringkasan total
   - Checkout button | Tombol checkout
+
+- **Checkout Page** | **Halaman Checkout**
+  - Customer information form | Form informasi pelanggan
+  - Shipping method selection | Pemilihan metode pengiriman
+  - Payment method options | Opsi metode pembayaran
+  - Promo code application | Penerapan kode promo
+  - Order confirmation modal | Modal konfirmasi pesanan
+  - Form validation with error handling | Validasi form dengan penanganan error
+
+- **Order Confirmation Page** | **Halaman Konfirmasi Pesanan**
+  - Order summary display | Tampilan ringkasan pesanan
+  - Customer details confirmation | Konfirmasi detail pelanggan
+  - Order tracking information | Informasi pelacakan pesanan
 
 - **About Page** | **Halaman Tentang**
   - Company information | Informasi perusahaan
@@ -145,6 +191,20 @@ Proyek ini menampilkan arsitektur kode yang bersih, prinsip desain responsif, da
 ### Storage & State Management
 - **LocalStorage API** - Cart persistence | Penyimpanan keranjang
 - **ES6 Modules** - Code organization | Organisasi kode
+
+### Security & Performance | Keamanan & Performa
+- **Input Validation** - Email, phone, credit card validation | Validasi input email, telepon, kartu kredit
+- **XSS Prevention** - HTML sanitization and input cleaning | Pencegahan XSS dengan sanitasi HTML
+- **Rate Limiting** - API rate limiting and user action throttling | Pembatasan rate API dan throttling aksi pengguna
+- **Session Management** - Secure session handling with auto-expiry | Manajemen sesi aman dengan auto-expiry
+- **Error Handling** - Comprehensive error catching and user feedback | Penanganan error komprehensif dan umpan balik pengguna
+- **Security Audit** - Built-in security monitoring and reporting | Audit keamanan built-in dengan monitoring dan pelaporan
+
+### Progressive Web App (PWA) | Aplikasi Web Progresif
+- **Web App Manifest** - App installation and offline capabilities | Manifest aplikasi untuk instalasi dan kemampuan offline
+- **Service Worker** - Caching and offline functionality | Service worker untuk caching dan fungsi offline
+- **Responsive Icons** - Multi-size app icons for all devices | Ikon aplikasi multi-ukuran untuk semua perangkat
+- **App Shortcuts** - Quick access to key features | Pintasan aplikasi untuk akses cepat fitur utama
 
 ### Hosting & Deployment
 - **GitHub Pages** - Static site hosting | Hosting situs statis
@@ -407,6 +467,7 @@ cart.clear();
 - [x] Security utilities and input sanitization | Utilitas keamanan dan sanitasi input
 - [x] Error handling and user feedback | Penanganan error dan umpan balik pengguna
 - [x] PWA manifest and service worker | Manifest PWA dan service worker
+- [x] Enhanced product cards with quick actions, badges, spotlight effects, and ratings | Kartu produk canggih dengan aksi cepat, badge, efek spotlight, dan rating
 
 #### Phase 2: Feature Expansion | Fase 2: Ekspansi Fitur
 - [ ] User authentication | Autentikasi pengguna
@@ -423,7 +484,6 @@ cart.clear();
 - [ ] Admin dashboard | Dashboard admin
 
 ### 🔮 Future Enhancements | Peningkatan Masa Depan
-- [ ] Progressive Web App (PWA) | Aplikasi Web Progresif
 - [ ] Dark/Light mode toggle | Toggle mode gelap/terang
 - [ ] Social media integration | Integrasi media sosial
 - [ ] Live chat support | Dukungan live chat
