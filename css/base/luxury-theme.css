@@ -386,10 +386,10 @@
   justify-content: center;
   padding: var(--space-2xl);
   overflow: hidden;
-  background: 
+  background:
     radial-gradient(ellipse at top, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
     linear-gradient(180deg, rgba(10, 10, 10, 0.5), rgba(10, 10, 10, 1)),
-    url('/assets/images/banners/background.jpg') center/cover no-repeat fixed;
+    url('/assets/image/Background/base-background.jpg') center/cover no-repeat fixed;
 }
 
 .hero::before {

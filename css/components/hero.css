@@ -7,7 +7,7 @@
   min-height: 100vh;
   padding: 2rem;
   background: linear-gradient(180deg, rgba(10,10,10,0.7), rgba(10,10,10,1)),
-              url('/assets/images/banners/background.jpg') center/cover no-repeat;
+              url('/assets/image/Background/base-background.jpg') center/cover no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
