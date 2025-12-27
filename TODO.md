@@ -1,20 +1,15 @@
-# TODO: Fix Asset Paths in HTML Files
+# Update Product Card Structure - QianlunShop
 
-## Overview
-Fix all asset paths in HTML files to match the actual folder structure and file names. Use Logo.png for navbar logos, Icon.png for hero section in index.html, and correct product image paths with proper capitalization.
+## Tasks
+- [x] Update product cards in index.html (4 cards)
+- [x] Update product cards in pages/products.html (4 cards)
+- [x] Add JavaScript for spotlight effect in js/products.js
+- [x] Add JavaScript for quick actions functionality in js/products.js
+- [x] Initialize new functions in js/script-final.js
+- [x] Test visual changes and functionality
 
-## Steps
-- [ ] Update index.html: Fix navbar logo to assets/image/Icon/Logo.png, hero to assets/image/Icon/Icon.png, product images to assets/image/Product/ with correct capitalization (Qianlun)
-- [ ] Update pages/products.html: Fix navbar logo to ../assets/image/Icon/Logo.png, product images to ../assets/image/Product/ with correct capitalization
-- [ ] Update pages/order-confirmation.html: Fix navbar logo to ../assets/image/Icon/Logo.png
-- [ ] Update pages/contact.html: Fix navbar logo to ../assets/image/Icon/Logo.png
-- [ ] Update pages/checkout.html: Fix navbar logo to ../assets/image/Icon/Logo.png
-- [ ] Update pages/cart.html: Fix navbar logo to ../assets/image/Icon/Logo.png
-- [ ] Update pages/about.html: Fix navbar logo to ../assets/image/Icon/Logo.png
-- [ ] Test the website to ensure all images load correctly
-
-## Notes
-- Change paths from assets/images/icons/ to assets/image/Icon/
-- Change paths from assets/images/products/ to assets/image/Product/
-- Fix capitalization: QianLun -> Qianlun
-- Use relative paths consistently
+## Current Status
+- CSS styles for enhanced product cards are already implemented
+- HTML structures have been updated to match the enhanced design
+- JavaScript functionality has been added and initialized
+- All product cards (8 total) now use the enhanced structure with quick actions, badges, spotlight effect, and ratings

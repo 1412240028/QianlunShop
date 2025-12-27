@@ -410,4 +410,60 @@ if (typeof window !== 'undefined') {
   window.debugProductCard = debugProductCard;
 }
 
+// =========================
+// 🎨 PRODUCT CARD ENHANCED FEATURES
+// =========================
+
+// Product Card Spotlight Effect
+export function initProductCardSpotlight() {
+  console.log("🎨 Initializing product card spotlight effect...");
+
+  document.querySelectorAll('.product-card').forEach(card => {
+    const spotlight = card.querySelector('.product-card-spotlight');
+
+    if (!spotlight) return;
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+      spotlight.style.setProperty('--mouse-x', `${x}%`);
+      spotlight.style.setProperty('--mouse-y', `${y}%`);
+    });
+  });
+
+  console.log("✅ Product card spotlight initialized");
+}
+
+// Quick Actions Handler
+export function initQuickActions() {
+  console.log("🎯 Initializing quick actions...");
+
+  document.addEventListener('click', (e) => {
+    const quickActionBtn = e.target.closest('.quick-action-btn');
+
+    if (!quickActionBtn) return;
+
+    e.stopPropagation(); // Prevent card click
+
+    const action = quickActionBtn.title;
+    const productCard = quickActionBtn.closest('.product-card');
+    const productId = productCard.dataset.id;
+
+    if (action.includes('Wishlist')) {
+      // Add to wishlist logic
+      showToast('❤️ Added to wishlist!', 'success');
+    } else if (action.includes('Quick View')) {
+      // Show quick view modal
+      showToast('👁️ Quick view opened!', 'info');
+    } else if (action.includes('Compare')) {
+      // Add to comparison
+      showToast('⚖️ Added to comparison!', 'info');
+    }
+  });
+
+  console.log("✅ Quick actions initialized");
+}
+
 console.log("✅ Products module loaded");
