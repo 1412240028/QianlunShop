@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - QianlunShop</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages/checkout.css">
+  <link rel="icon" href="/assets/images/icons/QianLun Alphabet.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="module" src="/js/script-final.js" defer></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <a href=../index.html>
+        <img src="/assets/images/icons/QianLun Alphabet.png" alt="QianLun Logo" class="logo-img">
+      </a>
+    </div>
+
+    <button class="mobile-menu-btn" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul>
+      <li><a href="../index.html">Beranda</a></li>
+      <li><a href="products.html">Produk</a></li>
+      <li>
+        <a href="cart.html" id="cartIcon">
+          Keranjang <span class="cart-count">0</span>
+        </a>
+      </li>
+      <li><a href="about.html">Tentang</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+    </ul>
+  </nav>
+
+  <!-- Checkout Section -->
+  <section class="section checkout-section">
+    <div class="container">
+      <h2>Checkout 🛒</h2>
+      
+      <div class="checkout-container">
+        <!-- Left Column - Form -->
+        <div class="checkout-form">
+          <h3>Informasi Pengiriman</h3>
+          
+          <form id="checkoutForm">
+            <div class="form-group">
+              <label for="fullName">Nama Lengkap *</label>
+              <input type="text" id="fullName" name="fullName" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Nomor Telepon *</label>
+              <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Alamat Lengkap *</label>
+              <textarea id="address" name="address" rows="3" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city">Kota *</label>
+                <input type="text" id="city" name="city" required>
+              </div>
+              <div class="form-group">
+                <label for="postalCode">Kode Pos *</label>
+                <input type="text" id="postalCode" name="postalCode" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="shipping">Metode Pengiriman *</label>
+              <select id="shipping" name="shipping" class="shipping-select" required>
+                <option value="">Pilih pengiriman</option>
+                <option value="regular">Regular Delivery - Rp 25.000 (3-5 hari)</option>
+                <option value="express">Express Delivery - Rp 50.000 (1-2 hari)</option>
+                <option value="same-day">Same Day Delivery - Rp 75.000 (Hari ini)</option>
+                <option value="free">Free Shipping - Rp 0 (7-14 hari)</option>
+              </select>
+            </div>
+
+            <h3>Metode Pembayaran</h3>
+            
+            <div class="payment-methods">
+              <div class="payment-option">
+                <input type="radio" id="creditCard" name="payment" value="creditCard" required>
+                <label for="creditCard">
+                  <span class="payment-icon">💳</span>
+                  Kartu Kredit
+                </label>
+              </div>
+              
+              <div class="payment-option">
+                <input type="radio" id="bankTransfer" name="payment" value="bankTransfer">
+                <label for="bankTransfer">
+                  <span class="payment-icon">🏦</span>
+                  Transfer Bank
+                </label>
+              </div>
+              
+              <div class="payment-option">
+                <input type="radio" id="ewallet" name="payment" value="ewallet">
+                <label for="ewallet">
+                  <span class="payment-icon">📱</span>
+                  E-Wallet
+                </label>
+              </div>
+            </div>
+
+            <!-- Credit Card Form (shown when selected) -->
+            <div class="credit-card-form" id="creditCardForm" style="display: none;">
+              <div class="form-group">
+                <label for="cardNumber">Nomor Kartu *</label>
+                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456">
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="expiryDate">Masa Berlaku *</label>
+                  <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY">
+                </div>
+                <div class="form-group">
+                  <label for="cvv">CVV *</label>
+                  <input type="text" id="cvv" name="cvv" placeholder="123">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="cardName">Nama di Kartu *</label>
+                <input type="text" id="cardName" name="cardName">
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right Column - Order Summary -->
+        <div class="order-summary">
+          <h3>Ringkasan Pesanan</h3>
+          
+          <div class="order-items" id="checkoutItems">
+            <!-- Items will be populated by JavaScript -->
+          </div>
+
+          <div class="order-totals">
+            <div class="total-row">
+              <span>Subtotal:</span>
+              <span id="subtotal">Rp 0</span>
+            </div>
+            <div class="total-row">
+              <span>Biaya Pengiriman:</span>
+              <span id="shippingCost">Rp 0</span>
+            </div>
+            <div class="total-row">
+              <span>Pajak (11%):</span>
+              <span id="taxAmount">Rp 0</span>
+            </div>
+            <div class="total-row discount">
+              <span>Diskon:</span>
+              <span id="discountAmount">- Rp 0</span>
+            </div>
+            <div class="total-row grand-total">
+              <span>Total:</span>
+              <span id="grandTotal">Rp 0</span>
+            </div>
+          </div>
+
+          <div class="promo-code">
+            <label for="promoCode">Kode Promo</label>
+            <div class="promo-input">
+              <input type="text" id="promoCode" placeholder="Masukkan kode promo">
+              <button class="btn btn-promo" id="applyPromo">Terapkan</button>
+            </div>
+          </div>
+
+          <div class="checkout-actions">
+            <button class="btn btn-checkout" id="placeOrder">
+              🛍️ Bayar Sekarang
+            </button>
+            <a href="cart.html" class="btn btn-secondary">Kembali ke Keranjang</a>
+          </div>
+
+          <div class="security-info">
+            <p>🔒 Transaksi Anda aman dan terenkripsi</p>
+            <div class="payment-badges">
+              <span>💳</span>
+              <span>🏦</span>
+              <span>📱</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>QIANLUNSHOP</h4>
+          <p>Where Heritage Meets Modern Luxury</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="products.html">Koleksi</a></li>
+            <li><a href="about.html">Tentang Kami</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>hello@qianlunshop.com</p>
+          <p>+62 812-3456-7890</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 <span>QianlunShop</span>. Semua hak dilindungi.</p>
+        <p>Desain oleh Dhoni Prasetya</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

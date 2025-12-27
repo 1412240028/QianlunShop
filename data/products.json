@@ -1,0 +1,90 @@
+[
+    {
+      "id": "prod_001",
+      "name": "Submariner Homage Black Gold",
+      "slug": "submariner-black-gold",
+      "category": "watches",
+      "brand": "QianlunLux",
+      "price": 15750000,
+      "originalPrice": 18500000,
+      "discount": 15,
+      "rating": 4.8,
+      "reviewCount": 127,
+      "stock": 5,
+      "isNew": true,
+      "isFeatured": true,
+      "images": [
+        "assets/images/products/watch1-main.jpg",
+        "assets/images/products/watch1-side.jpg"
+      ],
+      "thumbnail": "assets/images/products/watch1-thumb.jpg",
+      "description": "Premium automatic diver watch dengan *sapphire crystal* dan *316L stainless steel* yang kokoh, dihiasi aksen emas. Sempurna untuk pernyataan gaya yang tak lekang oleh waktu.",
+      "specifications": {
+        "movement": "Automatic",
+        "waterResistance": "200m",
+        "caseMaterial": "Stainless Steel 316L",
+        "dialColor": "Black",
+        "strapMaterial": "Oyster Bracelet"
+      },
+      "variants": [
+        { "id": "v1", "name": "Black Dial", "inStock": true },
+        { "id": "v2", "name": "Blue Dial", "inStock": false }
+      ],
+      "tags": ["luxury", "automatic", "diver"]
+    },
+    {
+      "id": "prod_002",
+      "name": "Leather Executive Briefcase",
+      "slug": "executive-briefcase",
+      "category": "bags",
+      "brand": "QianlunLeather",
+      "price": 8200000,
+      "originalPrice": 8200000,
+      "discount": 0,
+      "rating": 4.5,
+      "reviewCount": 88,
+      "stock": 12,
+      "isNew": false,
+      "isFeatured": false,
+      "images": [
+        "assets/images/products/bag2-main.jpg",
+        "assets/images/products/bag2-open.jpg"
+      ],
+      "thumbnail": "assets/images/products/bag2-thumb.jpg",
+      "description": "Tas kerja kulit asli Italia dengan *hardware* emas yang elegan. Desain yang timeless untuk eksekutif modern.",
+      "specifications": {
+        "material": "Genuine Italian Leather",
+        "closure": "Zippered",
+        "dimensions": "40x30x10 cm",
+        "color": "Deep Brown"
+      },
+      "tags": ["leather", "business", "briefcase"]
+    },
+    {
+      "id": "prod_003",
+      "name": "High Heel Suede Gold Accent",
+      "slug": "suede-heels-gold",
+      "category": "shoes",
+      "brand": "QianlunFootwear",
+      "price": 3150000,
+      "originalPrice": 3500000,
+      "discount": 10,
+      "rating": 5.0,
+      "reviewCount": 42,
+      "stock": 0,
+      "isNew": true,
+      "isFeatured": true,
+      "images": [
+        "assets/images/products/shoe3-main.jpg"
+      ],
+      "thumbnail": "assets/images/products/shoe3-thumb.jpg",
+      "description": "Sepatu *suede* hitam dengan hak emas yang mencolok. Kenyamanan dan kemewahan dalam setiap langkah.",
+      "specifications": {
+        "material": "Premium Suede",
+        "heelHeight": "10 cm",
+        "color": "Black",
+        "sizeRange": "36-40"
+      },
+      "tags": ["high-heel", "suede", "fashion"]
+    }
+  ]

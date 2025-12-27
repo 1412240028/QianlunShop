@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keranjang - QianlunShop</title>
+
+  <!-- 🎨 Fonts & Styles -->
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="icon" href="/assets/images/icons/QianLun Alphabet.png" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <!-- ⚙️ Main Script -->
+  <script type="module" src="../js/script-final.js" defer></script>
+</head>
+
+<body>
+  <!-- 🌟 NAVBAR -->
+  <nav class="navbar glass-nav">
+    <div class="logo">
+      <a href="../index.html">
+        <img src="/assets/images/icons/QianLun Alphabet.png" alt="QianLun Logo" class="logo-img" />
+      </a>
+    </div>
+
+    <button class="mobile-menu-btn" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul class="nav-links">
+      <li><a href="../index.html">Beranda</a></li>
+      <li><a href="products.html">Produk</a></li>
+      <li>
+        <a href="cart.html" class="active" id="cartIcon">
+          Keranjang <span class="cart-count">0</span>
+        </a>
+      </li>
+      <li><a href="about.html">Tentang</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+    </ul>
+  </nav>
+
+  <!-- 🛒 CART SECTION -->
+  <section class="cart-section">
+    <div class="cart-container">
+      <div class="cart-loading">
+        <div class="loading-spinner"></div>
+        <p>Memuat keranjang kamu...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚡ TOAST NOTIFICATION -->
+  <div class="toast" id="toast"></div>
+
+  <!-- 💎 FOOTER -->
+  <footer class="footer glass-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>QIANLUNSHOP</h4>
+          <p>Where Heritage Meets Modern Luxury</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="products.html">Koleksi</a></li>
+            <li><a href="about.html">Tentang Kami</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>dhoniprasetya3@gmail.com</p>
+          <p>+62 857-552-85030</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 <span>QianlunShop</span>. Semua hak dilindungi.</p>
+        <p>Desain oleh <strong>Dhoni Prasetya</strong></p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

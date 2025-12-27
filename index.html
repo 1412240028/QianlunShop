@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QianlunShop - Luxury Collection</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="icon" href="../assets/images/icons/QianLun Alphabet.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="module" src="/js/script-final.js" defer></script>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">
+      <a href="index.html">
+        <img src="../assets/images/icons/QianLun Alphabet.png" alt="QianLun Logo" class="logo-img">
+      </a>
+    </div>
+    
+    <button class="mobile-menu-btn" aria-label="Toggle menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <ul>
+      <li><a href="index.html" class="active">Beranda</a></li>
+      <li><a href="pages/products.html">Produk</a></li>
+      <li>
+        <a href="pages/cart.html" id="cartIcon">
+          Keranjang <span class="cart-count">0</span>
+        </a>
+      </li>
+      <li><a href="pages/about.html">Tentang</a></li>
+      <li><a href="pages/contact.html">Kontak</a></li>
+    </ul>
+  </nav>  
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <img src="../assets/images/icons/QianLun Dragon.png" alt="QianLun Dragon Logo" class="hero-logo">
+      <h1>QIANLUN - Where Heritage Meets Modern Luxury</h1>
+      <p>Experience timeless elegance with our dragon-inspired collections. Crafted for the discerning few.</p>
+      <div class="hero-buttons">
+        <a href="pages/products.html" class="btn btn-primary">Explore Collection</a>
+        <a href="#featured" class="btn btn-secondary">View Featured</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND STORY -->
+  <section class="brand-story">
+    <div class="container">
+      <div class="story-content">
+        <h2>The QianLun Legacy</h2>
+        <p>Terinspirasi oleh kekuatan dan kebijaksanaan naga legendaris, QianLun menghadirkan warisan mewah dengan sentuhan kontemporer. Setiap produk adalah mahakarya yang menyatukan presisi modern dengan seni tradisional.</p>
+        <div class="brand-values">
+          <div class="value-item">
+            <div class="value-icon">🛠️</div>
+            <h4>Craftsmanship</h4>
+            <p>Dibuat oleh pengrajin terbaik dengan material premium</p>
+          </div>
+          <div class="value-item">
+            <div class="value-icon">🐉</div>
+            <h4>Heritage</h4>
+            <p>Mengangkat warisan budaya dalam desain modern</p>
+          </div>
+          <div class="value-item">
+            <div class="value-icon">💎</div>
+            <h4>Exclusivity</h4>
+            <p>Koleksi terbatas untuk mereka yang menghargai keunikan</p>
+          </div>
+          <div class="value-item">
+            <div class="value-icon">👑</div>
+            <h4>Luxury</h4>
+            <p>Mewujudkan kemewahan dalam setiap detail produk</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="section" id="featured">
+    <div class="container">
+      <div class="section-header">
+        <h2>Signature Collection</h2>
+        <p>Koleksi andalan yang mendefinisikan elegansi QianLun</p>
+      </div>
+      
+      <!-- Product Grid -->
+      <div class="product-grid">
+        <!-- Product 1 -->
+        <div class="product-card" data-id="p001" data-price="8750000" data-category="watch"
+          data-name="QIANLUN HERITAGE COLLECTION">
+          <img src="../assets/images/products/QianLun Watch.jpg" alt="QIANLUN HERITAGE COLLECTION Watch">
+          <div class="product-info">
+            <h3>"HERITAGE COLLECTION"</h3>
+            <p>Rp 8.750.000</p>
+            <a href="pages/products.html#p001" class="btn view-product">Discover More</a>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-id="p002" data-price="5500000" data-category="bag"
+          data-name="QIANLUN CELESTIAL DRAGON">
+          <img src="../assets/images/products/QianLun Bag.jpg" alt="QIANLUN CELESTIAL DRAGON Bag">
+          <div class="product-info">
+            <h3>"CELESTIAL DRAGON"</h3>
+            <p>Rp 5.500.000</p>
+            <a href="pages/products.html#p002" class="btn view-product">Discover More</a>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-id="p003" data-price="3750000" data-category="shoes"
+          data-name="QIANLUN QILIN SCALE">
+          <img src="../assets/images/products/QianLun Shoes.jpg" alt="QIANLUN QILIN SCALE Shoes">
+          <div class="product-info">
+            <h3>"QILIN SCALE"</h3>
+            <p>Rp 3.750.000</p>
+            <a href="pages/products.html#p003" class="btn view-product">Discover More</a>
+          </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product-card" data-id="p004" data-price="2250000" data-category="wallet"
+          data-name="QIANLUN DRAGON SCALES">
+          <img src="../assets/images/products/QianLun Wallet.jpg" alt="QIANLUN DRAGON SCALES Wallet">
+          <div class="product-info">
+            <h3>"DRAGON SCALES"</h3>
+            <p>Rp 2.250.000</p>
+            <a href="pages/products.html#p004" class="btn view-product">Discover More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="container">
+      <h2>What Our Clients Say</h2>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-text">
+            <p>"Kualitasnya exceptional. Detail dragon scale-nya benar-benar artisan."</p>
+          </div>
+          <div class="client-info">
+            <strong>Alexander W.</strong>
+            <span>Collector</span>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-text">
+            <p>"Brand lokal yang bisa bersaing di level internasional. Packaging-nya luxury banget!"</p>
+          </div>
+          <div class="client-info">
+            <strong>Sarah Chen</strong>
+            <span>Fashion Influencer</span>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-text">
+            <p>"Investment yang worth it. Nilai craftsmanship-nya terasa sekali."</p>
+          </div>
+          <div class="client-info">
+            <strong>Michael T.</strong>
+            <span>Business Owner</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <div class="container">
+      <div class="newsletter-content">
+        <h3>Join the QianLun Inner Circle</h3>
+        <p>Dapatkan early access ke koleksi terbatas dan exclusive offers</p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" class="btn">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>QIANLUNSHOP</h4>
+          <p>Where Heritage Meets Modern Luxury</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="pages/products.html">Koleksi</a></li>
+            <li><a href="pages/about.html">Tentang Kami</a></li>
+            <li><a href="pages/contact.html">Kontak</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+        <h4>Contact</h4>
+        <p>dhoniprasetya3@gmail.com</p>
+        <p>+62 857-552-85030</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 <span>QianlunShop</span>. Semua hak dilindungi.</p>
+        <p>Desain oleh Dhoni Prasetya</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+</body>
+</html>

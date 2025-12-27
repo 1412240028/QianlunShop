@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produk - QianlunShop</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="icon" href="/assets/images/icons/QianLun Alphabet.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="module" src="../js/script-final.js" defer></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <a href="../index.html">
+        <img src="/assets/images/icons/QianLun Alphabet.png" alt="QianLun Logo" class="logo-img">
+      </a>
+    </div>
+
+    <button class="mobile-menu-btn" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <ul>
+      <li><a href="../index.html">Beranda</a></li>
+      <li><a href="products.html" class="active">Produk</a></li>
+      <li>
+        <a href="cart.html" id="cartIcon">
+          Keranjang <span class="cart-count">0</span>
+        </a>
+      </li>
+      <li><a href="about.html">Tentang</a></li>
+      <li><a href="contact.html">Kontak</a></li>
+    </ul>
+  </nav>
+
+  <!-- Product Section -->
+  <section class="section products-section">
+    <div class="container">
+      <h2>Our Exclusive Collection</h2>
+
+      <!-- 🔍 SEARCH & FILTER BAR -->
+      <div class="filter-container">
+        <!-- Search Box -->
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="🔍 Cari produk..." autocomplete="off">
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <label for="categoryFilter">Kategori:</label>
+          <select id="categoryFilter">
+            <option value="all">Semua Kategori</option>
+            <option value="watch">Jam Tangan</option>
+            <option value="bag">Tas</option>
+            <option value="shoes">Sepatu</option>
+            <option value="wallet">Dompet</option>
+          </select>
+        </div>
+
+        <!-- Sort Filter -->
+        <div class="filter-group">
+          <label for="sortFilter">Urutkan:</label>
+          <select id="sortFilter">
+            <option value="default">Default</option>
+            <option value="price-low">Harga: Terendah</option>
+            <option value="price-high">Harga: Tertinggi</option>
+            <option value="name-asc">Nama: A-Z</option>
+            <option value="name-desc">Nama: Z-A</option>
+          </select>
+        </div>
+
+        <!-- Reset Button -->
+        <button class="btn btn-reset" id="resetFilter">🔄 Reset</button>
+      </div>
+
+      <!-- Results Info -->
+      <div class="results-info">
+        Menampilkan <span id="resultCount">4</span> produk
+      </div>
+
+      <!-- Product Grid -->
+      <div class="product-grid" id="productGrid">
+
+        <!-- Product 1 -->
+        <div class="product-card" data-id="p001" data-price="8750000" data-category="watch" data-name="QIANLUN HERITAGE COLLECTION">
+          <img src="../assets/images/products/QianLun Watch.jpg" alt="QIANLUN HERITAGE COLLECTION" onerror="this.src='../assets/sample1.jpg'">
+          <div class="product-info">
+            <h3>"HERITAGE COLLECTION"</h3>
+            <p class="product-price">Rp 8.750.000</p>
+            <button class="btn add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-id="p002" data-price="5500000" data-category="bag" data-name="QIANLUN CELESTIAL DRAGON">
+          <img src="../assets/images/products/QianLun Bag.jpg" alt="QIANLUN CELESTIAL DRAGON" onerror="this.src='../assets/sample2.jpg'">
+          <div class="product-info">
+            <h3>"CELESTIAL DRAGON"</h3>
+            <p class="product-price">Rp 5.500.000</p>
+            <button class="btn add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-id="p003" data-price="3750000" data-category="shoes" data-name="QIANLUN QILIN SCALE">
+          <img src="../assets/images/products/QianLun Shoes.jpg" alt="QIANLUN QILIN SCALE" onerror="this.src='../assets/sample3.jpg'">
+          <div class="product-info">
+            <h3>"QILIN SCALE"</h3>
+            <p class="product-price">Rp 3.750.000</p>
+            <button class="btn add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product-card" data-id="p004" data-price="2250000" data-category="wallet" data-name="QIANLUN DRAGON SCALES">
+          <img src="../assets/images/products/QianLun Wallet.jpg" alt="QIANLUN DRAGON SCALES" onerror="this.src='../assets/sample4.jpg'">
+          <div class="product-info">
+            <h3>"DRAGON SCALES"</h3>
+            <p class="product-price">Rp 2.250.000</p>
+            <button class="btn add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- No Results Message -->
+      <div class="no-results" id="noResults" style="display: none;">
+        <h3>😔 Produk tidak ditemukan</h3>
+        <p>Coba kata kunci lain atau reset filter</p>
+        <button class="btn btn-primary" id="resetFromNoResults" style="margin-top: 1.5rem;">🔄 Reset Filter</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>QIANLUNSHOP</h4>
+          <p>Where Heritage Meets Modern Luxury</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="products.html">Koleksi</a></li>
+            <li><a href="about.html">Tentang Kami</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>dhoniprasetya3@gmail.com</p>
+          <p>+62 857-552-85030</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 <span>QianlunShop</span>. Semua hak dilindungi.</p>
+        <p>Desain oleh Dhoni Prasetya</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
