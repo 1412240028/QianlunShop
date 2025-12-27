@@ -5,6 +5,7 @@
 
 /* Base Styles */
 @import 'base/variables.css';
+@import 'base/luxury-theme.css';
 @import 'base/reset.css';
 
 /* Utilities */

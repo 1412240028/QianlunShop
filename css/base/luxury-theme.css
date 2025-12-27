@@ -1,0 +1,806 @@
+/* =========================
+   🐉 QIANLUNSHOP - ULTIMATE LUXURY THEME
+   Heritage Meets Modern Excellence
+   ========================= */
+
+/* =========================
+   🎨 ENHANCED VARIABLES
+   ========================= */
+:root {
+  /* Gold Palette - More Variations */
+  --gold-darkest: #8b7327;
+  --gold-dark: #b8941e;
+  --gold-primary: #d4af37;
+  --gold-accent: #f4d03f;
+  --gold-light: #f9e79f;
+  --gold-glow: rgba(212, 175, 55, 0.4);
+  
+  /* Background Layers */
+  --bg-deepest: #050505;
+  --bg-dark: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2a2a2a;
+  --bg-card: #1c1c1c;
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-light: #e8e8e8;
+  --text-muted: #a0a0a0;
+  --text-subtle: #707070;
+  
+  /* Accent Colors */
+  --success: #2ecc71;
+  --error: #e74c3c;
+  --warning: #f39c12;
+  --info: #3498db;
+  
+  /* Dragon Theme Accents */
+  --dragon-red: #c41e3a;
+  --dragon-jade: #00a86b;
+  --dragon-pearl: #f8f8ff;
+  
+  /* Shadows & Glows */
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-hard: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-premium: 0 12px 48px rgba(0, 0, 0, 0.6);
+  
+  --glow-soft: 0 0 10px var(--gold-glow);
+  --glow-medium: 0 0 20px var(--gold-glow);
+  --glow-strong: 0 0 40px var(--gold-glow);
+  
+  /* Fonts */
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Courier New', monospace;
+  
+  /* Spacing Scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  --transition-premium: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =========================
+   ✨ ADVANCED GLASSMORPHISM
+   ========================= */
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(26, 26, 26, 0.8) 0%,
+    rgba(20, 20, 20, 0.9) 100%
+  );
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow: 
+    var(--shadow-hard),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 0 1px rgba(212, 175, 55, 0.1);
+}
+
+.glass-card-premium {
+  background: linear-gradient(
+    135deg,
+    rgba(212, 175, 55, 0.08) 0%,
+    rgba(26, 26, 26, 0.95) 50%,
+    rgba(212, 175, 55, 0.05) 100%
+  );
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 2px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 
+    var(--shadow-premium),
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    0 0 40px rgba(212, 175, 55, 0.2);
+}
+
+/* =========================
+   🐉 DRAGON SCALE PATTERN
+   ========================= */
+.dragon-scale-bg {
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(212, 175, 55, 0.02) 0%, transparent 50%);
+  background-size: 100px 100px;
+  background-position: 0 0, 50px 50px;
+}
+
+.dragon-scale-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.dragon-scale-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    45deg,
+    var(--gold-dark) 0%,
+    var(--gold-primary) 25%,
+    var(--gold-accent) 50%,
+    var(--gold-primary) 75%,
+    var(--gold-dark) 100%
+  );
+  background-size: 200% 200%;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--transition-premium);
+  animation: dragonShimmer 3s ease-in-out infinite;
+}
+
+.dragon-scale-border:hover::before {
+  opacity: 0.3;
+}
+
+@keyframes dragonShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* =========================
+   💎 PREMIUM BUTTONS
+   ========================= */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-premium);
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform var(--transition-slow);
+}
+
+.btn:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-accent) 100%);
+  color: #000;
+  box-shadow: 
+    var(--shadow-medium),
+    0 0 20px rgba(212, 175, 55, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--gold-accent) 0%, var(--gold-light) 100%);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    var(--shadow-hard),
+    0 0 40px rgba(212, 175, 55, 0.5);
+}
+
+.btn-primary:active {
+  transform: translateY(-1px) scale(1);
+  box-shadow: 
+    var(--shadow-soft),
+    0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.btn-secondary {
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--gold-primary);
+  border: 2px solid var(--gold-primary);
+  backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--gold-accent);
+  color: var(--gold-accent);
+  transform: translateY(-3px);
+  box-shadow: 
+    var(--shadow-medium),
+    var(--glow-medium);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-light);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+}
+
+.btn-outline:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: var(--gold-primary);
+  color: var(--gold-accent);
+  transform: translateY(-2px);
+}
+
+/* =========================
+   🎴 PREMIUM PRODUCT CARDS
+   ========================= */
+.product-card {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(28, 28, 28, 0.95) 0%,
+    rgba(20, 20, 20, 0.98) 100%
+  );
+  border: 2px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-premium);
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(212, 175, 55, 0.1) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+  pointer-events: none;
+}
+
+.product-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 60px rgba(212, 175, 55, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.product-card:hover::before {
+  opacity: 1;
+  animation: radialPulse 2s ease-in-out infinite;
+}
+
+@keyframes radialPulse {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(10%, 10%) scale(1.1); }
+}
+
+.product-card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  transition: all var(--transition-slow);
+  filter: brightness(0.95) contrast(1.05);
+}
+
+.product-card:hover img {
+  transform: scale(1.08);
+  filter: brightness(1.1) contrast(1.1);
+}
+
+.product-info {
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 10, 0.95) 0%,
+    transparent 100%
+  );
+}
+
+.product-info h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--gold-primary);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.5px;
+  transition: all var(--transition-base);
+  text-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+.product-card:hover .product-info h3 {
+  color: var(--gold-accent);
+  text-shadow: 0 0 20px rgba(244, 208, 63, 0.6);
+  transform: translateX(5px);
+}
+
+.product-price {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--gold-accent);
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 6px rgba(244, 208, 63, 0.3);
+}
+
+.product-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-accent));
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-medium);
+  z-index: 2;
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
+}
+
+/* =========================
+   🎯 ENHANCED HERO SECTION
+   ========================= */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl);
+  overflow: hidden;
+  background: 
+    radial-gradient(ellipse at top, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+    linear-gradient(180deg, rgba(10, 10, 10, 0.5), rgba(10, 10, 10, 1)),
+    url('/assets/images/banners/background.jpg') center/cover no-repeat fixed;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(196, 30, 58, 0.05) 0%, transparent 50%);
+  animation: heroGlow 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes heroGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.hero-logo {
+  width: 320px;
+  height: auto;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.6));
+  animation: 
+    logoFloat 4s ease-in-out infinite,
+    logoGlow 2s ease-in-out infinite alternate;
+  transition: transform var(--transition-premium);
+}
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes logoGlow {
+  0% { filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.6)); }
+  100% { filter: drop-shadow(0 0 50px rgba(244, 208, 63, 0.8)); }
+}
+
+.hero-logo:hover {
+  transform: scale(1.08) rotate(5deg);
+  animation-play-state: paused;
+}
+
+.hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--gold-primary);
+  letter-spacing: 3px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: 
+    0 0 20px rgba(212, 175, 55, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(
+    135deg,
+    var(--gold-primary) 0%,
+    var(--gold-accent) 50%,
+    var(--gold-primary) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+}
+
+/* =========================
+   📋 PREMIUM FORM INPUTS
+   ========================= */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="password"],
+select,
+textarea {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  border: 2px solid rgba(212, 175, 55, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--text-light);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: all var(--transition-base);
+  backdrop-filter: blur(10px);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--gold-accent);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 0 0 4px rgba(212, 175, 55, 0.1),
+    0 8px 24px rgba(212, 175, 55, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-subtle);
+  font-style: italic;
+}
+
+/* =========================
+   🌊 SCROLL ANIMATIONS
+   ========================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.animate-left {
+  animation: fadeInLeft 0.8s ease forwards;
+}
+
+.animate-right {
+  animation: fadeInRight 0.8s ease forwards;
+}
+
+/* =========================
+   💫 LOADING STATES
+   ========================= */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(212, 175, 55, 0.2);
+  border-top-color: var(--gold-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================
+   🎭 HOVER EFFECTS LIBRARY
+   ========================= */
+.hover-lift {
+  transition: transform var(--transition-base);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.hover-glow {
+  transition: all var(--transition-base);
+}
+
+.hover-glow:hover {
+  box-shadow: var(--glow-strong);
+}
+
+.hover-scale {
+  transition: transform var(--transition-base);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* =========================
+   🌟 PARTICLE EFFECTS
+   ========================= */
+.particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, var(--gold-accent), transparent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat 6s ease-in-out infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh) scale(0);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(1);
+  }
+}
+
+/* =========================
+   📱 MOBILE ENHANCEMENTS
+   ========================= */
+@media (max-width: 768px) {
+  :root {
+    --space-xl: 1.5rem;
+    --space-2xl: 2rem;
+    --space-3xl: 2.5rem;
+  }
+  
+  .product-card {
+    border-width: 1.5px;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-8px) scale(1.01);
+  }
+  
+  .product-card img {
+    height: 220px;
+  }
+  
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Better touch targets */
+  .btn,
+  .product-card,
+  input,
+  select {
+    min-height: 44px;
+  }
+  
+  /* Reduce animations on mobile for performance */
+  @media (prefers-reduced-motion: no-preference) {
+    * {
+      animation-duration: 0.3s !important;
+    }
+  }
+}
+
+/* =========================
+   🎨 DARK MODE ENHANCEMENTS
+   ========================= */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-dark: #000000;
+    --bg-secondary: #0f0f0f;
+  }
+}
+
+/* =========================
+   ♿ ACCESSIBILITY
+   ========================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 3px solid var(--gold-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* =========================
+   🎯 UTILITY CLASSES
+   ========================= */
+.text-gradient {
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gold-border {
+  border: 2px solid var(--gold-primary);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.premium-shadow {
+  box-shadow: var(--shadow-premium);
+}
+
+.backdrop-blur {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* =========================
+   🔥 BRAND SIGNATURE ELEMENTS
+   ========================= */
+.qianlun-divider {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--gold-primary) 50%,
+    transparent 100%
+  );
+  margin: var(--space-xl) 0;
+  position: relative;
+}
+
+.qianlun-divider::after {
+  content: '🐉';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-dark);
+  padding: 0 1rem;
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 10px var(--gold-glow));
+}
+
+.heritage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--dragon-red), var(--gold-dark));
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-medium);
+}
+
+.heritage-badge::before {
+  content: '⚡';
+  font-size: 1rem;
+}
+
+/* =========================
+   END OF LUXURY THEME
+   ========================= */
