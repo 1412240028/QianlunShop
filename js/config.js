@@ -392,12 +392,11 @@ export const Utils = {
   },
 
   /**
-   * Store data with error handling
+   * Store data with IndexedDB (with localStorage fallback)
    */
-  saveToStorage(key, data) {
+  async saveToStorage(storeName, key, data) {
     try {
-      const serialized = JSON.stringify(data);
-      localStorage.setItem(key, serialized);
+      await storage.set(storeName, key, data);
       return true;
     } catch (error) {
       console.error('Storage Error:', error);
@@ -409,12 +408,12 @@ export const Utils = {
   },
 
   /**
-   * Load data with validation
+   * Load data with IndexedDB validation
    */
-  loadFromStorage(key, defaultValue = null) {
+  async loadFromStorage(storeName, key, defaultValue = null) {
     try {
-      const data = localStorage.getItem(key);
-      return data ? JSON.parse(data) : defaultValue;
+      const data = await storage.get(storeName, key);
+      return data !== null ? data : defaultValue;
     } catch (error) {
       console.error('Storage Load Error:', error);
       return defaultValue;

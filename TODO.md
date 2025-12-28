@@ -1,15 +1,26 @@
-# Update Product Card Structure - QianlunShop
+# QianlunShop Improvement Plan
 
-## Tasks
-- [x] Update product cards in index.html (4 cards)
-- [x] Update product cards in pages/products.html (4 cards)
-- [x] Add JavaScript for spotlight effect in js/products.js
-- [x] Add JavaScript for quick actions functionality in js/products.js
-- [x] Initialize new functions in js/script-final.js
-- [x] Test visual changes and functionality
+## High Priority 🔴
+- [ ] Create IndexedDB storage module (js/indexed-db.js)
+- [ ] Update config.js with centralized ASSETS config
+- [ ] Update config.js Utils to use IndexedDB instead of localStorage
+- [ ] Update cart.js to use IndexedDB for cart storage
+- [ ] Update error-handler.js to use IndexedDB and add window.onerror boundary
+- [ ] Update products.js to use centralized ASSETS paths
+- [ ] Update sw.js to use centralized ASSETS paths
 
-## Current Status
-- CSS styles for enhanced product cards are already implemented
-- HTML structures have been updated to match the enhanced design
-- JavaScript functionality has been added and initialized
-- All product cards (8 total) now use the enhanced structure with quick actions, badges, spotlight effect, and ratings
+## Medium Priority 🟡
+- [ ] Refactor mobile menu in script-final.js into MobileMenu class with destroy() method
+- [ ] Call initLazyLoading() in script-final.js
+- [ ] Add window.onerror boundary in error-handler.js (already partially done)
+
+## Low Priority 🟢
+- [ ] Create webpack.config.js for code splitting and bundle optimization
+- [ ] Implement detailed analytics tracking
+- [ ] Add virtual scrolling for product lists
+
+## Testing & Verification
+- [ ] Test IndexedDB functionality across browsers
+- [ ] Verify lazy loading works on products page
+- [ ] Test mobile menu cleanup on page navigation
+- [ ] Monitor bundle size improvements
