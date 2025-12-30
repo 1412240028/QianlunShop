@@ -1399,5 +1399,185 @@
   }
   
   /* =========================
+     📱 SMALL MOBILE (≤480px)
+     ========================= */
+  @media (max-width: 480px) {
+    html {
+      font-size: 15px;
+    }
+
+    body {
+      font-size: 14px;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+    }
+
+    h4 {
+      font-size: 1.1rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+
+    .section {
+      padding: 2rem 0.8rem;
+    }
+
+    .container {
+      padding: 0 1rem;
+    }
+
+    .btn {
+      padding: 0.85rem 1.2rem;
+      font-size: 0.9rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.6rem;
+    }
+
+    .section-header p {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* =========================
+     📱 EXTRA SMALL (≤360px)
+     ========================= */
+  @media (max-width: 360px) {
+    html {
+      font-size: 14px;
+    }
+
+    body {
+      font-size: 13px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+    }
+
+    p {
+      font-size: 0.85rem;
+    }
+
+    .container {
+      padding: 0 0.8rem;
+    }
+
+    .section {
+      padding: 1.5rem 0.5rem;
+    }
+
+    .btn {
+      padding: 0.8rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  /* =========================
+     🔧 MOBILE UTILITIES
+     ========================= */
+  @media (max-width: 768px) {
+
+    /* Hide on mobile */
+    .hide-mobile {
+      display: none !important;
+    }
+
+    /* Show only on mobile */
+    .show-mobile {
+      display: block !important;
+    }
+
+    /* Full width on mobile */
+    .full-width-mobile {
+      width: 100% !important;
+    }
+
+    /* Touch-friendly spacing */
+    .touch-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    /* Prevent text selection on interactive elements */
+    button,
+    .btn,
+    .mobile-menu-btn {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    /* Better scrolling on iOS */
+    .scroll-container {
+      -webkit-overflow-scrolling: touch;
+      overflow-scrolling: touch;
+    }
+
+    /* Safe area insets for iPhone X+ */
+    @supports (padding: max(0px)) {
+      body {
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
+      }
+    }
+  }
+
+  /* =========================
+     ⚡ PERFORMANCE OPTIMIZATIONS
+     ========================= */
+  @media (max-width: 768px) {
+
+    /* Reduce motion for better performance */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Optimize images */
+    img {
+      image-rendering: -webkit-optimize-contrast;
+    }
+
+    /* Optimize animations */
+    * {
+      will-change: auto !important;
+    }
+
+    /* Better font rendering */
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  }
+
+  /* =========================
      ✅ END OF MOBILE STYLES
      ========================= */

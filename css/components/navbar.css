@@ -5,687 +5,681 @@
 /* ===================================
    🎯 DESKTOP NAVBAR (DEFAULT)
    =================================== */
-   .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(10, 10, 10, 0.98);
-    padding: 0.8rem 3rem;
-    min-height: 70px;
-    height: 70px;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    z-index: 1000;
-    animation: navbarSlideIn 0.6s ease-out;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10, 10, 10, 0.98);
+  padding: 0.8rem 3rem;
+  min-height: 70px;
+  height: 70px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 1000;
+  animation: navbarSlideIn 0.6s ease-out;
+}
+
+.navbar.scrolled {
+  background: rgba(10, 10, 10, 0.95);
+  border-bottom-color: rgba(212, 175, 55, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 0.6rem 3rem;
+  min-height: 60px;
+  height: 60px;
+}
+
+.navbar.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes navbarSlideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
   }
-  
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===================================
+     🎨 LOGO SECTION
+     =================================== */
+.navbar .logo {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--gold-primary);
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.navbar .logo a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logo img.logo-img {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
+}
+
+.navbar.scrolled .logo img.logo-img {
+  height: 40px;
+}
+
+.logo img.logo-img:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 8px rgba(244, 208, 63, 0.6));
+}
+
+/* ===================================
+     📱 DESKTOP NAVIGATION
+     =================================== */
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.navbar ul li {
+  list-style: none;
+}
+
+.navbar ul li a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+}
+
+.navbar ul li a:hover,
+.navbar ul li a.active {
+  color: var(--gold-accent);
+  transform: translateY(-1px);
+}
+
+.navbar ul li a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gold-accent);
+  border-radius: 2px;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+.navbar ul li a::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--gold-accent);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar ul li a:hover::before {
+  width: 80%;
+}
+
+/* ===================================
+     🛒 CART ICON
+     =================================== */
+#cartIcon {
+  position: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cartIcon:hover {
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-2px);
+}
+
+.cart-count {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-accent));
+  color: #000;
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-dark);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+  transition: all 0.3s ease;
+}
+
+.cart-count.empty {
+  display: none;
+}
+
+.cart-count.pulse {
+  animation: cartPulse 0.6s ease;
+}
+
+@keyframes cartPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+/* ===================================
+     📱 MOBILE MENU BUTTON (HIDDEN ON DESKTOP)
+     =================================== */
+.mobile-menu-btn {
+  display: none;
+  /* Hidden by default on desktop */
+}
+
+.mobile-overlay {
+  display: none;
+  /* Hidden by default */
+}
+
+/* =========================
+   🎯 MOBILE NAVBAR - COMPLETELY FIXED
+   Tested on 320px - 768px devices
+   ========================= */
+
+/* ===================================
+   📱 BASE NAVBAR (ALL DEVICES)
+   =================================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10, 10, 10, 0.98);
+  padding: 0.8rem 3rem;
+  min-height: 70px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  background: rgba(10, 10, 10, 0.95);
+  padding: 0.6rem 3rem;
+  min-height: 60px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Logo */
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  z-index: 1001;
+}
+
+.logo img.logo-img {
+  height: 45px;
+  width: auto;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
+}
+
+.navbar.scrolled .logo img.logo-img {
+  height: 40px;
+}
+
+/* Desktop Navigation */
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.navbar ul li a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+}
+
+.navbar ul li a:hover,
+.navbar ul li a.active {
+  color: var(--gold-accent);
+  transform: translateY(-1px);
+}
+
+/* Cart Badge */
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-accent));
+  color: #000;
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-dark);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+}
+
+.cart-count.empty {
+  display: none;
+}
+
+/* Hide mobile button on desktop */
+.mobile-menu-btn {
+  display: none;
+}
+
+.mobile-overlay {
+  display: none;
+}
+
+/* ===================================
+   📱 MOBILE RESPONSIVE (≤768px)
+   =================================== */
+@media (max-width: 768px) {
+
+  /* Navbar Container */
+  .navbar {
+    padding: 0 1.25rem;
+    min-height: 65px;
+    height: 65px;
+  }
+
   .navbar.scrolled {
-    background: rgba(10, 10, 10, 0.95);
-    border-bottom-color: rgba(212, 175, 55, 0.2);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    padding: 0.6rem 3rem;
+    padding: 0 1.25rem;
     min-height: 60px;
     height: 60px;
   }
-  
-  .navbar.hidden {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  @keyframes navbarSlideIn {
-    from {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  
-  /* ===================================
-     🎨 LOGO SECTION
-     =================================== */
-  .navbar .logo {
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--gold-primary);
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-  }
-  
-  .navbar .logo a {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-  
+
+  /* Logo Size */
   .logo img.logo-img {
-    height: 45px;
-    width: auto;
-    object-fit: contain;
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
+    height: 42px;
   }
-  
+
   .navbar.scrolled .logo img.logo-img {
-    height: 40px;
+    height: 38px;
   }
-  
-  .logo img.logo-img:hover {
-    transform: scale(1.08);
-    filter: drop-shadow(0 0 8px rgba(244, 208, 63, 0.6));
-  }
-  
+
   /* ===================================
-     📱 DESKTOP NAVIGATION
-     =================================== */
-  .navbar ul {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
-    align-items: center;
-  }
-  
-  .navbar ul li {
-    list-style: none;
-  }
-  
-  .navbar ul li a {
-    color: var(--text-light);
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.95rem;
-    padding: 0.5rem 0;
-  }
-  
-  .navbar ul li a:hover,
-  .navbar ul li a.active {
-    color: var(--gold-accent);
-    transform: translateY(-1px);
-  }
-  
-  .navbar ul li a.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--gold-accent);
-    border-radius: 2px;
-    animation: slideIn 0.3s ease;
-  }
-  
-  @keyframes slideIn {
-    from {
-      width: 0;
-      opacity: 0;
-    }
-    to {
-      width: 100%;
-      opacity: 1;
-    }
-  }
-  
-  .navbar ul li a::before {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--gold-accent);
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-  }
-  
-  .navbar ul li a:hover::before {
-    width: 80%;
-  }
-  
-  /* ===================================
-     🛒 CART ICON
-     =================================== */
-  #cartIcon {
-    position: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 0.5rem;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  #cartIcon:hover {
-    background: rgba(212, 175, 55, 0.1);
-    transform: translateY(-2px);
-  }
-  
-  .cart-count {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    background: linear-gradient(135deg, var(--gold-primary), var(--gold-accent));
-    color: #000;
-    font-size: 0.7rem;
-    font-weight: 700;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--bg-dark);
-    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
-    transition: all 0.3s ease;
-  }
-  
-  .cart-count.empty {
-    display: none;
-  }
-  
-  .cart-count.pulse {
-    animation: cartPulse 0.6s ease;
-  }
-  
-  @keyframes cartPulse {
-    0%, 100% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.3);
-    }
-  }
-  
-  /* ===================================
-     📱 MOBILE MENU BUTTON (HIDDEN ON DESKTOP)
+     MOBILE MENU BUTTON
      =================================== */
   .mobile-menu-btn {
-    display: none; /* Hidden by default on desktop */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08));
+    border: 2px solid rgba(212, 175, 55, 0.4);
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 0;
+    gap: 5px;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    flex-shrink: 0;
+    margin-left: auto;
   }
-  
-  .mobile-overlay {
-    display: none; /* Hidden by default */
+
+  .mobile-menu-btn span {
+    width: 26px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold-primary), var(--gold-accent));
+    transition: all 0.3s ease;
+    border-radius: 3px;
+    display: block;
   }
-  
+
+  /* Hamburger Animation */
+  .mobile-menu-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+    background: var(--gold-accent);
+  }
+
+  .mobile-menu-btn.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  .mobile-menu-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+    background: var(--gold-accent);
+  }
+
+  .mobile-menu-btn:hover {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(212, 175, 55, 0.15));
+    border-color: var(--gold-accent);
+  }
+
+  .mobile-menu-btn:active {
+    transform: scale(0.95);
+  }
+
   /* ===================================
-     📱 MOBILE NAVBAR - COMPLETE OVERHAUL
+     MOBILE MENU PANEL
      =================================== */
-  @media (max-width: 768px) {
-    
-    /* ===================================
-       🔧 FIX 1: NAVBAR CONTAINER ALIGNMENT
-       =================================== */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 1.25rem;
-      min-height: 65px;
-      height: 65px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      background: rgba(10, 10, 10, 0.98);
-      /* ❌ REMOVE backdrop-filter */
-      border-bottom: 2px solid rgba(212, 175, 55, 0.3);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      z-index: 1000;
-      transition: all 0.3s ease;
-      /* PENTING: Hapus transform untuk mencegah blur */
-      transform: none !important;
-      will-change: auto;
-    }
-  
-    .navbar.scrolled {
-      padding: 0 1.25rem;
-      min-height: 60px;
-      height: 60px;
-      background: rgba(10, 10, 10, 0.95);
-      border-bottom-color: rgba(212, 175, 55, 0.2);
-    }
-  
-    /* ===================================
-       🔧 FIX 2: LOGO SECTION - PERFECT ALIGNMENT
-       =================================== */
-    .navbar .logo {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      flex-shrink: 0;
-      z-index: 1001;
-      margin: 0;
-      padding: 0;
-    }
-  
-    .navbar .logo a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      height: 100%;
-    }
-  
-    .logo img.logo-img {
-      height: 42px;
-      width: auto;
-      object-fit: contain;
-      transition: all 0.3s ease;
-      filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.4));
-      display: block;
-    }
-  
-    .navbar.scrolled .logo img.logo-img {
-      height: 38px;
-    }
-  
-    /* ===================================
-       🔧 FIX 3: MOBILE MENU BUTTON - RIGHT ALIGNMENT
-       =================================== */
-    .mobile-menu-btn {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08));
-      border: 2px solid rgba(212, 175, 55, 0.4);
-      border-radius: 12px;
-      cursor: pointer;
-      padding: 0;
-      gap: 5px;
-      transition: all 0.3s ease;
-      z-index: 1001;
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
-      flex-shrink: 0;
-      margin-left: auto;
-    }
-  
-    .mobile-menu-btn:hover {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(212, 175, 55, 0.15));
-      border-color: var(--gold-accent);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-    }
-  
-    .mobile-menu-btn:active {
-      transform: translateY(0) scale(0.95);
-    }
-  
-    .mobile-menu-btn span {
-      width: 26px;
-      height: 3px;
-      background: linear-gradient(90deg, var(--gold-primary), var(--gold-accent));
-      transition: all 0.3s ease;
-      border-radius: 3px;
-      box-shadow: 0 2px 4px rgba(212, 175, 55, 0.3);
-    }
-  
-    /* Animated hamburger to X */
-    .mobile-menu-btn.active {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(212, 175, 55, 0.2));
-      border-color: var(--gold-accent);
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-    }
-  
-    .mobile-menu-btn.active span:nth-child(1) {
-      transform: rotate(45deg) translate(8px, 8px);
-      background: var(--gold-accent);
-    }
-  
-    .mobile-menu-btn.active span:nth-child(2) {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-  
-    .mobile-menu-btn.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(8px, -8px);
-      background: var(--gold-accent);
-    }
-  
-    /* ===================================
-       🔧 FIX 4: MOBILE MENU - NO BLUR ISSUE
-       =================================== */
-    .navbar ul {
-      position: fixed;
-      top: 65px;
-      left: 0;
-      width: 100%;
-      height: calc(100vh - 65px);
-      max-height: calc(100vh - 65px);
-      background: rgba(10, 10, 10, 0.98);
-      /* ✅ CRITICAL: Hapus backdrop-filter */
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-      padding: 2rem 1.5rem;
-      gap: 0;
-      margin: 0;
-      transform: translateX(-100%);
-      transition: transform 0.4s ease;
-      border-top: 2px solid rgba(212, 175, 55, 0.3);
-      border-right: 1px solid rgba(212, 175, 55, 0.2);
-      z-index: 999;
-      overflow-y: auto;
-      overflow-x: hidden;
-      box-shadow: 4px 0 40px rgba(0, 0, 0, 0.6);
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-    }
-  
-    /* Active state - menu terbuka */
-    .navbar ul.active {
+  .navbar ul {
+    position: fixed;
+    top: 65px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 65px);
+    max-height: calc(100vh - 65px);
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 2rem 1.5rem;
+    gap: 0;
+    margin: 0;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 2px solid rgba(212, 175, 55, 0.3);
+    z-index: 999;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .navbar ul.active {
+    transform: translateX(0);
+  }
+
+  /* Menu Items */
+  .navbar ul li {
+    width: 100%;
+    margin: 0;
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.3s ease;
+  }
+
+  .navbar ul.active li {
+    animation: slideInMenuItem 0.4s ease forwards;
+  }
+
+  .navbar ul.active li:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+
+  .navbar ul.active li:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .navbar ul.active li:nth-child(3) {
+    animation-delay: 0.15s;
+  }
+
+  .navbar ul.active li:nth-child(4) {
+    animation-delay: 0.2s;
+  }
+
+  .navbar ul.active li:nth-child(5) {
+    animation-delay: 0.25s;
+  }
+
+  @keyframes slideInMenuItem {
+    to {
+      opacity: 1;
       transform: translateX(0);
     }
-  
-    /* ===================================
-       🔧 FIX 5: MENU ITEMS - SMOOTH ANIMATION
-       =================================== */
-    .navbar ul li {
-      width: 100%;
-      margin: 0;
-      list-style: none;
-      opacity: 0;
-      transform: translateX(-30px);
-    }
-  
-    /* Animate menu items when menu opens */
-    .navbar ul.active li {
-      animation: slideInMenuItem 0.4s ease forwards;
-    }
-  
-    .navbar ul.active li:nth-child(1) { animation-delay: 0.05s; }
-    .navbar ul.active li:nth-child(2) { animation-delay: 0.1s; }
-    .navbar ul.active li:nth-child(3) { animation-delay: 0.15s; }
-    .navbar ul.active li:nth-child(4) { animation-delay: 0.2s; }
-    .navbar ul.active li:nth-child(5) { animation-delay: 0.25s; }
-  
-    @keyframes slideInMenuItem {
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-  
-    /* ===================================
-       🔧 FIX 6: MENU LINKS - CENTERED ALIGNMENT
-       =================================== */
-    .navbar ul li a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      padding: 1.2rem 1.5rem;
-      font-size: 1.05rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: var(--text-light);
-      text-decoration: none;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 2px solid transparent;
-      margin-bottom: 0.7rem;
-      transition: all 0.3s ease;
-      position: relative;
-      text-align: center;
-    }
-  
-    .navbar ul li a:hover,
-    .navbar ul li a.active {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(212, 175, 55, 0.1));
-      border: 2px solid rgba(212, 175, 55, 0.5);
-      color: var(--gold-accent);
-      transform: translateX(8px);
-      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25);
-    }
-  
-    /* Remove desktop active indicator */
-    .navbar ul li a.active::after {
-      display: none;
-    }
-  
-    .navbar ul li a::before {
-      display: none;
-    }
-  
-    /* ===================================
-       🔧 FIX 7: CART BADGE IN MENU
-       =================================== */
-    .navbar ul li a .cart-count {
-      position: relative;
-      top: auto;
-      right: auto;
-      margin-left: auto;
-      min-width: 30px;
-      height: 30px;
-      padding: 0 0.5rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--gold-primary), var(--gold-accent));
-      color: #000;
-      border-radius: 50%;
-      border: 2px solid rgba(10, 10, 10, 0.9);
-      box-shadow: 0 3px 12px rgba(212, 175, 55, 0.5);
-      transition: all 0.3s ease;
-    }
-  
-    .navbar ul li a:hover .cart-count {
-      transform: scale(1.15);
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.7);
-    }
-  
-    .navbar ul li a .cart-count.empty {
-      display: none;
-    }
-  
-    /* ===================================
-       🔧 FIX 8: OVERLAY - NO BLUR
-       =================================== */
-    .mobile-overlay {
-      display: block;
-      position: fixed;
-      top: 65px;
-      left: 0;
-      width: 100%;
-      height: calc(100vh - 65px);
-      background: rgba(0, 0, 0, 0.85);
-      /* PENTING: Hapus backdrop-filter */
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      z-index: 998;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      pointer-events: none;
-    }
-  
-    .mobile-overlay.active {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-  
-    /* ===================================
-       🔧 FIX 9: PREVENT BODY SCROLL
-       =================================== */
-    body.menu-open {
-      overflow: hidden;
-      position: fixed;
-      width: 100%;
-      height: 100vh;
-    }
-  
-    /* ===================================
-       🔧 FIX 10: CART PAGE SPECIFIC FIX
-       =================================== */
-    .cart-section,
-    .checkout-section,
-    .order-confirmation {
-      padding-top: 85px; /* Extra padding untuk navbar */
-    }
-  
-    /* Ensure content doesn't hide under navbar */
-    body {
-      padding-top: 65px;
-    }
-  
-    body.menu-open {
-      padding-top: 65px;
-    }
   }
-  
+
+  /* Menu Links */
+  .navbar ul li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid transparent;
+    margin-bottom: 0.7rem;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .navbar ul li a:hover,
+  .navbar ul li a.active {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(212, 175, 55, 0.1));
+    border: 2px solid rgba(212, 175, 55, 0.5);
+    color: var(--gold-accent);
+    transform: translateX(8px);
+  }
+
+  .navbar ul li a.active::after {
+    display: none;
+  }
+
+  .navbar ul li a::before {
+    display: none;
+  }
+
+  /* Cart Badge in Mobile Menu */
+  .navbar ul li a .cart-count {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-left: auto;
+    min-width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+  }
+
   /* ===================================
-     📱 SMALL PHONES (< 480px)
+     MOBILE OVERLAY
      =================================== */
-  @media (max-width: 480px) {
+  .mobile-overlay {
+    display: block;
+    position: fixed;
+    top: 65px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 65px);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .mobile-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Prevent body scroll when menu open */
+  body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+}
+
+/* ===================================
+   📱 SMALL MOBILE (≤480px)
+   =================================== */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0 1rem;
+    min-height: 60px;
+    height: 60px;
+  }
+
+  .logo img.logo-img {
+    height: 38px;
+  }
+
+  .mobile-menu-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .mobile-menu-btn span {
+    width: 24px;
+    height: 2.5px;
+  }
+
+  .navbar ul {
+    top: 60px;
+    height: calc(100vh - 60px);
+    padding: 1.5rem 1.2rem;
+  }
+
+  .navbar ul li a {
+    padding: 1rem 1.2rem;
+    font-size: 1rem;
+  }
+}
+
+/* ===================================
+   🎨 LANDSCAPE MODE
+   =================================== */
+@media (max-width: 768px) and (orientation: landscape) {
+  .navbar ul {
+    padding: 1rem 1.2rem;
+  }
+
+  .navbar ul li a {
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* ===================================
+   🔒 SAFE AREA (iPhone X+)
+   =================================== */
+@supports (padding: max(0px)) {
+  @media (max-width: 768px) {
     .navbar {
-      padding: 0 1rem;
-      min-height: 60px;
-      height: 60px;
+      padding-left: max(1.25rem, env(safe-area-inset-left));
+      padding-right: max(1.25rem, env(safe-area-inset-right));
     }
-  
-    .navbar.scrolled {
-      padding: 0 1rem;
-      min-height: 58px;
-      height: 58px;
-    }
-  
-    .logo img.logo-img {
-      height: 38px;
-    }
-  
-    .navbar.scrolled .logo img.logo-img {
-      height: 35px;
-    }
-  
-    .mobile-menu-btn {
-      width: 44px;
-      height: 44px;
-    }
-  
-    .mobile-menu-btn span {
-      width: 24px;
-      height: 2.5px;
-    }
-  
+
     .navbar ul {
-      top: 60px;
-      height: calc(100vh - 60px);
-      padding: 1.5rem 1.2rem;
-    }
-  
-    .navbar ul li a {
-      padding: 1rem 1.2rem;
-      font-size: 1rem;
-    }
-  
-    .mobile-overlay {
-      top: 60px;
-      height: calc(100vh - 60px);
-    }
-  
-    body {
-      padding-top: 60px;
+      padding-left: max(1.5rem, env(safe-area-inset-left));
+      padding-right: max(1.5rem, env(safe-area-inset-right));
     }
   }
-  
-  /* ===================================
-     🎨 LANDSCAPE MODE
-     =================================== */
-  @media (max-width: 768px) and (orientation: landscape) {
-    .navbar ul {
-      padding: 1rem 1.2rem;
-    }
-  
-    .navbar ul li a {
-      padding: 0.8rem 1.2rem;
-      font-size: 0.95rem;
-      margin-bottom: 0.5rem;
-    }
-  }
-  
-  /* ===================================
-     🔒 SAFE AREA INSETS (iPhone X+)
-     =================================== */
-  @supports (padding: max(0px)) {
-    @media (max-width: 768px) {
-      .navbar {
-        padding-left: max(1.25rem, env(safe-area-inset-left));
-        padding-right: max(1.25rem, env(safe-area-inset-right));
-      }
-  
-      .navbar ul {
-        padding-left: max(1.5rem, env(safe-area-inset-left));
-        padding-right: max(1.5rem, env(safe-area-inset-right));
-        padding-bottom: max(2rem, env(safe-area-inset-bottom));
-      }
-    }
-  }
-  
-  /* ===================================
+}
+
+/* ===================================
      ✨ ACCESSIBILITY & UX ENHANCEMENTS
      =================================== */
-  @media (max-width: 768px) {
-    /* Prevent text selection on buttons */
-    .navbar ul li a,
-    .mobile-menu-btn {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-      -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
-    }
-  
-    /* Better touch targets */
-    .mobile-menu-btn,
-    .navbar ul li a {
-      min-height: 44px;
-      min-width: 44px;
-    }
+@media (max-width: 768px) {
+
+  /* Prevent text selection on buttons */
+  .navbar ul li a,
+  .mobile-menu-btn {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
   }
-  
-  /* ===================================
+
+  /* Better touch targets */
+  .mobile-menu-btn,
+  .navbar ul li a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ===================================
      📄 PAGE TRANSITION ANIMATION
      =================================== */
-  @keyframes slideUpIn {
-    from {
-      transform: translateY(30px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+@keyframes slideUpIn {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
   }
-  
-  .page-transition {
-    animation: slideUpIn 0.5s ease-out;
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
+}
+
+.page-transition {
+  animation: slideUpIn 0.5s ease-out;
+}
