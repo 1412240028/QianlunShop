@@ -45,7 +45,14 @@
   font-size: 1.1rem;
 }
 
-/* 🧾 Cart Items Container */
+/* =========================
+   ✅ CART ITEM - COMPLETE RESPONSIVE FIX
+   Desktop: image | info | total
+   Tablet: image | info + total
+   Mobile: image | info + total (vertical)
+   =========================== */
+
+/* Desktop Layout (default) */
 .cart-item {
   display: grid;
   grid-template-columns: 100px 1fr auto;
@@ -57,9 +64,7 @@
   border: 1px solid rgba(212, 175, 55, 0.25);
   border-radius: 16px;
   padding: 1.5rem;
-  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .cart-item img {
@@ -69,10 +74,38 @@
   object-fit: cover;
   border-radius: 10px;
   border: 2px solid rgba(212, 175, 55, 0.4);
-  transition: all 0.3s ease;
 }
 
-/* Tablet + Mobile Adjustments */
+.cart-info {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item-total-section {
+  grid-area: total;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.cart-actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  justify-self: start;
+}
+
+/* ===================================
+   📱 TABLET (768px - 900px)
+   =================================== */
 @media (max-width: 900px) {
   .cart-item {
     grid-template-columns: 80px 1fr;
@@ -83,8 +116,21 @@
     padding: 1.2rem;
     gap: 1rem;
   }
+
+  .cart-item img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .item-total-section {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
 }
 
+/* ===================================
+   📱 MOBILE (< 768px)
+   =================================== */
 @media (max-width: 768px) {
   .cart-item {
     grid-template-columns: 70px 1fr;
@@ -99,6 +145,41 @@
   .cart-item img {
     width: 70px;
     height: 70px;
+  }
+
+  .item-total-section {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .cart-actions {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ===================================
+   📱 SMALL MOBILE (< 480px)
+   =================================== */
+@media (max-width: 480px) {
+  .cart-item {
+    grid-template-columns: 60px 1fr;
+    padding: 0.8rem;
+  }
+
+  .cart-item img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .cart-info h3 {
+    font-size: 0.95rem;
+  }
+
+  .item-total {
+    font-size: 1.1rem;
   }
 }
 

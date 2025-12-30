@@ -163,8 +163,8 @@
    =================================== */
 .brand-values {
   display: grid;
-  /* FIXED: 4 kolom dengan lebar yang sama */
-  grid-template-columns: repeat(4, 1fr);
+  /* FIXED: Responsive grid - 4 kolom desktop, auto-fit untuk mobile */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-top: 3rem;
   /* Ensure full width untuk container */

@@ -141,6 +141,47 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // =========================
+  // 🧹 CLEANUP ON PAGE NAVIGATION
+  // =========================
+  // Clean up event listeners when navigating away from page
+  window.addEventListener('beforeunload', function() {
+    console.log("🧹 Cleaning up event listeners before page navigation...");
+
+    // Clean up mobile menu if it exists
+    if (window.mobileMenuCleanup) {
+      window.mobileMenuCleanup();
+      console.log("✅ Mobile menu event listeners cleaned up");
+    }
+
+    // Clean up cart event listeners
+    if (cart && cart.removeAllListeners) {
+      cart.removeAllListeners();
+      console.log("✅ Cart event listeners cleaned up");
+    }
+
+    // Clear any intervals or timeouts
+    if (window.qianlunIntervals) {
+      window.qianlunIntervals.forEach(clearInterval);
+      window.qianlunIntervals = [];
+      console.log("✅ Intervals cleared");
+    }
+
+    // Clear any pending timeouts
+    if (window.qianlunTimeouts) {
+      window.qianlunTimeouts.forEach(clearTimeout);
+      window.qianlunTimeouts = [];
+      console.log("✅ Timeouts cleared");
+    }
+  });
+
+  // Handle SPA-like navigation (if using client-side routing)
+  window.addEventListener('popstate', function() {
+    console.log("🔄 Page navigation detected, cleaning up...");
+    // Trigger cleanup on back/forward navigation
+    window.dispatchEvent(new Event('beforeunload'));
+  });
+
   console.log("✅ QianlunShop Modular Version Ready!");
 });
 
